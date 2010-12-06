@@ -3,7 +3,7 @@ module Data.Graph where
 -- A graph is an ordered pair G = (V, E) comprising a set V of nodes (or vertices) together with a set or multiset (bag) E of edges (or lines).
 -- Any number of nodes is allowed as long as they are not repeated ones.
 -- If E is a set, no repeated edges are allowed, and the graph is called simple. If E is a multiset, repeated edges are allowed and is called multigraph.
--- The elemnts of E are pairs of vertices, 
+-- The elements of E are pairs of vertices, 
 -- if the pair is ordered the lines have an orientation and the graph is called directed or digraph for short,
 -- otherwise, the pair is unordered and there is no orientation, just a relation between two nodes and the graph is called undirected or simply a graph.
 -- This differences and mucho more, like allowing cycles or an edge pair of the same node, are implementation depedent.
