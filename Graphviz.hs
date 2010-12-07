@@ -31,7 +31,7 @@ graphviz toString edgeGlue graph = "digraph {" ++ body ++ "}" where
 			stringId a = "\"" ++ (scape (toString a)) ++ "\""
 
 graphvizGraph 	:: (Graph.Graph graph, Ord node) => (node -> String) -> graph node -> String
-graphvizGraph 	toString graph		= graphviz toString "->" graph
+graphvizGraph 	toString graph		= graphviz toString "--" graph
 
 graphvizDigraph	:: (Graph.Graph graph, Ord node) => (node -> String) -> graph node -> String
 graphvizDigraph	toString digraph 	= graphviz toString "->" digraph
