@@ -30,11 +30,11 @@ graphviz toString edgeGlue graph = "digraph {" ++ body ++ "}" where
 			arc (src,dst) = (toString src) ++ edgeGlue ++ (toString dst)
 			stringId a = "\"" ++ (scape (toString a)) ++ "\""
 
-graphvizGraph :: (Graph.Graph graph, Ord node) => (node -> String) -> graph node -> String
-graphvizGraph toString graph = graphviz toString "->" graph
+graphvizGraph 	:: (Graph.Graph graph, Ord node) => (node -> String) -> graph node -> String
+graphvizGraph 	toString graph = graphviz toString "->" graph
 
-graphvizDigraph :: (Graph.Graph graph, Ord node) => (node -> String) -> graph node -> String
-graphvizDigraph toString digraph = graphviz toString "->" digraph
+graphvizDigraph	:: (Graph.Graph graph, Ord node) => (node -> String) -> graph node -> String
+graphvizDigraph	toString digraph = graphviz toString "->" digraph
 
 
 -- writeFile "graphviz.dot" (graphvizdigraph show digraph)
