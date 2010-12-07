@@ -40,6 +40,10 @@ class Graph graph where
 	-- Is implementation dependent to allow or not repeated edges (simple or multigraph).
 	edges 		:: Ord node => graph node -> [(node, node)]
 
+	-- Gets a list of all the nodes reachable from a given node.
+	-- Is implementation dependent to allow or not repeated edges (simple or multigraph).
+	reachable	:: Ord node => node -> graph node -> [node]
+
 	-- Gets all the connections pairs that the node partipates.
 	-- Is implementation dependent to decide if the order of the nodes is important (directed or undirected).
 	-- Is implementation dependent to allow or not repeated edges (simple or multigraph).

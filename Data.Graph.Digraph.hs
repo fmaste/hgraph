@@ -48,6 +48,8 @@ instance Graph.Graph Digraph where
 
 	edges digraph = concatMap (\a -> headArcs a digraph) (Graph.nodes digraph)
 
+	reachable node digraph = (heads node digraph) ++ (tails node digraph)
+
 	nodeEdges node digraph = (headArcs node digraph) ++ (tailArcs node digraph)
 
 -------------------------------------------------------------------------------

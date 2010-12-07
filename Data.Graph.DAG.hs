@@ -40,6 +40,8 @@ instance Graph.Graph DAG where
 
 	edges (DAG digraph) = Graph.edges digraph 
 
+	reachable node (DAG digraph) = Graph.reachable node digraph
+
 	nodeEdges node (DAG digraph) = Graph.nodeEdges node digraph
 
 -- UTILITIES
