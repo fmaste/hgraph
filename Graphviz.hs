@@ -2,7 +2,6 @@ module Graphviz (
 	graphvizDigraph,
 	command) where 
 
---import qualified Data.Class
 import qualified Data.Graph as Graph
 import qualified Data.Graph.Digraph as Digraph
 
