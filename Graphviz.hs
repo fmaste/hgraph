@@ -38,8 +38,5 @@ graphvizDigraph	toString digraph 	= graphviz toString "->" digraph
 -- writeFile "graphviz.dot" (graphvizdigraph show digraph)
 -- > cat graphviz.dot | dot -Tpng > graphviz.png
 
---classNode :: Data.Class.Data.Class -> String
---classNode c = (name c) ++ "[label='{" ++ (implode "|" (map graphvizProperty (properties c))) ++ "}']" where
-
 --	graphvizProperty (n,t) = "{" ++ (show n) ++ "|" ++ (show t) ++ "}"
 
