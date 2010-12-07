@@ -25,7 +25,6 @@ graphviz toString edgeGlue graph = "digraph {" ++ body ++ "}" where
 	body = implode ";" (nodes ++ edges) where
 		nodes = map toString (Graph.nodes graph)
 		edges = map arc (Graph.edges graph) where
---		edges = map arc [(src,dst) | src <- (Graph.nodes graph), dst <- (Graph.heads src graph)] where
 			arc (src,dst) = (toString src) ++ edgeGlue ++ (toString dst)
 			stringId a = "\"" ++ (scape (toString a)) ++ "\""
 
