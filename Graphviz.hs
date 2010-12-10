@@ -3,7 +3,6 @@ module Graphviz (
 	command) where 
 
 import qualified Data.Graph as Graph
-import qualified Data.Graph.Digraph as Digraph
 
 implode :: String -> [String] -> String
 implode glue []     = ""
