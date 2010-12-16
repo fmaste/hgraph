@@ -19,7 +19,7 @@ type TailOf node = (Map.Map node [node])
 -- A map of nodes as keys and a list of the direct predecessors of that node as values.
 type HeadOf node = (Map.Map node [node])
 
-data Digraph node = Digraph (TailOf node) (HeadOf node)
+data Digraph node edge = Digraph (TailOf node) (HeadOf node) | TmpDigraph edge
     deriving (Show, Read, Ord, Eq)
 
 -- CONSTRUCTORS
@@ -55,7 +55,7 @@ instance Graph.Graph Digraph where
 -------------------------------------------------------------------------------
 
 -- Checks if the connection generates a cicle.
-generatesCycle :: Ord node => node -> node -> Digraph node -> Bool
+generatesCycle :: (Ord node, Ord edge) => node -> node -> Digraph node edge -> Bool
 generatesCycle tail head digraph = isParent [tail] where
 	isParent [] = False
 	isParent (x:xs) = (x == head) || (isParent xs) || (isParent (tails x digraph))
@@ -64,26 +64,26 @@ generatesCycle tail head digraph = isParent [tail] where
 -------------------------------------------------------------------------------
 
 -- Removes all the links between the node and its direct successors.
-unlinkSuccessors :: Ord node => node -> Digraph node -> Digraph node
+unlinkSuccessors :: (Ord node, Ord edge) => node -> Digraph node edge -> Digraph node edge
 unlinkSuccessors node digraph = foldl (\a b -> Graph.unlink node b a) digraph (heads node digraph)
 
 -- Removes all the links between the node and its direct predecessors.
-unlinkPredecessors :: Ord node => node -> Digraph node -> Digraph node
+unlinkPredecessors :: (Ord node, Ord edge) => node -> Digraph node edge -> Digraph node edge
 unlinkPredecessors node digraph = foldl (\a b -> Graph.unlink b node a) digraph (tails node digraph)
 
 -- Removes all the links that this node has.
-unlinkAll :: Ord node => node -> Digraph node -> Digraph node
+unlinkAll :: (Ord node, Ord edge) => node -> Digraph node edge -> Digraph node edge
 unlinkAll node digraph = unlinkSuccessors node (unlinkPredecessors node digraph)
 
 -- GETTER FUNCTIONS
 -------------------------------------------------------------------------------
 
 -- Gets a list of all the nodes with no predecessors.
-roots :: Ord node => Digraph node -> [node]
+roots :: (Ord node, Ord edge) => Digraph node edge -> [node]
 roots (Digraph _ headOf) = Map.keys (Map.filter (\xs -> xs == []) headOf)
 
 -- Gets a list of all the nodes with no successors.
-leafs :: Ord node => Digraph node -> [node]
+leafs :: (Ord node, Ord edge) => Digraph node edge -> [node]
 leafs (Digraph tailOf _) = Map.keys (Map.filter (\xs -> xs == []) tailOf)
 
 -- TODO: isolated (The nodes without connections)
@@ -92,18 +92,18 @@ leafs (Digraph tailOf _) = Map.keys (Map.filter (\xs -> xs == []) tailOf)
 -------------------------------------------------------------------------------
 
 -- Gets a list with the direct successors of a node.
-heads :: Ord node => node -> Digraph node -> [node]
+heads :: (Ord node, Ord edge) => node -> Digraph node edge -> [node]
 heads node (Digraph tailOf _) = tailOf Map.! node
 
 -- Generates a list of connection tuples (tail, head) with the direct successors of this node.
-headArcs :: Ord node => node -> Digraph node -> [(node, node)]
+headArcs :: (Ord node, Ord edge) => node -> Digraph node edge -> [(node, node)]
 headArcs node digraph = map (\a -> (node, a)) (heads node digraph)
 
 -- Gets a list with the direct predecessors of a node.
-tails :: Ord node => node -> Digraph node -> [node]
+tails :: (Ord node, Ord edge) => node -> Digraph node edge -> [node]
 tails node (Digraph _ headOf) = headOf Map.! node
 
 -- Generates a list of connection tuples (tail, head) with the direct predecessors of this node.
-tailArcs :: Ord node => node -> Digraph node -> [(node, node)]
+tailArcs :: (Ord node, Ord edge) => node -> Digraph node edge -> [(node, node)]
 tailArcs node digraph = map (\a -> (a, node)) (tails node digraph)
 

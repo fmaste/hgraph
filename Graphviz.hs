@@ -19,7 +19,7 @@ scape (x:xs) = (replace x) ++ (scape xs) where
 command :: String -> String
 command dot = "echo '" ++ dot ++ "' | dot -Tpng > dot.png"
 
-graphviz :: (Graph.Graph graph, Ord node) => (node -> String) -> String -> graph node -> String
+graphviz :: (Graph.Graph graph, Ord node, Ord edge) => (node -> String) -> String -> graph node edge -> String
 graphviz toString edgeGlue graph = "digraph {" ++ body ++ "}" where
 	body = implode ";" (nodes ++ edges) where
 		nodes = map toString (Graph.nodes graph)
@@ -27,10 +27,10 @@ graphviz toString edgeGlue graph = "digraph {" ++ body ++ "}" where
 			arc (src,dst) = (toString src) ++ edgeGlue ++ (toString dst)
 			stringId a = "\"" ++ (scape (toString a)) ++ "\""
 
-graphvizGraph 	:: (Graph.Graph graph, Ord node) => (node -> String) -> graph node -> String
+graphvizGraph 	:: (Graph.Graph graph, Ord node, Ord edge) => (node -> String) -> graph node edge -> String
 graphvizGraph 	toString graph		= graphviz toString "--" graph
 
-graphvizDigraph	:: (Graph.Graph graph, Ord node) => (node -> String) -> graph node -> String
+graphvizDigraph	:: (Graph.Graph graph, Ord node, Ord edge) => (node -> String) -> graph node edge -> String
 graphvizDigraph	toString digraph 	= graphviz toString "->" digraph
 
 

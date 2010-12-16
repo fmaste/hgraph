@@ -12,7 +12,8 @@ import qualified Data.Graph.Digraph as Digraph
 -- DATA DEFINITION
 -------------------------------------------------------------------------------
 
-newtype DAG node = DAG (Digraph.Digraph node)
+--TODO: Use newtype instead of data when TmpDAG is removed
+data DAG node edge = DAG (Digraph.Digraph node edge) | TmpDAG edge
 	deriving (Show, Read, Ord, Eq)
 
 -- CONSTRUCTORS
@@ -48,6 +49,6 @@ instance Graph.Graph DAG where
 -------------------------------------------------------------------------------
 
 -- Checks if the connection generates a cicle.
-generatesCycle :: Ord node => node -> node -> DAG node -> Bool
+generatesCycle :: (Ord node, Ord edge) => node -> node -> DAG node edge -> Bool
 generatesCycle tail head (DAG digraph) = Digraph.generatesCycle tail head digraph
 
