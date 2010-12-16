@@ -1,6 +1,6 @@
 module Data.Graph.Digraph (
 	Digraph(),
-	empty,
+--TODO	empty,
 	generatesCycle) where
 
 -- IMPORTS
@@ -25,8 +25,8 @@ data Digraph node = Digraph (TailOf node) (HeadOf node)
 -- CONSTRUCTORS
 -------------------------------------------------------------------------------
 
-empty :: Ord node => Digraph node
-empty = Digraph Map.empty Map.empty
+--TODO empty :: (Ord node, Ord edge) => Digraph node edge
+--TODO empty = Digraph (Map.empty) (Map.empty) edge
 
 -- CLASS DEFINITION
 -------------------------------------------------------------------------------

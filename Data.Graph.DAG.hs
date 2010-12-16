@@ -1,6 +1,6 @@
 module Data.Graph.DAG (
 	DAG(),
-	empty,
+--TODO	empty,
 	generatesCycle) where
 
 -- IMPORTS
@@ -18,8 +18,8 @@ newtype DAG node = DAG (Digraph.Digraph node)
 -- CONSTRUCTORS
 -------------------------------------------------------------------------------
 
-empty :: Ord node => DAG (Digraph.Digraph node)
-empty = DAG Digraph.empty
+--TODO empty :: Ord node => DAG (Digraph.Digraph node)
+--TODO empty = DAG Digraph.empty
 
 -- CLASS DEFINITION
 -------------------------------------------------------------------------------
