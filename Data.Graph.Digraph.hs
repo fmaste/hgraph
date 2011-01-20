@@ -38,7 +38,7 @@ instance Graph.Graph Digraph where
 	removeNode node digraph = deleteFromMap (unlinkAll node digraph) where
 		deleteFromMap (Digraph tailOf headOf) = Digraph (Map.delete node tailOf) (Map.delete node headOf)
 
-	link tail head digraph@(Digraph tailOf headOf) = Digraph (addToMap tail head tailOf) (addToMap head tail headOf) where
+	addEdge tail head digraph@(Digraph tailOf headOf) = Digraph (addToMap tail head tailOf) (addToMap head tail headOf) where
 		addToMap src dest aMap = Map.insert src (dest:(aMap Map.! src)) aMap
 
 	unlink tail head digraph@(Digraph tailOf headOf) = Digraph (removeFromMap tail head tailOf) (removeFromMap head tail headOf) where

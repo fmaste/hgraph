@@ -31,9 +31,9 @@ instance Graph.Graph DAG where
 
 	removeNode node (DAG digraph) = DAG (Graph.removeNode node digraph)
 
-	link tail head dag@(DAG digraph)
+	addEdge tail head dag@(DAG digraph)
 		| generatesCycle tail head dag = error ("Linking generates a cicle")
-		| otherwise = DAG (Graph.link tail head digraph)
+		| otherwise = DAG (Graph.addEdge tail head digraph)
 
 	unlink tail head (DAG digraph) = DAG (Graph.unlink tail head digraph)
 
