@@ -39,7 +39,7 @@ instance Graph.Graph DAG where
 
 	getNodes (DAG digraph) = Graph.getNodes digraph
 
-	edges (DAG digraph) = Graph.edges digraph 
+	getEdges (DAG digraph) = Graph.getEdges digraph 
 
 	reachable node (DAG digraph) = Graph.reachable node digraph
 

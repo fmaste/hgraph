@@ -39,7 +39,7 @@ class Graph graph where
 	-- Gets a lists with all the connection pairs. 
 	-- Is implementation dependent to decide if the order of the nodes is important (directed or undirected).
 	-- Is implementation dependent to allow or not repeated edges (simple or multigraph).
-	edges 		:: (Ord node, Ord edge) => graph node edge -> [(node, node)]
+	getEdges 		:: (Ord node, Ord edge) => graph node edge -> [(node, node)]
 
 	-- Gets a list of all the nodes reachable from a given node.
 	-- Is implementation dependent to allow or not repeated edges (simple or multigraph).
@@ -59,7 +59,7 @@ class Graph graph where
 	-- The implementation may override this method with a more performant one.
         -- Is implementation dependent to decide if the order of the nodes is important (directed or undirected).
 	containsEdge	:: (Ord node, Ord edge) => (node, node) -> graph node edge -> Bool
-	containsEdge edge graph = elem edge (edges graph)
+	containsEdge edge graph = elem edge (getEdges graph)
 
 	-- TODO: Degree, indegree and outdegree.
 	----------------------------------------

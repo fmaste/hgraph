@@ -46,7 +46,7 @@ instance Graph.Graph Digraph where
 
 	getNodes (Digraph tailOf _) = Map.keys tailOf
 
-	edges digraph = concatMap (\a -> headArcs a digraph) (Graph.getNodes digraph)
+	getEdges digraph = concatMap (\a -> headArcs a digraph) (Graph.getNodes digraph)
 
 	reachable node digraph = (heads node digraph) ++ (tails node digraph)
 

@@ -23,7 +23,7 @@ graphviz :: (Graph.Graph graph, Ord node, Ord edge) => (node -> String) -> Strin
 graphviz toString edgeGlue graph = "digraph {" ++ body ++ "}" where
 	body = implode ";" (nodes ++ edges) where
 		nodes = map toString (Graph.getNodes graph)
-		edges = map arc (Graph.edges graph) where
+		edges = map arc (Graph.getEdges graph) where
 			arc (src,dst) = (toString src) ++ edgeGlue ++ (toString dst)
 			stringId a = "\"" ++ (scape (toString a)) ++ "\""
 
