@@ -52,8 +52,8 @@ class Graph graph where
 
 	-- True is the node exists, otherwise false.
 	-- The implementation may override this method with a more performant one.
-	nodeExists	:: (Ord node, Ord edge) => node -> graph node edge -> Bool
-	nodeExists node graph = elem node (nodes graph)
+	containsNode	:: (Ord node, Ord edge) => node -> graph node edge -> Bool
+	containsNode node graph = elem node (nodes graph)
 
 	-- True if the edge exists, otherwise false.
 	-- The implementation may override this method with a more performant one.
