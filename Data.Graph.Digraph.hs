@@ -35,7 +35,7 @@ instance Graph.Graph Digraph where
 
 	addNode node (Digraph nodeSuccs nodePreds) = Digraph nodeSuccs' nodePreds' where
 		nodeSuccs' = Map.insert node [] nodeSuccs
-		nodePreds' = (Map.insert node [] nodePreds)
+		nodePreds' = Map.insert node [] nodePreds
 
 	removeNode node digraph = deleteFromMap (unlinkAll node digraph) where
 		deleteFromMap (Digraph nodeSuccs nodePreds) = Digraph (Map.delete node nodeSuccs) (Map.delete node nodePreds)
