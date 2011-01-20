@@ -58,8 +58,8 @@ class Graph graph where
 	-- True if the edge exists, otherwise false.
 	-- The implementation may override this method with a more performant one.
         -- Is implementation dependent to decide if the order of the nodes is important (directed or undirected).
-	edgeExists	:: (Ord node, Ord edge) => (node, node) -> graph node edge -> Bool
-	edgeExists edge graph = elem edge (edges graph)
+	containsEdge	:: (Ord node, Ord edge) => (node, node) -> graph node edge -> Bool
+	containsEdge edge graph = elem edge (edges graph)
 
 	-- TODO: Degree, indegree and outdegree.
 	----------------------------------------
