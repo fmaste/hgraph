@@ -1,5 +1,6 @@
 module Data.Graph where
 
+-- The topmost module of the graph library.
 -- A graph is an ordered pair G = (V, E) comprising a set V of nodes (or vertices) together with a set or multiset (bag) E of edges (or lines).
 -- Any number of nodes is allowed as long as they are not repeated ones.
 -- If E is a set, no repeated edges are allowed, and the graph is called simple. If E is a multiset, repeated edges are allowed and is called multigraph.
