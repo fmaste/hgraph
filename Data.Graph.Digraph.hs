@@ -13,7 +13,7 @@ import qualified Data.Map as Map
 -------------------------------------------------------------------------------
 -- Using two adjacency lists to represent the digraph.
 
--- A map of nodes as keys and a list of the direct successors of that node as values.
+-- A map of nodes as keys and a list of the direct successors of that node as value.
 type NodeSuccs node = (Map.Map node [node])
 
 -- A map of nodes as keys and a list of the direct predecessors of that node as values.
