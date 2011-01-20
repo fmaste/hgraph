@@ -47,10 +47,8 @@ instance Graph.Graph Digraph where
 		nodePreds' = Map.insert head (tail:(nodePreds Map.! head)) nodePreds
 
 	removeEdge tail head (Digraph nodeSuccs nodePreds) = Digraph nodeSuccs' nodePreds' where
-		nodeSuccs' = Map.insert tail succs nodeSuccs where
-			succs = filter (\x -> x /= head) (nodeSuccs Map.! tail)
-		nodePreds' = Map.insert head preds nodePreds where
-			preds = filter (\x -> x /= tail) (nodePreds Map.! head)
+		nodeSuccs' = Map.adjust (dropElem head) tail nodeSuccs
+		nodePreds' = Map.adjust (dropElem tail) head nodePreds
 
 	getNodes (Digraph nodeSuccs _) = Map.keys nodeSuccs
 
