@@ -35,7 +35,7 @@ instance Graph.Graph DAG where
 		| generatesCycle tail head dag = error ("Linking generates a cicle")
 		| otherwise = DAG (Graph.addEdge tail head digraph)
 
-	unlink tail head (DAG digraph) = DAG (Graph.unlink tail head digraph)
+	removeEdge tail head (DAG digraph) = DAG (Graph.removeEdge tail head digraph)
 
 	nodes (DAG digraph) = Graph.nodes digraph
 

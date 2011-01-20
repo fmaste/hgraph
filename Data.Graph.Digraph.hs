@@ -41,7 +41,7 @@ instance Graph.Graph Digraph where
 	addEdge tail head digraph@(Digraph tailOf headOf) = Digraph (addToMap tail head tailOf) (addToMap head tail headOf) where
 		addToMap src dest aMap = Map.insert src (dest:(aMap Map.! src)) aMap
 
-	unlink tail head digraph@(Digraph tailOf headOf) = Digraph (removeFromMap tail head tailOf) (removeFromMap head tail headOf) where
+	removeEdge tail head digraph@(Digraph tailOf headOf) = Digraph (removeFromMap tail head tailOf) (removeFromMap head tail headOf) where
 		removeFromMap src dest aMap = Map.insert src (filter (\x -> x /= dest) (aMap Map.! src)) aMap
 
 	nodes (Digraph tailOf _) = Map.keys tailOf
@@ -65,11 +65,11 @@ generatesCycle tail head digraph = isParent [tail] where
 
 -- Removes all the links between the node and its direct successors.
 unlinkSuccessors :: (Ord node, Ord edge) => node -> Digraph node edge -> Digraph node edge
-unlinkSuccessors node digraph = foldl (\a b -> Graph.unlink node b a) digraph (heads node digraph)
+unlinkSuccessors node digraph = foldl (\a b -> Graph.removeEdge node b a) digraph (heads node digraph)
 
 -- Removes all the links between the node and its direct predecessors.
 unlinkPredecessors :: (Ord node, Ord edge) => node -> Digraph node edge -> Digraph node edge
-unlinkPredecessors node digraph = foldl (\a b -> Graph.unlink b node a) digraph (tails node digraph)
+unlinkPredecessors node digraph = foldl (\a b -> Graph.removeEdge b node a) digraph (tails node digraph)
 
 -- Removes all the links that this node has.
 unlinkAll :: (Ord node, Ord edge) => node -> Digraph node edge -> Digraph node edge
