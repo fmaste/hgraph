@@ -33,7 +33,9 @@ data Digraph node edge = Digraph (NodeSuccs node) (NodePreds node) | TmpDigraph 
 
 instance Graph.Graph Digraph where
 
-	addNode node (Digraph nodeSuccs nodePreds) = Digraph (Map.insert node [] nodeSuccs) (Map.insert node [] nodePreds)
+	addNode node (Digraph nodeSuccs nodePreds) = Digraph nodeSuccs' nodePreds' where
+		nodeSuccs' = Map.insert node [] nodeSuccs
+		nodePreds' = (Map.insert node [] nodePreds)
 
 	removeNode node digraph = deleteFromMap (unlinkAll node digraph) where
 		deleteFromMap (Digraph nodeSuccs nodePreds) = Digraph (Map.delete node nodeSuccs) (Map.delete node nodePreds)
