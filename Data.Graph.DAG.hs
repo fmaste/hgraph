@@ -27,7 +27,7 @@ data DAG node edge = DAG (Digraph.Digraph node edge) | TmpDAG edge
 
 instance Graph.Graph DAG where
 
-	insert node (DAG digraph) = DAG (Graph.insert node digraph)
+	addNode node (DAG digraph) = DAG (Graph.addNode node digraph)
 
 	delete node (DAG digraph) = DAG (Graph.delete node digraph)
 

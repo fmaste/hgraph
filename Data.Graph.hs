@@ -14,7 +14,7 @@ class Graph graph where
 	-----------------------------------------------------------------------
 
 	-- Inserts a node to the graph without making any connection.
-	insert 		:: (Ord node, Ord edge) => node -> graph node edge -> graph node edge
+	addNode 	:: (Ord node, Ord edge) => node -> graph node edge -> graph node edge
 
 	-- Deletes a node and all its connections from the graph.
 	delete 		:: (Ord node, Ord edge) => node -> graph node edge -> graph node edge
