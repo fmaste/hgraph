@@ -50,6 +50,8 @@ instance Graph.Graph Digraph where
 
 	getEdges digraph = concatMap (\a -> headArcs a digraph) (Graph.getNodes digraph)
 
+	-- TODO: getNodeCount
+
 	reachable node digraph = (heads node digraph) ++ (tails node digraph)
 
 	nodeEdges node digraph = (headArcs node digraph) ++ (tailArcs node digraph)
