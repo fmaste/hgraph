@@ -55,6 +55,11 @@ class Graph graph where
 	-- Is implementation dependent to allow or not repeated edges (simple or multigraph).
 	nodeEdges	:: (Ord node, Ord edge) => node -> graph node edge -> [(node, node)]
 
+	-- Gets the node count.
+	-- The implementation may override this method with a more performant one.
+	getNodeCount	:: (Ord node, Ord edge) => graph node edge -> Int
+	getNodeCount graph = length $ getNodes graph
+
 	-- True is the node exists, otherwise false.
 	-- The implementation may override this method with a more performant one.
 	containsNode	:: (Ord node, Ord edge) => node -> graph node edge -> Bool
