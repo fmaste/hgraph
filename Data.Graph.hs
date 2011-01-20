@@ -46,15 +46,6 @@ class Graph graph where
 	-- Is implementation dependent to allow or not multiple edges (simple or multigraph).
 	getEdges 		:: (Ord node, Ord edge) => graph node edge -> [(node, node)]
 
-	-- Gets a list of all the nodes reachable from a given node.
-	-- Is implementation dependent to allow or not multiple edges (simple or multigraph).
-	reachable	:: (Ord node, Ord edge) => node -> graph node edge -> [node]
-
-	-- Gets all the connections pairs that the node partipates.
-	-- Is implementation dependent to decide if the order of the nodes is important (directed or undirected).
-	-- Is implementation dependent to allow or not multiple edges (simple or multigraph).
-	nodeEdges	:: (Ord node, Ord edge) => node -> graph node edge -> [(node, node)]
-
 	-- Gets the node count.
 	-- The implementation may override this method with a more performant one.
 	getNodeCount	:: (Ord node, Ord edge) => graph node edge -> Int
@@ -64,6 +55,15 @@ class Graph graph where
 	-- The implementation may override this method with a more performant one.
 	getEdgeCount	:: (Ord node, Ord edge) => graph node edge -> Int
 	getEdgeCount graph = length $ getEdges graph
+
+	-- Gets a list of all the nodes reachable from a given node.
+	-- Is implementation dependent to allow or not multiple edges (simple or multigraph).
+	reachable	:: (Ord node, Ord edge) => node -> graph node edge -> [node]
+
+	-- Gets all the connections pairs that the node partipates.
+	-- Is implementation dependent to decide if the order of the nodes is important (directed or undirected).
+	-- Is implementation dependent to allow or not multiple edges (simple or multigraph).
+	nodeEdges	:: (Ord node, Ord edge) => node -> graph node edge -> [(node, node)]
 
 	-- True is the node exists, otherwise false.
 	-- The implementation may override this method with a more performant one.
