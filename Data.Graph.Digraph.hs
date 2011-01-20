@@ -54,6 +54,8 @@ instance Graph.Graph Digraph where
 
 	-- TODO: getEdgeCount
 
+	-- TODO: containsNode
+
 	reachable node digraph = (heads node digraph) ++ (tails node digraph)
 
 	nodeEdges node digraph = (headArcs node digraph) ++ (tailArcs node digraph)
