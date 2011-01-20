@@ -56,15 +56,6 @@ class Graph graph where
 	getEdgeCount	:: (Ord node, Ord edge) => graph node edge -> Int
 	getEdgeCount graph = length $ getEdges graph
 
-	-- Gets a list of all the nodes reachable from a given node.
-	-- Is implementation dependent to allow or not multiple edges (simple or multigraph).
-	reachable	:: (Ord node, Ord edge) => node -> graph node edge -> [node]
-
-	-- Gets all the connections pairs that the node partipates.
-	-- Is implementation dependent to decide if the order of the nodes is important (directed or undirected).
-	-- Is implementation dependent to allow or not multiple edges (simple or multigraph).
-	nodeEdges	:: (Ord node, Ord edge) => node -> graph node edge -> [(node, node)]
-
 	-- True is the node exists, otherwise false.
 	-- The implementation may override this method with a more performant one.
 	containsNode	:: (Ord node, Ord edge) => node -> graph node edge -> Bool
@@ -75,6 +66,15 @@ class Graph graph where
         -- Is implementation dependent to decide if the order of the nodes is important (directed or undirected).
 	containsEdge	:: (Ord node, Ord edge) => (node, node) -> graph node edge -> Bool
 	containsEdge edge graph = elem edge (getEdges graph)
+
+	-- Gets a list of all the nodes reachable from a given node.
+	-- Is implementation dependent to allow or not multiple edges (simple or multigraph).
+	reachable	:: (Ord node, Ord edge) => node -> graph node edge -> [node]
+
+	-- Gets all the connections pairs that the node partipates.
+	-- Is implementation dependent to decide if the order of the nodes is important (directed or undirected).
+	-- Is implementation dependent to allow or not multiple edges (simple or multigraph).
+	nodeEdges	:: (Ord node, Ord edge) => node -> graph node edge -> [(node, node)]
 
 	-- TODO: Degree, indegree and outdegree.
 	----------------------------------------
