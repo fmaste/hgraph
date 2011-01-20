@@ -33,15 +33,15 @@ data Digraph node edge = Digraph (NodeSuccs node) (NodePreds node) | TmpDigraph 
 
 instance Graph.Graph Digraph where
 
-	addNode node (Digraph nodeSuccs headOf) = Digraph (Map.insert node [] nodeSuccs) (Map.insert node [] headOf)
+	addNode node (Digraph nodeSuccs nodePreds) = Digraph (Map.insert node [] nodeSuccs) (Map.insert node [] nodePreds)
 
 	removeNode node digraph = deleteFromMap (unlinkAll node digraph) where
-		deleteFromMap (Digraph nodeSuccs headOf) = Digraph (Map.delete node nodeSuccs) (Map.delete node headOf)
+		deleteFromMap (Digraph nodeSuccs nodePreds) = Digraph (Map.delete node nodeSuccs) (Map.delete node nodePreds)
 
-	addEdge tail head digraph@(Digraph nodeSuccs headOf) = Digraph (addToMap tail head nodeSuccs) (addToMap head tail headOf) where
+	addEdge tail head digraph@(Digraph nodeSuccs nodePreds) = Digraph (addToMap tail head nodeSuccs) (addToMap head tail nodePreds) where
 		addToMap src dest aMap = Map.insert src (dest:(aMap Map.! src)) aMap
 
-	removeEdge tail head digraph@(Digraph nodeSuccs headOf) = Digraph (removeFromMap tail head nodeSuccs) (removeFromMap head tail headOf) where
+	removeEdge tail head digraph@(Digraph nodeSuccs nodePreds) = Digraph (removeFromMap tail head nodeSuccs) (removeFromMap head tail nodePreds) where
 		removeFromMap src dest aMap = Map.insert src (filter (\x -> x /= dest) (aMap Map.! src)) aMap
 
 	getNodes (Digraph nodeSuccs _) = Map.keys nodeSuccs
@@ -80,7 +80,7 @@ unlinkAll node digraph = unlinkSuccessors node (unlinkPredecessors node digraph)
 
 -- Gets a list of all the nodes with no predecessors.
 roots :: (Ord node, Ord edge) => Digraph node edge -> [node]
-roots (Digraph _ headOf) = Map.keys (Map.filter (\xs -> xs == []) headOf)
+roots (Digraph _ nodePreds) = Map.keys (Map.filter (\xs -> xs == []) nodePreds)
 
 -- Gets a list of all the nodes with no successors.
 leafs :: (Ord node, Ord edge) => Digraph node edge -> [node]
@@ -101,7 +101,7 @@ headArcs node digraph = map (\a -> (node, a)) (heads node digraph)
 
 -- Gets a list with the direct predecessors of a node.
 tails :: (Ord node, Ord edge) => node -> Digraph node edge -> [node]
-tails node (Digraph _ headOf) = headOf Map.! node
+tails node (Digraph _ nodePreds) = nodePreds Map.! node
 
 -- Generates a list of connection tuples (tail, head) with the direct predecessors of this node.
 tailArcs :: (Ord node, Ord edge) => node -> Digraph node edge -> [(node, node)]
