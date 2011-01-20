@@ -32,6 +32,9 @@ class Graph graph where
 	-- TODO: Add edge parameter
 	removeEdge	:: (Ord node, Ord edge) => node -> node -> graph node edge -> graph node edge
 
+	-- TODO: After adding the edge parameters above, add this method
+	-- removeEdges node node
+
 	---- GETTER FUNCTIONS -------------------------------------------------
 	-----------------------------------------------------------------------
 
