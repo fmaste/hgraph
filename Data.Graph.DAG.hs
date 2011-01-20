@@ -37,7 +37,7 @@ instance Graph.Graph DAG where
 
 	removeEdge tail head (DAG digraph) = DAG (Graph.removeEdge tail head digraph)
 
-	nodes (DAG digraph) = Graph.nodes digraph
+	getNodes (DAG digraph) = Graph.getNodes digraph
 
 	edges (DAG digraph) = Graph.edges digraph 
 

@@ -44,9 +44,9 @@ instance Graph.Graph Digraph where
 	removeEdge tail head digraph@(Digraph tailOf headOf) = Digraph (removeFromMap tail head tailOf) (removeFromMap head tail headOf) where
 		removeFromMap src dest aMap = Map.insert src (filter (\x -> x /= dest) (aMap Map.! src)) aMap
 
-	nodes (Digraph tailOf _) = Map.keys tailOf
+	getNodes (Digraph tailOf _) = Map.keys tailOf
 
-	edges digraph = concatMap (\a -> headArcs a digraph) (Graph.nodes digraph)
+	edges digraph = concatMap (\a -> headArcs a digraph) (Graph.getNodes digraph)
 
 	reachable node digraph = (heads node digraph) ++ (tails node digraph)
 

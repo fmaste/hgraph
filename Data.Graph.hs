@@ -34,7 +34,7 @@ class Graph graph where
 	-----------------------------------------------------------------------
 
 	-- Gets a list of the nodes of the graph. Also called vertices or points.
-	nodes 		:: (Ord node, Ord edge) => graph node edge -> [node]
+	getNodes 		:: (Ord node, Ord edge) => graph node edge -> [node]
 
 	-- Gets a lists with all the connection pairs. 
 	-- Is implementation dependent to decide if the order of the nodes is important (directed or undirected).
@@ -53,7 +53,7 @@ class Graph graph where
 	-- True is the node exists, otherwise false.
 	-- The implementation may override this method with a more performant one.
 	containsNode	:: (Ord node, Ord edge) => node -> graph node edge -> Bool
-	containsNode node graph = elem node (nodes graph)
+	containsNode node graph = elem node (getNodes graph)
 
 	-- True if the edge exists, otherwise false.
 	-- The implementation may override this method with a more performant one.
