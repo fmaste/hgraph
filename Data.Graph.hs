@@ -29,6 +29,7 @@ class Graph graph where
 	-- Is implementation dependent to decide if the order of the nodes is important (directed or undirected).
 	-- Is implementation dependent to allow or not repeated edges (simple or multigraph).
 	-- The implementation may need extra methods to allow to delete a particular edge on a multigraph.
+	-- TODO: Add edge parameter
 	removeEdge	:: (Ord node, Ord edge) => node -> node -> graph node edge -> graph node edge
 
 	---- GETTER FUNCTIONS -------------------------------------------------
