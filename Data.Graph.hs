@@ -21,13 +21,13 @@ class Graph graph where
 
 	-- Creates a link from the first node to the second.
 	-- Is implementation dependent to decide if the order of the nodes is important (directed or undirected).
-	-- Is implementation dependent to allow or not repeated edges (simple or multigraph).
+	-- Is implementation dependent to allow or not multiple edges (simple or multigraph).
 	-- TODO: Add edge parameter
 	addEdge		:: (Ord node, Ord edge) => node -> node -> graph node edge -> graph node edge
 
 	-- Removes the link(s) from the first node to the second.
 	-- Is implementation dependent to decide if the order of the nodes is important (directed or undirected).
-	-- Is implementation dependent to allow or not repeated edges (simple or multigraph).
+	-- Is implementation dependent to allow or not multiple edges (simple or multigraph).
 	-- The implementation may need extra methods to allow to delete a particular edge on a multigraph.
 	-- TODO: Add edge parameter
 	removeEdge	:: (Ord node, Ord edge) => node -> node -> graph node edge -> graph node edge
@@ -43,16 +43,16 @@ class Graph graph where
 
 	-- Gets a lists with all the connection pairs. 
 	-- Is implementation dependent to decide if the order of the nodes is important (directed or undirected).
-	-- Is implementation dependent to allow or not repeated edges (simple or multigraph).
+	-- Is implementation dependent to allow or not multiple edges (simple or multigraph).
 	getEdges 		:: (Ord node, Ord edge) => graph node edge -> [(node, node)]
 
 	-- Gets a list of all the nodes reachable from a given node.
-	-- Is implementation dependent to allow or not repeated edges (simple or multigraph).
+	-- Is implementation dependent to allow or not multiple edges (simple or multigraph).
 	reachable	:: (Ord node, Ord edge) => node -> graph node edge -> [node]
 
 	-- Gets all the connections pairs that the node partipates.
 	-- Is implementation dependent to decide if the order of the nodes is important (directed or undirected).
-	-- Is implementation dependent to allow or not repeated edges (simple or multigraph).
+	-- Is implementation dependent to allow or not multiple edges (simple or multigraph).
 	nodeEdges	:: (Ord node, Ord edge) => node -> graph node edge -> [(node, node)]
 
 	-- Gets the node count.
