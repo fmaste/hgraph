@@ -70,6 +70,9 @@ instance Graph.Graph Digraph where
 
 -------------------------------------------------------------------------------
 
+dropElem :: Ord a => a -> [a] -> [a]
+dropElem x xs = filter (\n -> n /= x) xs
+
 -- Checks if the connection generates a cicle.
 generatesCycle :: (Ord node, Ord edge) => node -> node -> Digraph node edge -> Bool
 generatesCycle tail head digraph = isParent [tail] where
