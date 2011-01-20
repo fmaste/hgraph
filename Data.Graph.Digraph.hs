@@ -45,8 +45,11 @@ instance Graph.Graph Digraph where
 	addEdge tail head digraph@(Digraph nodeSuccs nodePreds) = Digraph (addToMap tail head nodeSuccs) (addToMap head tail nodePreds) where
 		addToMap src dest aMap = Map.insert src (dest:(aMap Map.! src)) aMap
 
-	removeEdge tail head digraph@(Digraph nodeSuccs nodePreds) = Digraph (removeFromMap tail head nodeSuccs) (removeFromMap head tail nodePreds) where
-		removeFromMap src dest aMap = Map.insert src (filter (\x -> x /= dest) (aMap Map.! src)) aMap
+	removeEdge tail head (Digraph nodeSuccs nodePreds) = Digraph nodeSuccs' nodePreds' where
+		nodeSuccs' = Map.insert tail succs nodeSuccs where
+			succs = filter (\x -> x /= head) (nodeSuccs Map.! tail)
+		nodePreds' = Map.insert head preds nodePreds where
+			preds = filter (\x -> x /= tail) (nodePreds Map.! head)
 
 	getNodes (Digraph nodeSuccs _) = Map.keys nodeSuccs
 
