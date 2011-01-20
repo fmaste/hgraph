@@ -17,9 +17,9 @@ import qualified Data.Map as Map
 type NodeSuccs node = (Map.Map node [node])
 
 -- A map of nodes as keys and a list of the direct predecessors of that node as values.
-type HeadOf node = (Map.Map node [node])
+type NodePreds node = (Map.Map node [node])
 
-data Digraph node edge = Digraph (NodeSuccs node) (HeadOf node) | TmpDigraph edge
+data Digraph node edge = Digraph (NodeSuccs node) (NodePreds node) | TmpDigraph edge
     deriving (Show, Read, Ord, Eq)
 
 -- CONSTRUCTORS
