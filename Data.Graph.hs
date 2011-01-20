@@ -17,7 +17,7 @@ class Graph graph where
 	addNode 	:: (Ord node, Ord edge) => node -> graph node edge -> graph node edge
 
 	-- Deletes a node and all its connections from the graph.
-	delete 		:: (Ord node, Ord edge) => node -> graph node edge -> graph node edge
+	removeNode	:: (Ord node, Ord edge) => node -> graph node edge -> graph node edge
 
 	-- Creates a link from the first node to the second.
 	-- Is implementation dependent to decide if the order of the nodes is important (directed or undirected).

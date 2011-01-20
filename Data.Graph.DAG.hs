@@ -29,7 +29,7 @@ instance Graph.Graph DAG where
 
 	addNode node (DAG digraph) = DAG (Graph.addNode node digraph)
 
-	delete node (DAG digraph) = DAG (Graph.delete node digraph)
+	removeNode node (DAG digraph) = DAG (Graph.removeNode node digraph)
 
 	link tail head dag@(DAG digraph)
 		| generatesCycle tail head dag = error ("Linking generates a cicle")
