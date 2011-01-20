@@ -16,7 +16,7 @@ import qualified Data.Map as Map
 -- A map of nodes as keys and a list of the direct successors of that node as value.
 type NodeSuccs node = (Map.Map node [node])
 
--- A map of nodes as keys and a list of the direct predecessors of that node as values.
+-- A map of nodes as keys and a list of the direct predecessors of that node as value.
 type NodePreds node = (Map.Map node [node])
 
 data Digraph node edge = Digraph (NodeSuccs node) (NodePreds node) | TmpDigraph edge
