@@ -60,6 +60,11 @@ class Graph graph where
 	getNodeCount	:: (Ord node, Ord edge) => graph node edge -> Int
 	getNodeCount graph = length $ getNodes graph
 
+	-- Gets the edge count.
+	-- The implementation may override this method with a more performant one.
+	getEdgeCount	:: (Ord node, Ord edge) => graph node edge -> Int
+	getEdgeCount graph = length $ getEdges graph
+
 	-- True is the node exists, otherwise false.
 	-- The implementation may override this method with a more performant one.
 	containsNode	:: (Ord node, Ord edge) => node -> graph node edge -> Bool
