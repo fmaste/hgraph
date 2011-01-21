@@ -87,10 +87,6 @@ generatesCycle tail head digraph = isParent [tail] where
 unlinkSuccessors :: (Ord node, Ord edge) => node -> Digraph node edge -> Digraph node edge
 unlinkSuccessors node digraph = foldl (\a b -> Graph.removeEdge node b a) digraph (heads node digraph)
 
--- Removes all the links between the node and its direct predecessors.
-unlinkPredecessors :: (Ord node, Ord edge) => node -> Digraph node edge -> Digraph node edge
-unlinkPredecessors node digraph = foldl (\a b -> Graph.removeEdge b node a) digraph (tails node digraph)
-
 -- GETTER FUNCTIONS
 -------------------------------------------------------------------------------
 
