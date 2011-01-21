@@ -39,8 +39,11 @@ instance Graph.Graph Digraph where
 		nodeSuccs' = Map.insert node [] nodeSuccs
 		nodePreds' = Map.insert node [] nodePreds
 
-	removeNode node digraph = deleteFromMap (unlinkAll node digraph) where
-		deleteFromMap (Digraph nodeSuccs nodePreds) = Digraph (Map.delete node nodeSuccs) (Map.delete node nodePreds)
+	removeNode node (Digraph nodeSuccs nodePreds) = Digraph nodeSuccs' nodePreds' where
+		-- Fold through the predecessors to know which successors to udjust.
+		nodeSuccs' = Map.delete node (foldl (\aMap aNode -> Map.adjust (dropElem node) aNode aMap) nodeSuccs (nodePreds Map.! node))
+		-- Fold through the successors to know which predecessors to udjust.
+		nodePreds' = Map.delete node (foldl (\aMap aNode -> Map.adjust (dropElem node) aNode aMap) nodePreds (nodeSuccs Map.! node))
 
 	addEdge tail head (Digraph nodeSuccs nodePreds) = Digraph nodeSuccs' nodePreds' where
 		nodeSuccs' = Map.adjust (head :) tail nodeSuccs
