@@ -19,7 +19,7 @@ type NodeSuccs node = Map.Map node [node]
 
 -- The nodes that can reach a given node.
 -- A map of nodes as keys and a list of the direct predecessors of that node as value.
-type NodePreds node = (Map.Map node [node])
+type NodePreds node = Map.Map node [node]
 
 data Digraph node edge = Digraph (NodeSuccs node) (NodePreds node) | TmpDigraph edge
     deriving (Show, Read, Ord, Eq)
