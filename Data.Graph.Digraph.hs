@@ -91,10 +91,6 @@ unlinkSuccessors node digraph = foldl (\a b -> Graph.removeEdge node b a) digrap
 unlinkPredecessors :: (Ord node, Ord edge) => node -> Digraph node edge -> Digraph node edge
 unlinkPredecessors node digraph = foldl (\a b -> Graph.removeEdge b node a) digraph (tails node digraph)
 
--- Removes all the links that this node has.
-unlinkAll :: (Ord node, Ord edge) => node -> Digraph node edge -> Digraph node edge
-unlinkAll node digraph = unlinkSuccessors node (unlinkPredecessors node digraph)
-
 -- GETTER FUNCTIONS
 -------------------------------------------------------------------------------
 
