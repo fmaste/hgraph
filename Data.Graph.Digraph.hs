@@ -43,8 +43,8 @@ instance Graph.Graph Digraph where
 		deleteFromMap (Digraph nodeSuccs nodePreds) = Digraph (Map.delete node nodeSuccs) (Map.delete node nodePreds)
 
 	addEdge tail head (Digraph nodeSuccs nodePreds) = Digraph nodeSuccs' nodePreds' where
-		nodeSuccs' = Map.adjust (head ++) tail nodeSuccs
-		nodePreds' = Map.adjust (tail ++) head nodePreds
+		nodeSuccs' = Map.adjust (head :) tail nodeSuccs
+		nodePreds' = Map.adjust (tail :) head nodePreds
 
 	removeEdge tail head (Digraph nodeSuccs nodePreds) = Digraph nodeSuccs' nodePreds' where
 		nodeSuccs' = Map.adjust (dropElem head) tail nodeSuccs
