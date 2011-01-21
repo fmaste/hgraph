@@ -15,7 +15,7 @@ import qualified Data.Map as Map
 
 -- The nodes that can be reached from a given node.
 -- A map of nodes as keys and a list of the direct successors of that node as value.
-type NodeSuccs node = (Map.Map node [node])
+type NodeSuccs node = Map.Map node [node]
 
 -- The nodes that can reach a given node.
 -- A map of nodes as keys and a list of the direct predecessors of that node as value.
