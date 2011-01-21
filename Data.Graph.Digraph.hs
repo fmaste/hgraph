@@ -58,7 +58,7 @@ instance Graph.Graph Digraph where
 
 	-- TODO: getEdgeCount
 
-	-- TODO: containsNode
+	containsNode node (Digraph nodeSuccs nodePreds) = Map.member node nodeSuccs
 
 	-- TODO: containsEdge
 
