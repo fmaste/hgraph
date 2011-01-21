@@ -54,7 +54,7 @@ instance Graph.Graph Digraph where
 
 	getEdges digraph = concatMap (\a -> headArcs a digraph) (Graph.getNodes digraph)
 
-	-- TODO: getNodeCount
+	getNodeCount (Digraph nodeSuccs nodePreds) = Map.size nodeSuccs
 
 	-- TODO: getEdgeCount
 
