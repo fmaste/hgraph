@@ -7,21 +7,15 @@ module Data.Graph.Digraph (
 -------------------------------------------------------------------------------
 
 import qualified Data.Graph as Graph
+import qualified Data.Graph.Adjacency as Adj
 import qualified Data.Map as Map
 
 -- DATA DEFINITION
 -------------------------------------------------------------------------------
--- Using two adjacency lists to represent the digraph.
 
--- The nodes that can be reached from a given node.
--- A map of nodes as keys and a list of the direct successors of that node as value.
-type NodeSuccs node = Map.Map node [node]
 
--- The nodes that can reach a given node.
--- A map of nodes as keys and a list of the direct predecessors of that node as value.
-type NodePreds node = Map.Map node [node]
 
-data Digraph node edge = Digraph (NodeSuccs node) (NodePreds node) | TmpDigraph edge
+data Digraph node edge = Digraph (Adj.Adjacency node) | TmpDigraph edge
     deriving (Show, Read, Ord, Eq)
 
 -- CONSTRUCTORS
@@ -35,33 +29,27 @@ data Digraph node edge = Digraph (NodeSuccs node) (NodePreds node) | TmpDigraph 
 
 instance Graph.Graph Digraph where
 
-	addNode node (Digraph nodeSuccs nodePreds) = Digraph nodeSuccs' nodePreds' where
-		nodeSuccs' = Map.insert node [] nodeSuccs
-		nodePreds' = Map.insert node [] nodePreds
+	addNode node (Digraph adj) = Digraph adj' where
+		adj' = Adj.addNode node adj
 
-	removeNode node (Digraph nodeSuccs nodePreds) = Digraph nodeSuccs' nodePreds' where
-		-- Fold through the predecessors to know which successors to udjust.
-		nodeSuccs' = Map.delete node (foldl (\aMap aNode -> Map.adjust (dropElem node) aNode aMap) nodeSuccs (nodePreds Map.! node))
-		-- Fold through the successors to know which predecessors to udjust.
-		nodePreds' = Map.delete node (foldl (\aMap aNode -> Map.adjust (dropElem node) aNode aMap) nodePreds (nodeSuccs Map.! node))
+	removeNode node (Digraph adj) = Digraph adj' where
+		adj' = Adj.removeNode node adj
 
-	addEdge tail head (Digraph nodeSuccs nodePreds) = Digraph nodeSuccs' nodePreds' where
-		nodeSuccs' = Map.adjust (head :) tail nodeSuccs
-		nodePreds' = Map.adjust (tail :) head nodePreds
+	addEdge src dst (Digraph adj) = Digraph adj' where
+		adj' = Adj.addAdjacency src dst adj
 
-	removeEdge tail head (Digraph nodeSuccs nodePreds) = Digraph nodeSuccs' nodePreds' where
-		nodeSuccs' = Map.adjust (dropElem head) tail nodeSuccs
-		nodePreds' = Map.adjust (dropElem tail) head nodePreds
+	removeEdge src dst (Digraph adj) = Digraph adj' where
+		adj' = Adj.removeAdjacency src dst adj
 
-	getNodes (Digraph nodeSuccs _) = Map.keys nodeSuccs
+	getNodes (Digraph adj) = Adj.getNodes adj
 
-	getEdges digraph = concatMap (\a -> headArcs a digraph) (Graph.getNodes digraph)
+	getEdges (Digraph adj) = Adj.getAdjacencies adj
 
-	getNodeCount (Digraph nodeSuccs nodePreds) = Map.size nodeSuccs
+	getNodeCount (Digraph adj) = Adj.getNodeCount adj
 
 	-- TODO: getEdgeCount
 
-	containsNode node (Digraph nodeSuccs nodePreds) = Map.member node nodeSuccs
+	containsNode node (Digraph adj) = Adj.containsNode node adj
 
 	-- TODO: containsEdge
 
@@ -71,8 +59,6 @@ instance Graph.Graph Digraph where
 
 -------------------------------------------------------------------------------
 
-dropElem :: Ord a => a -> [a] -> [a]
-dropElem x xs = filter (\n -> n /= x) xs
 
 -- Checks if the connection generates a cicle.
 generatesCycle :: (Ord node, Ord edge) => node -> node -> Digraph node edge -> Bool
@@ -82,17 +68,16 @@ generatesCycle tail head digraph = isParent [tail] where
 
 -- CONSTRUCTOR FUNCTIONS
 -------------------------------------------------------------------------------
-
 -- GETTER FUNCTIONS
 -------------------------------------------------------------------------------
 
 -- Gets a list of all the nodes with no predecessors.
 roots :: (Ord node, Ord edge) => Digraph node edge -> [node]
-roots (Digraph _ nodePreds) = Map.keys (Map.filter (\xs -> xs == []) nodePreds)
+roots (Digraph adj) = filter (\x -> (Adj.getNodePreds x adj) == []) (Adj.getNodes adj)
 
 -- Gets a list of all the nodes with no successors.
 leafs :: (Ord node, Ord edge) => Digraph node edge -> [node]
-leafs (Digraph nodeSuccs _) = Map.keys (Map.filter (\xs -> xs == []) nodeSuccs)
+leafs (Digraph adj) = filter (\x -> (Adj.getNodeSuccs x adj) == []) (Adj.getNodes adj)
 
 -- TODO: isolated (The nodes without connections)
 
@@ -101,7 +86,7 @@ leafs (Digraph nodeSuccs _) = Map.keys (Map.filter (\xs -> xs == []) nodeSuccs)
 
 -- Gets a list with the direct successors of a node.
 heads :: (Ord node, Ord edge) => node -> Digraph node edge -> [node]
-heads node (Digraph nodeSuccs _) = nodeSuccs Map.! node
+heads node (Digraph adj) = Adj.getNodeSuccs node adj
 
 -- Generates a list of connection tuples (tail, head) with the direct successors of this node.
 headArcs :: (Ord node, Ord edge) => node -> Digraph node edge -> [(node, node)]
@@ -109,7 +94,7 @@ headArcs node digraph = map (\a -> (node, a)) (heads node digraph)
 
 -- Gets a list with the direct predecessors of a node.
 tails :: (Ord node, Ord edge) => node -> Digraph node edge -> [node]
-tails node (Digraph _ nodePreds) = nodePreds Map.! node
+tails node (Digraph adj) = Adj.getNodePreds node adj
 
 -- Generates a list of connection tuples (tail, head) with the direct predecessors of this node.
 tailArcs :: (Ord node, Ord edge) => node -> Digraph node edge -> [(node, node)]
