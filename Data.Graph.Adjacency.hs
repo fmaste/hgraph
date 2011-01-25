@@ -79,6 +79,8 @@ getNodeCount (Adjacency succs _) = Map.size succs
 getAdjacencies :: Ord node => Adjacency node -> [(node, node)]
 getAdjacencies adj = concatMap (\node -> [(node, x) | x <- getNodeSuccs node adj]) (getNodes adj)
 
+-- There is no getAdjacenciesCount because there is only one "edge" between two nodes, no matter how many times you add the adjacency.
+
 getNodeAdjacencies :: Ord node => node -> Adjacency node -> [(node, node)]
 getNodeAdjacencies node adj = [(node, x) | x <- getNodeSuccs node adj] ++ [(x, node) | x <- getNodePreds node adj]
 
