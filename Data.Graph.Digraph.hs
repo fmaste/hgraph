@@ -13,8 +13,6 @@ import qualified Data.Map as Map
 -- DATA DEFINITION
 -------------------------------------------------------------------------------
 
-
-
 data Digraph node edge = Digraph (Adj.Adjacency node) | TmpDigraph edge
     deriving (Show, Read, Ord, Eq)
 
