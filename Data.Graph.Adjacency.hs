@@ -41,6 +41,7 @@ type NodePreds node = Map.Map node (Set.Set node)
 -- CONSTRUCTION
 -------------------------------------------------------------------------------
 
+-- The empty Adjacency
 empty :: Ord node => Adjacency node
 empty = Adjacency (Map.empty) (Map.empty)
 
