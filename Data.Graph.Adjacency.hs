@@ -100,9 +100,3 @@ containsAdjacency src dst (Adjacency succs _) =
 	then Set.member dst (succs Map.! src)
 	else False
 
--- UTILS
--------------------------------------------------------------------------------
-
-dropElem :: Ord a => a -> [a] -> [a]
-dropElem x xs = filter (\n -> n /= x) xs
-
