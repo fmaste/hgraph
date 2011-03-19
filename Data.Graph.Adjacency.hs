@@ -67,7 +67,7 @@ addAdjacency src dst (Adjacency succs preds) = Adjacency succs' preds' where
 removeAdjacency :: Ord node => node -> node -> Adjacency node -> Adjacency node
 removeAdjacency src dst (Adjacency succs preds) = Adjacency succs' preds' where
 	succs' = Map.adjust (Set.delete dst) src succs
-	preds' = Map.adjust (Set.delete dst) src preds
+	preds' = Map.adjust (Set.delete src) dst preds
 
 -- QUERY
 -------------------------------------------------------------------------------
