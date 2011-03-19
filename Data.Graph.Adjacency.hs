@@ -38,14 +38,11 @@ type NodeSuccs node = Map.Map node (Set.Set node)
 -- A map of nodes as keys and a set of the nodes that are a direct predecessor of that node as value.
 type NodePreds node = Map.Map node (Set.Set node)
 
--- CONSTRUCTORS
+-- CONSTRUCTION
 -------------------------------------------------------------------------------
 
 empty :: Ord node => Adjacency node
 empty = Adjacency (Map.empty) (Map.empty)
-
--- FUNCTIONS
--------------------------------------------------------------------------------
 
 -- If the node list already exists it is emptied.
 addNode :: Ord node => node -> Adjacency node -> Adjacency node
@@ -70,6 +67,9 @@ removeAdjacency :: Ord node => node -> node -> Adjacency node -> Adjacency node
 removeAdjacency src dst (Adjacency succs preds) = Adjacency succs' preds' where
 	succs' = Map.adjust (Set.delete dst) src succs
 	preds' = Map.adjust (Set.delete dst) src preds
+
+-- QUERY
+-------------------------------------------------------------------------------
 
 getNodes :: Ord node => Adjacency node -> [node]
 getNodes (Adjacency succs _) = Map.keys succs
