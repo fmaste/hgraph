@@ -18,6 +18,7 @@ module Data.Graph.Adjacency (
 -------------------------------------------------------------------------------
 
 import qualified Data.Map as Map
+import qualified Data.Set as Set
 
 -- DATA DEFINITION
 -------------------------------------------------------------------------------
@@ -30,12 +31,12 @@ data Adjacency node = Adjacency (NodeSuccs node) (NodePreds node)
     deriving (Show, Read, Ord, Eq)
 
 -- The nodes that can be reached from a given node.
--- A map of nodes as keys and a list of the nodes that are a direct successor of that node as value.
-type NodeSuccs node = Map.Map node [node] -- TODO: Use a List instead of [] to make more performant adding or removing elements.
+-- A map of nodes as keys and a set of the nodes that are a direct successor of that node as value.
+type NodeSuccs node = Map.Map node (Set.Set node)
 
 -- The nodes that can reach a given node.
--- A map of nodes as keys and a list of the nodes that are a direct predecessor of that node as value.
-type NodePreds node = Map.Map node [node] -- TODO: Use a List instead of [] to make more performant adding or removing elements.
+-- A map of nodes as keys and a set of the nodes that are a direct predecessor of that node as value.
+type NodePreds node = Map.Map node (Set.Set node)
 
 -- CONSTRUCTORS
 -------------------------------------------------------------------------------
@@ -49,26 +50,26 @@ empty = Adjacency (Map.empty) (Map.empty)
 -- If the node list already exists it is emptied.
 addNode :: Ord node => node -> Adjacency node -> Adjacency node
 addNode node (Adjacency succs preds) = Adjacency succs' preds' where
-	succs' = Map.insert node [] succs
-	preds' = Map.insert node [] preds
+	succs' = Map.insert node Set.empty succs
+	preds' = Map.insert node Set.empty preds
 
 -- The appearences of the node on other lists are not modified.
 removeNode :: Ord node => node -> Adjacency node -> Adjacency node
 removeNode node adj@(Adjacency succs preds) = Adjacency succs' preds' where
 		-- Fold through the predecessors to know which successors to adjust and them delete the node.
-		succs' = Map.delete node (foldl (\aMap aNode -> Map.adjust (dropElem node) aNode aMap) succs (getNodePreds node adj))
+		succs' = Map.delete node (foldl (\aMap aNode -> Map.adjust (Set.delete node) aNode aMap) succs (getNodePreds node adj))
 		-- Fold through the successors to know which predecessors to adjust and them delete the node.
-		preds' = Map.delete node (foldl (\aMap aNode -> Map.adjust (dropElem node) aNode aMap) preds (getNodeSuccs node adj))
+		preds' = Map.delete node (foldl (\aMap aNode -> Map.adjust (Set.delete node) aNode aMap) preds (getNodeSuccs node adj))
 
 addAdjacency :: Ord node => node -> node -> Adjacency node -> Adjacency node
 addAdjacency src dst (Adjacency succs preds) = Adjacency succs' preds' where
-	succs' = Map.adjust (\xs -> dst : (dropElem dst xs)) src succs -- First, if exists, the element is removed from the list.
-	preds' = Map.adjust (\xs -> src : (dropElem src xs)) dst preds -- First, if exists, the element is removed from the list.
+	succs' = Map.adjust (Set.insert dst) src succs
+	preds' = Map.adjust (Set.insert src) dst preds
 
 removeAdjacency :: Ord node => node -> node -> Adjacency node -> Adjacency node
 removeAdjacency src dst (Adjacency succs preds) = Adjacency succs' preds' where
-	succs' = Map.adjust (dropElem dst) src succs
-	preds' = Map.adjust (dropElem dst) src preds
+	succs' = Map.adjust (Set.delete dst) src succs
+	preds' = Map.adjust (Set.delete dst) src preds
 
 getNodes :: Ord node => Adjacency node -> [node]
 getNodes (Adjacency succs _) = Map.keys succs
@@ -85,10 +86,10 @@ getNodeAdjacencies :: Ord node => node -> Adjacency node -> [(node, node)]
 getNodeAdjacencies node adj = [(node, x) | x <- getNodeSuccs node adj] ++ [(x, node) | x <- getNodePreds node adj]
 
 getNodeSuccs :: Ord node => node -> Adjacency node -> [node]
-getNodeSuccs node (Adjacency succs _) = succs Map.! node
+getNodeSuccs node (Adjacency succs _) = Set.elems $ succs Map.! node
 
 getNodePreds :: Ord node => node -> Adjacency node -> [node]
-getNodePreds node (Adjacency _ preds) = preds Map.! node
+getNodePreds node (Adjacency _ preds) = Set.elems $ preds Map.! node
 
 containsNode :: Ord node => node -> Adjacency node -> Bool
 containsNode node (Adjacency succs _) = Map.member node succs
@@ -96,7 +97,7 @@ containsNode node (Adjacency succs _) = Map.member node succs
 containsAdjacency :: Ord node => node -> node -> Adjacency node -> Bool
 containsAdjacency src dst (Adjacency succs _) = 
 	if Map.member src succs
-	then elem dst (succs Map.! src)
+	then Set.member dst (succs Map.! src)
 	else False
 
 -- UTILS
