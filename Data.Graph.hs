@@ -46,12 +46,12 @@ class Graph graph where
 	-- Is implementation dependent to allow or not multiple edges (simple or multigraph).
 	getEdges 		:: (Ord node, Ord edge) => graph node edge -> [(node, node)]
 
-	-- Gets the node count.
+	-- Gets the number of nodes.
 	-- The implementation may override this method with a more performant one.
 	getNodeCount	:: (Ord node, Ord edge) => graph node edge -> Int
 	getNodeCount graph = length $ getNodes graph
 
-	-- Gets the edge count.
+	-- Gets the number of edges.
 	-- The implementation may override this method with a more performant one.
 	getEdgeCount	:: (Ord node, Ord edge) => graph node edge -> Int
 	getEdgeCount graph = length $ getEdges graph
