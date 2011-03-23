@@ -35,7 +35,7 @@ class Graph graph where
 	-- TODO: After adding the edge parameters above, add this method
 	-- removeEdges node node
 
-	---- GETTER FUNCTIONS -------------------------------------------------
+	---- QUERY FUNCTIONS --------------------------------------------------
 	-----------------------------------------------------------------------
 
 	-- Gets a list of the nodes of the graph. Also called vertices or points.
