@@ -10,7 +10,7 @@ module Data.Graph where
 -- This differences and mucho more, like allowing cycles or an edge pair of the same node, are implementation depedent.
 class Graph graph where
 
-	---- CONSTRUCTOR FUNCTIONS --------------------------------------------
+	---- CONSTRUCTION FUNCTIONS -------------------------------------------
 	-----------------------------------------------------------------------
 
 	-- Inserts a node to the graph without making any connection.
