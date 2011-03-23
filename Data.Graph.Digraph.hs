@@ -19,8 +19,8 @@ data Digraph node edge = Digraph (Adj.Adjacency node)
 -- CONSTRUCTORS
 -------------------------------------------------------------------------------
 
---TODO empty :: (Ord node, Ord edge) => Digraph node edge
---TODO empty = Digraph (Map.empty) (Map.empty) edge
+empty :: (Ord node, Ord edge) => Digraph node edge
+empty = Digraph Adj.empty
 
 -- CLASS DEFINITION
 -------------------------------------------------------------------------------
