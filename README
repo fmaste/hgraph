@@ -3,6 +3,6 @@ The graph is represented by two structures:
 	- The adjacency:
 		This structure contains for each node a list with its predecessors and another one with its successors.
 		This index allows to make fasters connection queries at the cost of the extra storage space.
-	- The weigth:
+	- The labels:
 		This structure contains the labels associated with each edge or arc.
 		Allows to handle multiple edges with different data indepently of the adjacency.
