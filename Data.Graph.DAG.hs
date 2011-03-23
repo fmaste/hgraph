@@ -13,7 +13,7 @@ import qualified Data.Graph.Digraph as Digraph
 -------------------------------------------------------------------------------
 
 --TODO: Use newtype instead of data when TmpDAG is removed
-data DAG node edge = DAG (Digraph.Digraph node edge) | TmpDAG edge
+data DAG node edge = DAG (Digraph.Digraph node edge)
 	deriving (Show, Read, Ord, Eq)
 
 -- CONSTRUCTORS
