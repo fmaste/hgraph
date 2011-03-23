@@ -16,16 +16,12 @@ import qualified Data.Graph.Digraph as Digraph
 data DAG node edge = DAG (Digraph.Digraph node edge)
 	deriving (Show, Read, Ord, Eq)
 
--- CONSTRUCTORS
--------------------------------------------------------------------------------
-
---TODO empty :: Ord node => DAG (Digraph.Digraph node)
---TODO empty = DAG Digraph.empty
-
 -- CLASS DEFINITION
 -------------------------------------------------------------------------------
 
 instance Graph.Graph DAG where
+
+	empty = (DAG Graph.empty)
 
 	addNode node (DAG digraph) = DAG (Graph.addNode node digraph)
 

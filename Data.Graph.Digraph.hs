@@ -16,16 +16,12 @@ import qualified Data.Map as Map
 data Digraph node edge = Digraph (Adj.Adjacency node)
     deriving (Show, Read, Ord, Eq)
 
--- CONSTRUCTORS
--------------------------------------------------------------------------------
-
-empty :: (Ord node, Ord edge) => Digraph node edge
-empty = Digraph Adj.empty
-
 -- CLASS DEFINITION
 -------------------------------------------------------------------------------
 
 instance Graph.Graph Digraph where
+
+	empty = Digraph Adj.empty
 
 	addNode node (Digraph adj) = Digraph adj' where
 		adj' = Adj.addNode node adj
