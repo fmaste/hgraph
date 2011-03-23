@@ -51,7 +51,6 @@ addNode node (Adjacency succs preds) = Adjacency succs' preds' where
 	succs' = Map.insert node Set.empty succs
 	preds' = Map.insert node Set.empty preds
 
--- The appearences of the node on other lists are not modified.
 removeNode :: Ord node => node -> Adjacency node -> Adjacency node
 removeNode node adj@(Adjacency succs preds) = Adjacency succs' preds' where
 		-- Fold through the predecessors to know which successors to adjust and them delete the node.
