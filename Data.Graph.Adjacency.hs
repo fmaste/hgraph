@@ -83,10 +83,10 @@ getNodeCount :: Adjacency node -> Int
 getNodeCount (Adjacency succs _) = Map.size succs
 
 getNodeSuccs :: Ord node => node -> Adjacency node -> [node]
-getNodeSuccs node (Adjacency succs _) = Set.elems $ succs Map.! node
+getNodeSuccs node adj = Set.elems $ getNodeSuccsSet node adj
 
 getNodePreds :: Ord node => node -> Adjacency node -> [node]
-getNodePreds node (Adjacency _ preds) = Set.elems $ preds Map.! node
+getNodePreds node adj = Set.elems $ getNodeSuccsSet node adj
 
 getNodeSuccsSet :: Ord node => node -> Adjacency node -> Set.Set node
 getNodeSuccsSet node (Adjacency succs _) = Map.findWithDefault Set.empty node succs
