@@ -111,6 +111,9 @@ removeNodePredAdjacencies node adj@(Adjacency succs preds) = Adjacency succs' pr
 		removePredFromSuccs succsMap succNode = Map.adjust (Set.delete node) succNode succsMap
 	preds' = Map.adjust (const Set.empty) node preds
 
+-- TODO
+-- removeNodeSelectedAdjacencies :: Ord node => node -> [node] -> Adjacency node -> Adjacency node
+
 -- QUERY
 -------------------------------------------------------------------------------
 
