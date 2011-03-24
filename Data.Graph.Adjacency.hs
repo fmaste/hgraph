@@ -66,7 +66,7 @@ addNode node (Adjacency succs preds) = Adjacency succs' preds' where
 	removeNode node (Adjacency succs preds) = Adjacency succs' preds' where
 		succs' = Map.delete node (Map.map (Set.delete node) succs)
 		preds' = Map.delete node (Map.map (Set.delete node) preds)
-	But this means interating through all the internal sets (that can be very big)
+	But this means interating through all the internal sets (can be very big)
 	and I already know which sets because of the succ/preds indexes.
 -}
 removeNode :: Ord node => node -> Adjacency node -> Adjacency node
