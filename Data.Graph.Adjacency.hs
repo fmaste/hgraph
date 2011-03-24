@@ -61,6 +61,10 @@ addNode node (Adjacency succs preds) = Adjacency succs' preds' where
 	succs' = Map.insertWith (\new old -> old) node Set.empty succs
 	preds' = Map.insertWith (\new old -> old) node Set.empty preds
 
+-- TODO:
+-- addNodeSuccs :: Ord node => node -> [node] -> Adjacency node -> Adjacency node
+-- addNodePreds :: Ord node => node -> [node] -> Adjacency node -> Adjacency node
+
 -- Also removes all the node adjacencies.
 {- Can also be done as:
 	removeNode node (Adjacency succs preds) = Adjacency succs' preds' where
