@@ -52,11 +52,11 @@ type NodePreds node = Map.Map node (Set.Set node)
 empty :: Ord node => Adjacency node
 empty = Adjacency (Map.empty) (Map.empty)
 
--- If the node list already exists it is emptied.
+-- If the node already exists, nothing happens.
 addNode :: Ord node => node -> Adjacency node -> Adjacency node
 addNode node (Adjacency succs preds) = Adjacency succs' preds' where
-	succs' = Map.insert node Set.empty succs
-	preds' = Map.insert node Set.empty preds
+	succs' = Map.insertWith (\new old -> old) node Set.empty succs
+	preds' = Map.insertWith (\new old -> old) node Set.empty preds
 
 removeNode :: Ord node => node -> Adjacency node -> Adjacency node
 removeNode node adj@(Adjacency succs preds) = Adjacency succs' preds' where
