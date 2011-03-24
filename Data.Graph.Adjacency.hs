@@ -22,6 +22,8 @@ module Data.Graph.Adjacency (
 	getAdjacencyCount,
 	getNodeAdjacencies,
 	containsNode,
+	containsNodeSucc,
+	containsNodePred,
 	containsAdjacency) where
 
 -- IMPORTS
@@ -148,6 +150,12 @@ getNodeAdjacencies node adj =
 
 containsNode :: Ord node => node -> Adjacency node -> Bool
 containsNode node (Adjacency succs _) = Map.member node succs
+
+containsNodeSucc :: Ord node => node -> node -> Adjacency node -> Bool
+containsNodeSucc node succ adj = containsAdjacency node succ adj
+
+containsNodePred :: Ord node => node -> node -> Adjacency node -> Bool
+containsNodePred node pred adj = containsAdjacency pred node adj
 
 containsAdjacency :: Ord node => node -> node -> Adjacency node -> Bool
 containsAdjacency src dst adj = Set.member dst $ getNodeSuccsSet src adj
