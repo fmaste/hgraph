@@ -60,9 +60,7 @@ addNode node (Adjacency succs preds) = Adjacency succs' preds' where
 
 removeNode :: Ord node => node -> Adjacency node -> Adjacency node
 removeNode node adj@(Adjacency succs preds) = Adjacency succs' preds' where
-		-- Fold through the predecessors to know which successors to adjust and them delete the node.
 		succs' = Map.delete node (foldl (\aMap aNode -> Map.adjust (Set.delete node) aNode aMap) succs (getNodePreds node adj))
-		-- Fold through the successors to know which predecessors to adjust and them delete the node.
 		preds' = Map.delete node (foldl (\aMap aNode -> Map.adjust (Set.delete node) aNode aMap) preds (getNodeSuccs node adj))
 
 addAdjacency :: Ord node => node -> node -> Adjacency node -> Adjacency node
