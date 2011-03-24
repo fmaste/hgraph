@@ -88,7 +88,7 @@ getNodeSuccs :: Ord node => node -> Adjacency node -> [node]
 getNodeSuccs node adj = Set.elems $ getNodeSuccsSet node adj
 
 getNodePreds :: Ord node => node -> Adjacency node -> [node]
-getNodePreds node adj = Set.elems $ getNodeSuccsSet node adj
+getNodePreds node adj = Set.elems $ getNodePredsSet node adj
 
 getNodeSuccsArcs :: Ord node => node -> Adjacency node -> [(node, node)]
 getNodeSuccsArcs node adj = [(node, x) | x <- getNodeSuccs node adj]
