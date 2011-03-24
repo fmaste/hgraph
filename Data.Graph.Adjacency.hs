@@ -11,6 +11,8 @@ module Data.Graph.Adjacency (
 	getNodeCount,
 	getNodeSuccs,
 	getNodePreds,
+	getNodeSuccsArcs,
+	getNodePredsArcs,
 	getNodeSuccsSet,
 	getNodePredsSet,
 	getAdjacencies,
