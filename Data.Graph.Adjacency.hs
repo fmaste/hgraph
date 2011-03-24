@@ -107,8 +107,4 @@ containsNode :: Ord node => node -> Adjacency node -> Bool
 containsNode node (Adjacency succs _) = Map.member node succs
 
 containsAdjacency :: Ord node => node -> node -> Adjacency node -> Bool
-containsAdjacency src dst (Adjacency succs _) = 
-	if Map.member src succs
-	then Set.member dst (succs Map.! src)
-	else False
-
+containsAdjacency src dst adj = Set.member dst $ getNodeSuccsSet src adj
