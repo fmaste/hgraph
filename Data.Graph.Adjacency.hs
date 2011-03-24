@@ -89,16 +89,20 @@ getNodePreds :: Ord node => node -> Adjacency node -> [node]
 getNodePreds node adj = Set.elems $ getNodeSuccsSet node adj
 
 getNodeSuccsSet :: Ord node => node -> Adjacency node -> Set.Set node
-getNodeSuccsSet node (Adjacency succs _) = Map.findWithDefault Set.empty node succs
+getNodeSuccsSet node (Adjacency succs _) = 
+	Map.findWithDefault Set.empty node succs
 
 getNodePredsSet :: Ord node => node -> Adjacency node -> Set.Set node
-getNodePredsSet node (Adjacency _ preds) = Map.findWithDefault Set.empty node preds
+getNodePredsSet node (Adjacency _ preds) = 
+	Map.findWithDefault Set.empty node preds
 
 getAdjacencies :: Ord node => Adjacency node -> [(node, node)]
-getAdjacencies adj = concatMap (\node -> [(node, x) | x <- getNodeSuccs node adj]) (getNodes adj)
+getAdjacencies adj = 
+	concatMap (\node -> [(node, x) | x <- getNodeSuccs node adj]) (getNodes adj)
 
 getAdjacencyCount :: Ord node => Adjacency node -> Int
-getAdjacencyCount (Adjacency succs _) = Map.fold (\aSet count -> count + Set.size aSet) 0 succs
+getAdjacencyCount (Adjacency succs _) = 
+	Map.fold (\aSet count -> count + Set.size aSet) 0 succs
 
 getNodeAdjacencies :: Ord node => node -> Adjacency node -> [(node, node)]
 getNodeAdjacencies node adj = [(node, x) | x <- getNodeSuccs node adj] ++ [(x, node) | x <- getNodePreds node adj]
