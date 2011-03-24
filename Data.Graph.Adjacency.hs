@@ -9,11 +9,11 @@ module Data.Graph.Adjacency (
 	removeAdjacency,
 	getNodes,
 	getNodeCount,
+	getNodeSuccs,
+	getNodePreds,
 	getAdjacencies,
 	getAdjacencyCount,
 	getNodeAdjacencies,
-	getNodeSuccs,
-	getNodePreds,
 	containsNode,
 	containsAdjacency) where
 
@@ -80,6 +80,12 @@ getNodes (Adjacency succs _) = Map.keys succs
 getNodeCount :: Adjacency node -> Int
 getNodeCount (Adjacency succs _) = Map.size succs
 
+getNodeSuccs :: Ord node => node -> Adjacency node -> [node]
+getNodeSuccs node (Adjacency succs _) = Set.elems $ succs Map.! node
+
+getNodePreds :: Ord node => node -> Adjacency node -> [node]
+getNodePreds node (Adjacency _ preds) = Set.elems $ preds Map.! node
+
 getAdjacencies :: Ord node => Adjacency node -> [(node, node)]
 getAdjacencies adj = concatMap (\node -> [(node, x) | x <- getNodeSuccs node adj]) (getNodes adj)
 
@@ -88,12 +94,6 @@ getAdjacencyCount (Adjacency succs _) = Map.fold (\aSet count -> count + Set.siz
 
 getNodeAdjacencies :: Ord node => node -> Adjacency node -> [(node, node)]
 getNodeAdjacencies node adj = [(node, x) | x <- getNodeSuccs node adj] ++ [(x, node) | x <- getNodePreds node adj]
-
-getNodeSuccs :: Ord node => node -> Adjacency node -> [node]
-getNodeSuccs node (Adjacency succs _) = Set.elems $ succs Map.! node
-
-getNodePreds :: Ord node => node -> Adjacency node -> [node]
-getNodePreds node (Adjacency _ preds) = Set.elems $ preds Map.! node
 
 containsNode :: Ord node => node -> Adjacency node -> Bool
 containsNode node (Adjacency succs _) = Map.member node succs
