@@ -11,6 +11,8 @@ module Data.Graph.Adjacency (
 	getNodeCount,
 	getNodeSuccs,
 	getNodePreds,
+	getNodeSuccsSet,
+	getNodePredsSet,
 	getAdjacencies,
 	getAdjacencyCount,
 	getNodeAdjacencies,
@@ -85,6 +87,12 @@ getNodeSuccs node (Adjacency succs _) = Set.elems $ succs Map.! node
 
 getNodePreds :: Ord node => node -> Adjacency node -> [node]
 getNodePreds node (Adjacency _ preds) = Set.elems $ preds Map.! node
+
+getNodeSuccsSet :: Ord node => node -> Adjacency node -> Set.Set node
+getNodeSuccsSet node (Adjacency succs _) = succs Map.! node
+
+getNodePredsSet :: Ord node => node -> Adjacency node -> Set.Set node
+getNodePredsSet node (Adjacency _ preds) = preds Map.! node
 
 getAdjacencies :: Ord node => Adjacency node -> [(node, node)]
 getAdjacencies adj = concatMap (\node -> [(node, x) | x <- getNodeSuccs node adj]) (getNodes adj)
