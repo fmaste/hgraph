@@ -1,3 +1,5 @@
+-- Author: Federico Mastellone (fmaste@gmail.com)
+
 module Data.Graph.Adjacency (
 	Adjacency(),
 	empty,

@@ -1,3 +1,5 @@
+-- Author: Federico Mastellone (fmaste@gmail.com)
+
 module Data.Graph.Digraph (
 	Digraph(),
 --TODO	empty,
