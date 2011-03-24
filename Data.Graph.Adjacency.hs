@@ -7,6 +7,7 @@ module Data.Graph.Adjacency (
 	removeNode,
 	addAdjacency,
 	removeAdjacency,
+	removeFullAdjacency,
 	removeArc,
 	removeNodeAdjacencies,
 	removeNodeSuccAdjacencies,
@@ -91,6 +92,10 @@ removeAdjacency :: Ord node => node -> node -> Adjacency node -> Adjacency node
 removeAdjacency src dst (Adjacency succs preds) = Adjacency succs' preds' where
 	succs' = Map.adjust (Set.delete dst) src succs
 	preds' = Map.adjust (Set.delete src) dst preds
+
+removeFullAdjacency :: Ord node => node -> node -> Adjacency node -> Adjacency node
+removeFullAdjacency node1 node2 adj = 
+	removeAdjacency node1 node2 $ removeAdjacency node2 node1 adj
 
 removeArc :: Ord node => (node, node) -> Adjacency node -> Adjacency node
 removeArc (src, dst) adj = removeAdjacency src dst adj
