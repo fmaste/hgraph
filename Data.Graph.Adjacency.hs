@@ -7,6 +7,9 @@ module Data.Graph.Adjacency (
 	removeNode,
 	addAdjacency,
 	removeAdjacency,
+	removeNodeAdjacencies,
+	removeNodeSuccAdjacencies,
+	removeNodePredAdjacencies,
 	getNodes,
 	getNodeCount,
 	getNodeSuccs,
@@ -59,9 +62,10 @@ addNode node (Adjacency succs preds) = Adjacency succs' preds' where
 	preds' = Map.insertWith (\new old -> old) node Set.empty preds
 
 removeNode :: Ord node => node -> Adjacency node -> Adjacency node
-removeNode node adj@(Adjacency succs preds) = Adjacency succs' preds' where
-		succs' = Map.delete node (foldl (\aMap aNode -> Map.adjust (Set.delete node) aNode aMap) succs (getNodePreds node adj))
-		preds' = Map.delete node (foldl (\aMap aNode -> Map.adjust (Set.delete node) aNode aMap) preds (getNodeSuccs node adj))
+removeNode node adj = removeNode' $ removeNodeAdjacencies node adj where
+	removeNode' (Adjacency succs preds) = Adjacency succs' preds' where
+		succs' = Map.delete node succs
+		preds' = Map.delete node preds
 
 addAdjacency :: Ord node => node -> node -> Adjacency node -> Adjacency node
 addAdjacency src dst (Adjacency succs preds) = Adjacency succs' preds' where
@@ -72,6 +76,22 @@ removeAdjacency :: Ord node => node -> node -> Adjacency node -> Adjacency node
 removeAdjacency src dst (Adjacency succs preds) = Adjacency succs' preds' where
 	succs' = Map.adjust (Set.delete dst) src succs
 	preds' = Map.adjust (Set.delete src) dst preds
+
+removeNodeAdjacencies :: Ord node => node -> Adjacency node -> Adjacency node
+removeNodeAdjacencies node adj =
+	removeNodeSuccAdjacencies node $ removeNodePredAdjacencies node adj
+
+removeNodeSuccAdjacencies :: Ord node => node -> Adjacency node -> Adjacency node
+removeNodeSuccAdjacencies node adj@(Adjacency succs preds) = Adjacency succs' preds' where
+	succs' = Map.adjust (const Set.empty) node succs
+	preds' = foldl removeSuccFromPreds preds (getNodeSuccs node adj) where
+		removeSuccFromPreds predsMap predNode = Map.adjust (Set.delete node) predNode predsMap
+
+removeNodePredAdjacencies :: Ord node => node -> Adjacency node -> Adjacency node
+removeNodePredAdjacencies node adj@(Adjacency succs preds) = Adjacency succs' preds' where
+	succs' = foldl removePredFromSuccs succs (getNodePreds node adj) where
+		removePredFromSuccs succsMap succNode = Map.adjust (Set.delete node) succNode succsMap
+	preds' = Map.adjust (const Set.empty) node preds
 
 -- QUERY
 -------------------------------------------------------------------------------
