@@ -88,6 +88,12 @@ getNodeSuccs node adj = Set.elems $ getNodeSuccsSet node adj
 getNodePreds :: Ord node => node -> Adjacency node -> [node]
 getNodePreds node adj = Set.elems $ getNodeSuccsSet node adj
 
+getNodeSuccsArcs :: Ord node => node -> Adjacency node -> [(node, node)]
+getNodeSuccsArcs node adj = [(node, x) | x <- getNodeSuccs node adj]
+
+getNodePredsArcs :: Ord node => node -> Adjacency node -> [(node, node)]
+getNodePredsArcs node adj = [(x, node) | x <- getNodePreds node adj]
+
 getNodeSuccsSet :: Ord node => node -> Adjacency node -> Set.Set node
 getNodeSuccsSet node (Adjacency succs _) = 
 	Map.findWithDefault Set.empty node succs
@@ -105,9 +111,8 @@ getAdjacencyCount (Adjacency succs _) =
 	Map.fold (\aSet count -> count + Set.size aSet) 0 succs
 
 getNodeAdjacencies :: Ord node => node -> Adjacency node -> [(node, node)]
-getNodeAdjacencies node adj = succArcs ++ predArcs where
-	succArcs = [(node, x) | x <- getNodeSuccs node adj]
-	predArcs = [(x, node) | x <- getNodePreds node adj]
+getNodeAdjacencies node adj = 
+	getNodeSuccsArcs node adj ++ getNodePredsArcs node adj
 
 containsNode :: Ord node => node -> Adjacency node -> Bool
 containsNode node (Adjacency succs _) = Map.member node succs
