@@ -15,10 +15,10 @@ module Data.Graph.Adjacency (
 	getNodeCount,
 	getNodeSuccs,
 	getNodePreds,
-	getNodeSuccAdjacencies,
-	getNodePredAdjacencies,
 	getNodeSuccsSet,
 	getNodePredsSet,
+	getNodeSuccAdjacencies,
+	getNodePredAdjacencies,
 	getAdjacencies,
 	getAdjacencyCount,
 	getNodeAdjacencies,
@@ -143,12 +143,6 @@ getNodeSuccs node adj = Set.elems $ getNodeSuccsSet node adj
 getNodePreds :: Ord node => node -> Adjacency node -> [node]
 getNodePreds node adj = Set.elems $ getNodePredsSet node adj
 
-getNodeSuccAdjacencies :: Ord node => node -> Adjacency node -> [(node, node)]
-getNodeSuccAdjacencies node adj = [(node, x) | x <- getNodeSuccs node adj]
-
-getNodePredAdjacencies :: Ord node => node -> Adjacency node -> [(node, node)]
-getNodePredAdjacencies node adj = [(x, node) | x <- getNodePreds node adj]
-
 getNodeSuccsSet :: Ord node => node -> Adjacency node -> Set.Set node
 getNodeSuccsSet node (Adjacency succs _) = 
 	Map.findWithDefault Set.empty node succs
@@ -156,6 +150,12 @@ getNodeSuccsSet node (Adjacency succs _) =
 getNodePredsSet :: Ord node => node -> Adjacency node -> Set.Set node
 getNodePredsSet node (Adjacency _ preds) = 
 	Map.findWithDefault Set.empty node preds
+
+getNodeSuccAdjacencies :: Ord node => node -> Adjacency node -> [(node, node)]
+getNodeSuccAdjacencies node adj = [(node, x) | x <- getNodeSuccs node adj]
+
+getNodePredAdjacencies :: Ord node => node -> Adjacency node -> [(node, node)]
+getNodePredAdjacencies node adj = [(x, node) | x <- getNodePreds node adj]
 
 getAdjacencies :: Ord node => Adjacency node -> [(node, node)]
 getAdjacencies adj = 
