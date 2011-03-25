@@ -158,11 +158,11 @@ getNodePredsSet :: Ord node => node -> Adjacency node -> Set.Set node
 getNodePredsSet node (Adjacency _ preds) = 
 	Map.findWithDefault Set.empty node preds
 
--- The adjacencies were this node is predecessor.
+-- The different adjacencies were this node is predecessor.
 getNodeSuccAdjacencies :: Ord node => node -> Adjacency node -> [(node, node)]
 getNodeSuccAdjacencies node adj = [(node, x) | x <- getNodeSuccs node adj]
 
--- The adjacencies were this node is successor.
+-- The different adjacencies were this node is successor.
 getNodePredAdjacencies :: Ord node => node -> Adjacency node -> [(node, node)]
 getNodePredAdjacencies node adj = [(x, node) | x <- getNodePreds node adj]
 
@@ -171,7 +171,7 @@ getNodeAdjacents :: Ord node => node -> Adjacency node -> [node]
 getNodeAdjacents node adj = 
 	getNodeSuccs node adj ++ getNodePreds node adj
 
--- The adjacencies were this node participates.
+-- The different adjacencies were this node participates.
 getNodeAdjacencies :: Ord node => node -> Adjacency node -> [(node, node)]
 getNodeAdjacencies node adj = 
 	getNodeSuccAdjacencies node adj ++ getNodePredAdjacencies node adj
