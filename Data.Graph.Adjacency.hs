@@ -22,6 +22,7 @@ module Data.Graph.Adjacency (
 	getAdjacencies,
 	getAdjacencyCount,
 	getNodeAdjacencies,
+	getNodeAdjacents,
 	containsNode,
 	containsNodeSucc,
 	containsNodePred,
@@ -179,6 +180,11 @@ getAdjacencyCount (Adjacency succs _) =
 getNodeAdjacencies :: Ord node => node -> Adjacency node -> [(node, node)]
 getNodeAdjacencies node adj = 
 	getNodeSuccAdjacencies node adj ++ getNodePredAdjacencies node adj
+
+-- The ones that are adjacencent to node.
+getNodeAdjacents :: Ord node => node -> Adjacency node -> [node]
+getNodeAdjacents node adj = 
+	getNodeSuccs node adj ++ getNodePreds node adj
 
 -- Node exists?
 containsNode :: Ord node => node -> Adjacency node -> Bool
