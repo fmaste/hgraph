@@ -131,52 +131,67 @@ removeNodePredAdjacencies node adj@(Adjacency succs preds) = Adjacency succs' pr
 -- QUERY FUNCTIONS
 -------------------------------------------------------------------------------
 
+-- A list with all the different nodes.
 getNodes :: Ord node => Adjacency node -> [node]
 getNodes (Adjacency succs _) = Map.keys succs
 
+-- The number of different nodes present.
 getNodeCount :: Adjacency node -> Int
 getNodeCount (Adjacency succs _) = Map.size succs
 
+-- Get all the different nodes that are successors.
 getNodeSuccs :: Ord node => node -> Adjacency node -> [node]
 getNodeSuccs node adj = Set.elems $ getNodeSuccsSet node adj
 
+-- Get all the different nodes that are predecessors.
 getNodePreds :: Ord node => node -> Adjacency node -> [node]
 getNodePreds node adj = Set.elems $ getNodePredsSet node adj
 
+-- A set with the node successors.
 getNodeSuccsSet :: Ord node => node -> Adjacency node -> Set.Set node
 getNodeSuccsSet node (Adjacency succs _) = 
 	Map.findWithDefault Set.empty node succs
 
+-- A set with the node predecessors.
 getNodePredsSet :: Ord node => node -> Adjacency node -> Set.Set node
 getNodePredsSet node (Adjacency _ preds) = 
 	Map.findWithDefault Set.empty node preds
 
+-- The adjacencies were this node is predecessor.
 getNodeSuccAdjacencies :: Ord node => node -> Adjacency node -> [(node, node)]
 getNodeSuccAdjacencies node adj = [(node, x) | x <- getNodeSuccs node adj]
 
+-- The adjacencies were this node is successor.
 getNodePredAdjacencies :: Ord node => node -> Adjacency node -> [(node, node)]
 getNodePredAdjacencies node adj = [(x, node) | x <- getNodePreds node adj]
 
+-- All the different adjacencies that exist.
 getAdjacencies :: Ord node => Adjacency node -> [(node, node)]
 getAdjacencies adj = 
 	concatMap (\node -> [(node, x) | x <- getNodeSuccs node adj]) (getNodes adj)
 
+-- The number of different adjacencies.
 getAdjacencyCount :: Ord node => Adjacency node -> Int
 getAdjacencyCount (Adjacency succs _) = 
 	Map.fold (\aSet count -> count + Set.size aSet) 0 succs
 
+-- The node's different adjacencies.
 getNodeAdjacencies :: Ord node => node -> Adjacency node -> [(node, node)]
 getNodeAdjacencies node adj = 
 	getNodeSuccAdjacencies node adj ++ getNodePredAdjacencies node adj
 
+-- Node exists?
 containsNode :: Ord node => node -> Adjacency node -> Bool
 containsNode node (Adjacency succs _) = Map.member node succs
 
+-- Is this a successor of node?
 containsNodeSucc :: Ord node => node -> node -> Adjacency node -> Bool
 containsNodeSucc node succ adj = containsAdjacency node succ adj
 
+-- Is this a predecessor of node?
 containsNodePred :: Ord node => node -> node -> Adjacency node -> Bool
 containsNodePred node pred adj = containsAdjacency pred node adj
 
+-- Adjacency exists?
 containsAdjacency :: Ord node => node -> node -> Adjacency node -> Bool
 containsAdjacency src dst adj = Set.member dst $ getNodeSuccsSet src adj
