@@ -19,10 +19,10 @@ module Data.Graph.Adjacency (
 	getNodePredsSet,
 	getNodeSuccAdjacencies,
 	getNodePredAdjacencies,
+	getNodeAdjacents,
+	getNodeAdjacencies,
 	getAdjacencies,
 	getAdjacencyCount,
-	getNodeAdjacencies,
-	getNodeAdjacents,
 	containsNode,
 	containsNodeSucc,
 	containsNodePred,
@@ -166,6 +166,16 @@ getNodeSuccAdjacencies node adj = [(node, x) | x <- getNodeSuccs node adj]
 getNodePredAdjacencies :: Ord node => node -> Adjacency node -> [(node, node)]
 getNodePredAdjacencies node adj = [(x, node) | x <- getNodePreds node adj]
 
+-- The ones that are adjacencent to node.
+getNodeAdjacents :: Ord node => node -> Adjacency node -> [node]
+getNodeAdjacents node adj = 
+	getNodeSuccs node adj ++ getNodePreds node adj
+
+-- The adjacencies were this node participates.
+getNodeAdjacencies :: Ord node => node -> Adjacency node -> [(node, node)]
+getNodeAdjacencies node adj = 
+	getNodeSuccAdjacencies node adj ++ getNodePredAdjacencies node adj
+
 -- All the different adjacencies that exist.
 getAdjacencies :: Ord node => Adjacency node -> [(node, node)]
 getAdjacencies adj = 
@@ -175,16 +185,6 @@ getAdjacencies adj =
 getAdjacencyCount :: Ord node => Adjacency node -> Int
 getAdjacencyCount (Adjacency succs _) = 
 	Map.fold (\aSet count -> count + Set.size aSet) 0 succs
-
--- The adjacencies were this node participates.
-getNodeAdjacencies :: Ord node => node -> Adjacency node -> [(node, node)]
-getNodeAdjacencies node adj = 
-	getNodeSuccAdjacencies node adj ++ getNodePredAdjacencies node adj
-
--- The ones that are adjacencent to node.
-getNodeAdjacents :: Ord node => node -> Adjacency node -> [node]
-getNodeAdjacents node adj = 
-	getNodeSuccs node adj ++ getNodePreds node adj
 
 -- Node exists?
 containsNode :: Ord node => node -> Adjacency node -> Bool
