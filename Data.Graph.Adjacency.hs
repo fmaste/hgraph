@@ -86,11 +86,12 @@ removeNode node adj = removeNode' $ removeNodeAdjacencies node adj where
 -}
 
 -- Adds an adjacency from src to dst.
+-- If src or dst do not exist they are added.
 -- If the adjacency already exists the original Adjacency is returned.
 addAdjacency :: Ord node => node -> node -> Adjacency node -> Adjacency node
 addAdjacency src dst (Adjacency succs preds) = Adjacency succs' preds' where
-	succs' = Map.adjust (Set.insert dst) src succs
-	preds' = Map.adjust (Set.insert src) dst preds
+	succs' = Map.insertWith (\new old -> old) dst Set.empty $ Map.insertWith (\new old -> Set.insert dst old) src (Set.singleton dst) succs
+	preds' = Map.insertWith (\new old -> old) src Set.empty $ Map.insertWith (\new old -> Set.insert src old) dst (Set.singleton src) preds
 
 -- Removes the adjacency from src to dst.
 -- If src or dst do not exist the original Adjacency is returned.
