@@ -167,7 +167,7 @@ getAdjacencyCount (Adjacency succs _) =
 
 getNodeAdjacencies :: Ord node => node -> Adjacency node -> [(node, node)]
 getNodeAdjacencies node adj = 
-	getNodeSuccsArcs node adj ++ getNodePredsArcs node adj
+	getNodeSuccAdjacencies node adj ++ getNodePredAdjacencies node adj
 
 containsNode :: Ord node => node -> Adjacency node -> Bool
 containsNode node (Adjacency succs _) = Map.member node succs
