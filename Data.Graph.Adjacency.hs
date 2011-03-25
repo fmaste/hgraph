@@ -166,10 +166,10 @@ getNodeSuccAdjacencies node adj = [(node, x) | x <- getNodeSuccs node adj]
 getNodePredAdjacencies :: Ord node => node -> Adjacency node -> [(node, node)]
 getNodePredAdjacencies node adj = [(x, node) | x <- getNodePreds node adj]
 
--- The ones that are adjacencent to node.
+-- The different nodes that are adjacencent, either succs or preds.
 getNodeAdjacents :: Ord node => node -> Adjacency node -> [node]
 getNodeAdjacents node adj = 
-	getNodeSuccs node adj ++ getNodePreds node adj
+	Set.elems $ Set.union (getNodeSuccsSet node adj) (getNodePredsSet node adj)
 
 -- The different adjacencies were this node participates.
 getNodeAdjacencies :: Ord node => node -> Adjacency node -> [(node, node)]
