@@ -175,7 +175,7 @@ getAdjacencyCount :: Ord node => Adjacency node -> Int
 getAdjacencyCount (Adjacency succs _) = 
 	Map.fold (\aSet count -> count + Set.size aSet) 0 succs
 
--- The node's different adjacencies.
+-- The adjacencies were this node participates.
 getNodeAdjacencies :: Ord node => node -> Adjacency node -> [(node, node)]
 getNodeAdjacencies node adj = 
 	getNodeSuccAdjacencies node adj ++ getNodePredAdjacencies node adj
