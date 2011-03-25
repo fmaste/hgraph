@@ -52,14 +52,15 @@ type NodeSuccs node = Map.Map node (Set.Set node)
 -- A map of nodes as keys and a set of the nodes that are a direct predecessor of that node as value.
 type NodePreds node = Map.Map node (Set.Set node)
 
--- CONSTRUCTION
+-- CONSTRUCTION FUNCTIONS
 -------------------------------------------------------------------------------
 
--- The empty Adjacency
+-- The empty Adjacency.
 empty :: Ord node => Adjacency node
 empty = Adjacency (Map.empty) (Map.empty)
 
--- If the node already exists, nothing happens.
+-- Adds a node without any adjacencies.
+-- If the node already exists the original Adjacency is returned.
 addNode :: Ord node => node -> Adjacency node -> Adjacency node
 addNode node (Adjacency succs preds) = Adjacency succs' preds' where
 	succs' = Map.insertWith (\new old -> old) node Set.empty succs
@@ -69,7 +70,13 @@ addNode node (Adjacency succs preds) = Adjacency succs' preds' where
 -- addNodeSuccs :: Ord node => node -> [node] -> Adjacency node -> Adjacency node
 -- addNodePreds :: Ord node => node -> [node] -> Adjacency node -> Adjacency node
 
--- Also removes all the node adjacencies.
+-- Removes the node and all the adjacencies were the node participates.
+-- If the node does not exists the original Adjacency is returned.
+removeNode :: Ord node => node -> Adjacency node -> Adjacency node
+removeNode node adj = removeNode' $ removeNodeAdjacencies node adj where
+	removeNode' (Adjacency succs preds) = Adjacency succs' preds' where
+		succs' = Map.delete node succs
+		preds' = Map.delete node preds
 {- Can also be done as:
 	removeNode node (Adjacency succs preds) = Adjacency succs' preds' where
 		succs' = Map.delete node (Map.map (Set.delete node) succs)
@@ -77,22 +84,25 @@ addNode node (Adjacency succs preds) = Adjacency succs' preds' where
 	But this means interating through all the internal sets (can be very big)
 	and I already know which sets because of the succ/preds indexes.
 -}
-removeNode :: Ord node => node -> Adjacency node -> Adjacency node
-removeNode node adj = removeNode' $ removeNodeAdjacencies node adj where
-	removeNode' (Adjacency succs preds) = Adjacency succs' preds' where
-		succs' = Map.delete node succs
-		preds' = Map.delete node preds
 
+-- Adds an adjacency from src to dst.
+-- If the adjacency already exists the original Adjacency is returned.
 addAdjacency :: Ord node => node -> node -> Adjacency node -> Adjacency node
 addAdjacency src dst (Adjacency succs preds) = Adjacency succs' preds' where
 	succs' = Map.adjust (Set.insert dst) src succs
 	preds' = Map.adjust (Set.insert src) dst preds
 
+-- Removes the adjacency from src to dst.
+-- If src or dst do not exist the original Adjacency is returned.
+-- If the adjancecy does not exists the original Adjacency is returned.
 removeAdjacency :: Ord node => node -> node -> Adjacency node -> Adjacency node
 removeAdjacency src dst (Adjacency succs preds) = Adjacency succs' preds' where
 	succs' = Map.adjust (Set.delete dst) src succs
 	preds' = Map.adjust (Set.delete src) dst preds
 
+-- Removes all the adjacencies between node1 and node2.
+-- If node1 or node2 do not exist the original Adjacency is returned.
+-- If no adjacencies between node1 and node2 exist the original Adjacency is returned.
 removeFullAdjacency :: Ord node => node -> node -> Adjacency node -> Adjacency node
 removeFullAdjacency node1 node2 adj = 
 	removeAdjacency node1 node2 $ removeAdjacency node2 node1 adj
@@ -100,16 +110,25 @@ removeFullAdjacency node1 node2 adj =
 removeArc :: Ord node => (node, node) -> Adjacency node -> Adjacency node
 removeArc (src, dst) adj = removeAdjacency src dst adj
 
+-- Removes all the adjacencies were this node participates.
+-- If node does not exists the original Adjacency is returned.
+-- If there are no adjacencies were this node participates the original Adjacency is returned.
 removeNodeAdjacencies :: Ord node => node -> Adjacency node -> Adjacency node
 removeNodeAdjacencies node adj =
 	removeNodeSuccAdjacencies node $ removeNodePredAdjacencies node adj
 
+-- Removes all the adjacencies were this node is predecessor.
+-- If node does not exists the original Adjacency is returned.
+-- If there are no adjacencies were this node is predecessor the original Adjacency is returned.
 removeNodeSuccAdjacencies :: Ord node => node -> Adjacency node -> Adjacency node
 removeNodeSuccAdjacencies node adj@(Adjacency succs preds) = Adjacency succs' preds' where
 	succs' = Map.adjust (const Set.empty) node succs
 	preds' = foldl removeSuccFromPreds preds (getNodeSuccs node adj) where
 		removeSuccFromPreds predsMap predNode = Map.adjust (Set.delete node) predNode predsMap
 
+-- Removes all the adjacencies were this node is successor.
+-- If node does not exists the original Adjacency is returned.
+-- If there are no adjacencies were this node is successor the original Adjacency is returned.
 removeNodePredAdjacencies :: Ord node => node -> Adjacency node -> Adjacency node
 removeNodePredAdjacencies node adj@(Adjacency succs preds) = Adjacency succs' preds' where
 	succs' = foldl removePredFromSuccs succs (getNodePreds node adj) where
@@ -119,7 +138,7 @@ removeNodePredAdjacencies node adj@(Adjacency succs preds) = Adjacency succs' pr
 -- TODO
 -- removeNodeSelectedAdjacencies :: Ord node => node -> [node] -> Adjacency node -> Adjacency node
 
--- QUERY
+-- QUERY FUNCTIONS
 -------------------------------------------------------------------------------
 
 getNodes :: Ord node => Adjacency node -> [node]
