@@ -8,7 +8,6 @@ module Data.Graph.Adjacency (
 	addAdjacency,
 	removeAdjacency,
 	removeFullAdjacency,
-	removeArc,
 	removeNodeAdjacencies,
 	removeNodeSuccAdjacencies,
 	removeNodePredAdjacencies,
@@ -103,9 +102,6 @@ removeAdjacency src dst (Adjacency succs preds) = Adjacency succs' preds' where
 removeFullAdjacency :: Ord node => node -> node -> Adjacency node -> Adjacency node
 removeFullAdjacency node1 node2 adj = 
 	removeAdjacency node1 node2 $ removeAdjacency node2 node1 adj
-
-removeArc :: Ord node => (node, node) -> Adjacency node -> Adjacency node
-removeArc (src, dst) adj = removeAdjacency src dst adj
 
 -- Removes all the adjacencies were this node participates.
 -- If node does not exists the original Adjacency is returned.
