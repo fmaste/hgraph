@@ -73,7 +73,7 @@ roots (Digraph adj) = filter (\x -> (Adj.getNodePreds x adj) == []) (Adj.getNode
 
 -- Gets a list of all the nodes with no successors.
 leafs :: (Ord node, Ord edge) => Digraph node edge -> [node]
-leafs (Digraph adj) = filter (\x -> (Adj.getNodeSuccs x adj) == []) (Adj.getNodes adj)
+leafs (Digraph adj) = filter (\x -> (Adj.getNodeSuccNodes x adj) == []) (Adj.getNodes adj)
 
 -- TODO: isolated (The nodes without connections)
 
@@ -82,7 +82,7 @@ leafs (Digraph adj) = filter (\x -> (Adj.getNodeSuccs x adj) == []) (Adj.getNode
 
 -- Gets a list with the direct successors of a node.
 heads :: (Ord node, Ord edge) => node -> Digraph node edge -> [node]
-heads node (Digraph adj) = Adj.getNodeSuccs node adj
+heads node (Digraph adj) = Adj.getNodeSuccNodes node adj
 
 -- Generates a list of connection tuples (tail, head) with the direct successors of this node.
 headArcs :: (Ord node, Ord edge) => node -> Digraph node edge -> [(node, node)]
