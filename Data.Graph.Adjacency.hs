@@ -13,7 +13,7 @@ module Data.Graph.Adjacency (
 	removeNodePredAdjacencies,
 	getNodes,
 	getNodeCount,
-	getNodeSuccs,
+	getNodeSuccNodes,
 	getNodePreds,
 	getNodeSuccsSet,
 	getNodePredsSet,
@@ -119,7 +119,7 @@ removeNodeAdjacencies node adj =
 removeNodeSuccAdjacencies :: Ord node => node -> Adjacency node -> Adjacency node
 removeNodeSuccAdjacencies node adj@(Adjacency succs preds) = Adjacency succs' preds' where
 	succs' = Map.adjust (const Set.empty) node succs
-	preds' = foldl removeSuccFromPreds preds (getNodeSuccs node adj) where
+	preds' = foldl removeSuccFromPreds preds (getNodeSuccNodes node adj) where
 		removeSuccFromPreds predsMap predNode = Map.adjust (Set.delete node) predNode predsMap
 
 -- Removes all the adjacencies were this node is successor.
@@ -143,8 +143,8 @@ getNodeCount :: Adjacency node -> Int
 getNodeCount (Adjacency succs _) = Map.size succs
 
 -- Get all the different nodes that are successors.
-getNodeSuccs :: Ord node => node -> Adjacency node -> [node]
-getNodeSuccs node adj = Set.elems $ getNodeSuccsSet node adj
+getNodeSuccNodes :: Ord node => node -> Adjacency node -> [node]
+getNodeSuccNodes node adj = Set.elems $ getNodeSuccsSet node adj
 
 -- Get all the different nodes that are predecessors.
 getNodePreds :: Ord node => node -> Adjacency node -> [node]
@@ -167,7 +167,7 @@ getNodeAdjacencies node adj =
 
 -- The different adjacencies were this node is predecessor.
 getNodeSuccAdjacencies :: Ord node => node -> Adjacency node -> [(node, node)]
-getNodeSuccAdjacencies node adj = [(node, x) | x <- getNodeSuccs node adj]
+getNodeSuccAdjacencies node adj = [(node, x) | x <- getNodeSuccNodes node adj]
 
 -- The different adjacencies were this node is successor.
 getNodePredAdjacencies :: Ord node => node -> Adjacency node -> [(node, node)]
@@ -181,7 +181,7 @@ getNodeAdjacents node adj =
 -- All the different adjacencies that exist.
 getAdjacencies :: Ord node => Adjacency node -> [(node, node)]
 getAdjacencies adj = 
-	concatMap (\node -> [(node, x) | x <- getNodeSuccs node adj]) (getNodes adj)
+	concatMap (\node -> [(node, x) | x <- getNodeSuccNodes node adj]) (getNodes adj)
 
 -- The number of different adjacencies.
 getAdjacencyCount :: Ord node => Adjacency node -> Int
@@ -256,7 +256,7 @@ prop_structure arcs = (addArcList arcs empty) == (reconstruct $ addArcList arcs 
 prop_removeNodeSuccs :: [(Int, Int)] -> Int -> Bool
 prop_removeNodeSuccs arcs node = (nodesSuccsFromCreatedAdjacency adj == []) && (not $ nodeIsInPreds adj) where
 	adj = removeNodeSuccAdjacencies node $ addArcList arcs empty
-	nodesSuccsFromCreatedAdjacency adj = List.sort $ getNodeSuccs node adj
+	nodesSuccsFromCreatedAdjacency adj = List.sort $ getNodeSuccNodes node adj
 	nodeIsInPreds (Adjacency _ preds) = Map.fold (\predsSet ans -> ans || (Set.member node predsSet)) False preds
 
 prop_removeNodePreds :: [(Int, Int)] -> Int -> Bool
