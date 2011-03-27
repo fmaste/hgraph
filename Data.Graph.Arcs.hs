@@ -1,6 +1,6 @@
 -- Author: Federico Mastellone (fmaste@gmail.com)
 
-module Data.Graph.Labels (
+module Data.Graph.Arcs (
 	Labels(),
 	empty,
 	addArcLabel,
