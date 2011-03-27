@@ -20,7 +20,7 @@ module Data.Graph.Adjacency (
 	getNodeAdjacencies,
 	getNodeSuccAdjacencies,
 	getNodePredAdjacencies,
-	getNodeAdjacents,
+	getNodeAdjacentNodes,
 	getAdjacencies,
 	getAdjacencyCount,
 	containsNode,
@@ -174,8 +174,8 @@ getNodePredAdjacencies :: Ord node => node -> Adjacency node -> [(node, node)]
 getNodePredAdjacencies node adj = [(x, node) | x <- getNodePredNodes node adj]
 
 -- The different nodes that are adjacencent, either succs or preds.
-getNodeAdjacents :: Ord node => node -> Adjacency node -> [node]
-getNodeAdjacents node adj = 
+getNodeAdjacentNodes :: Ord node => node -> Adjacency node -> [node]
+getNodeAdjacentNodes node adj = 
 	Set.elems $ Set.union (getNodeSuccNodesSet node adj) (getNodePredNodesSet node adj)
 
 -- All the different adjacencies that exist.
