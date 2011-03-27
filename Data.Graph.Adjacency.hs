@@ -33,6 +33,8 @@ module Data.Graph.Adjacency (
 
 import qualified Data.Map as Map
 import qualified Data.Set as Set
+import qualified Test.QuickCheck as QC
+import qualified Data.List as List
 
 -- DATA DEFINITION
 -------------------------------------------------------------------------------
@@ -201,3 +203,67 @@ containsNodePred node pred adj = containsAdjacency pred node adj
 -- Adjacency exists?
 containsAdjacency :: Ord node => node -> node -> Adjacency node -> Bool
 containsAdjacency src dst adj = Set.member dst $ getNodeSuccsSet src adj
+
+-- QUICKCHECK
+-------------------------------------------------------------------------------
+
+addNodeList :: Ord node => [node] -> Adjacency node -> Adjacency node
+addNodeList nodes adj = foldl (\adj' node -> addNode node adj') adj nodes
+
+removeNodeList :: Ord node => [node] -> Adjacency node -> Adjacency node
+removeNodeList nodes adj = foldl (\adj' node -> removeNode node adj') adj nodes
+
+-- Adds the list of adjacencies.
+addArcList :: Ord node => [(node, node)] -> Adjacency node -> Adjacency node
+addArcList arcs adj = foldl (\adj' arc -> uncurry addAdjacency arc adj') adj arcs
+
+-- Removes the list of adjacencies.
+removeArcList :: Ord node => [(node, node)] -> Adjacency node -> Adjacency node
+removeArcList arcs adj = foldl (\adj' arc -> uncurry removeAdjacency arc adj') adj arcs
+
+-- Reconstruct succs using preds and viceversa.
+-- Used to demostrate that both structures have the same info but in defferent formats.
+reconstruct :: Ord node => Adjacency node -> Adjacency node
+reconstruct (Adjacency succs preds) = Adjacency succs' preds' where
+	succs' = Map.foldWithKey f Map.empty preds where
+		f succNode predsSet succs'' = Set.fold g (Map.insertWith (\new old -> old) succNode Set.empty succs'') predsSet where
+			g predNode succs''' = Map.insertWith (\new old -> Set.insert succNode old) predNode (Set.singleton succNode) succs'''
+	preds' = Map.foldWithKey f Map.empty succs where
+		f predNode succsSet preds'' = Set.fold g (Map.insertWith (\new old -> old) predNode Set.empty preds'') succsSet where
+			g succNode preds''' = Map.insertWith (\new old -> Set.insert predNode old) succNode (Set.singleton predNode) preds'''
+
+prop_addNode :: [Int] -> Bool
+prop_addNode nodes = nonRepeatInsertedNodesList == nodesFromCreatedAdjacency where
+	nonRepeatInsertedNodesList = Set.toAscList $ Set.fromList nodes
+	nodesFromCreatedAdjacency = List.sort $ getNodes $ addNodeList nodes empty
+
+prop_removeNode :: [Int] -> Bool
+prop_removeNode nodes = nodesFromCreatedAdjacency == [] where
+	nodesFromCreatedAdjacency = List.sort $ getNodes $ removeNodeList nodes $ addNodeList nodes empty
+
+prop_addAdjacency :: [(Int, Int)] -> Bool
+prop_addAdjacency arcs = nonRepeatInsertedAdjacenciesList == adjacenciesFromCreatedAdjacency where
+	nonRepeatInsertedAdjacenciesList = Set.toAscList $ Set.fromList arcs 
+	adjacenciesFromCreatedAdjacency = List.sort $ getAdjacencies $ addArcList arcs empty
+
+prop_removeAdjacency :: [(Int, Int)] -> Bool
+prop_removeAdjacency adjacencies = adjacenciesFromCreatedAdjacency == [] where
+	adjacenciesFromCreatedAdjacency = getAdjacencies $ removeArcList adjacencies $ addArcList adjacencies empty
+
+prop_structure :: [(Int, Int)] -> Bool
+prop_structure arcs = (addArcList arcs empty) == (reconstruct $ addArcList arcs empty)
+
+prop_removeNodeSuccs :: [(Int, Int)] -> Int -> Bool
+prop_removeNodeSuccs arcs node = (nodesSuccsFromCreatedAdjacency adj == []) && (not $ nodeIsInPreds adj) where
+	adj = removeNodeSuccAdjacencies node $ addArcList arcs empty
+	nodesSuccsFromCreatedAdjacency adj = List.sort $ getNodeSuccs node adj
+	nodeIsInPreds (Adjacency _ preds) = Map.fold (\predsSet ans -> ans || (Set.member node predsSet)) False preds
+
+prop_removeNodePreds :: [(Int, Int)] -> Int -> Bool
+prop_removeNodePreds arcs node = (nodesPredsFromCreatedAdjacency adj == []) && (not $ nodeIsInSuccs adj) where
+	adj = removeNodePredAdjacencies node $ addArcList arcs empty
+	nodesPredsFromCreatedAdjacency adj = List.sort $ getNodePreds node adj
+	nodeIsInSuccs (Adjacency succs _) = Map.fold (\succsSet ans -> ans || (Set.member node succsSet)) False succs
+
+--prop_addAdjacency arcs = (Set.fromList nodes) == (Set.fromList $ getNodes $ foldl (\adj node -> addNode node adj) empty nodes)
+--  where types = arcs :: [(Int, Int)]
