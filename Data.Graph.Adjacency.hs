@@ -17,10 +17,10 @@ module Data.Graph.Adjacency (
 	getNodePredNodes,
 	getNodeSuccNodesSet,
 	getNodePredNodesSet,
+	getNodeAdjacentNodes,
 	getNodeAdjacencies,
 	getNodeSuccAdjacencies,
 	getNodePredAdjacencies,
-	getNodeAdjacentNodes,
 	getAdjacencies,
 	getAdjacencyCount,
 	containsNode,
@@ -160,6 +160,11 @@ getNodePredNodesSet :: Ord node => node -> Adjacency node -> Set.Set node
 getNodePredNodesSet node (Adjacency _ preds) = 
 	Map.findWithDefault Set.empty node preds
 
+-- The different nodes that are adjacencent, either succs or preds.
+getNodeAdjacentNodes :: Ord node => node -> Adjacency node -> [node]
+getNodeAdjacentNodes node adj = 
+	Set.elems $ Set.union (getNodeSuccNodesSet node adj) (getNodePredNodesSet node adj)
+
 -- The different adjacencies were this node participates.
 getNodeAdjacencies :: Ord node => node -> Adjacency node -> [(node, node)]
 getNodeAdjacencies node adj = 
@@ -172,11 +177,6 @@ getNodeSuccAdjacencies node adj = [(node, x) | x <- getNodeSuccNodes node adj]
 -- The different adjacencies were this node is successor.
 getNodePredAdjacencies :: Ord node => node -> Adjacency node -> [(node, node)]
 getNodePredAdjacencies node adj = [(x, node) | x <- getNodePredNodes node adj]
-
--- The different nodes that are adjacencent, either succs or preds.
-getNodeAdjacentNodes :: Ord node => node -> Adjacency node -> [node]
-getNodeAdjacentNodes node adj = 
-	Set.elems $ Set.union (getNodeSuccNodesSet node adj) (getNodePredNodesSet node adj)
 
 -- All the different adjacencies that exist.
 getAdjacencies :: Ord node => Adjacency node -> [(node, node)]
