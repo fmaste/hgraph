@@ -69,7 +69,7 @@ generatesCycle tail head digraph = isParent [tail] where
 
 -- Gets a list of all the nodes with no predecessors.
 roots :: (Ord node, Ord edge) => Digraph node edge -> [node]
-roots (Digraph adj) = filter (\x -> (Adj.getNodePreds x adj) == []) (Adj.getNodes adj)
+roots (Digraph adj) = filter (\x -> (Adj.getNodePredNodes x adj) == []) (Adj.getNodes adj)
 
 -- Gets a list of all the nodes with no successors.
 leafs :: (Ord node, Ord edge) => Digraph node edge -> [node]
@@ -90,7 +90,7 @@ headArcs node digraph = map (\a -> (node, a)) (heads node digraph)
 
 -- Gets a list with the direct predecessors of a node.
 tails :: (Ord node, Ord edge) => node -> Digraph node edge -> [node]
-tails node (Digraph adj) = Adj.getNodePreds node adj
+tails node (Digraph adj) = Adj.getNodePredNodes node adj
 
 -- Generates a list of connection tuples (tail, head) with the direct predecessors of this node.
 tailArcs :: (Ord node, Ord edge) => node -> Digraph node edge -> [(node, node)]

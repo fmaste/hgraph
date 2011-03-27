@@ -14,7 +14,7 @@ module Data.Graph.Adjacency (
 	getNodes,
 	getNodeCount,
 	getNodeSuccNodes,
-	getNodePreds,
+	getNodePredNodes,
 	getNodeSuccsSet,
 	getNodePredsSet,
 	getNodeAdjacencies,
@@ -127,7 +127,7 @@ removeNodeSuccAdjacencies node adj@(Adjacency succs preds) = Adjacency succs' pr
 -- If there are no adjacencies were this node is successor the original Adjacency is returned.
 removeNodePredAdjacencies :: Ord node => node -> Adjacency node -> Adjacency node
 removeNodePredAdjacencies node adj@(Adjacency succs preds) = Adjacency succs' preds' where
-	succs' = foldl removePredFromSuccs succs (getNodePreds node adj) where
+	succs' = foldl removePredFromSuccs succs (getNodePredNodes node adj) where
 		removePredFromSuccs succsMap succNode = Map.adjust (Set.delete node) succNode succsMap
 	preds' = Map.adjust (const Set.empty) node preds
 
@@ -147,8 +147,8 @@ getNodeSuccNodes :: Ord node => node -> Adjacency node -> [node]
 getNodeSuccNodes node adj = Set.elems $ getNodeSuccsSet node adj
 
 -- Get all the different nodes that are predecessors.
-getNodePreds :: Ord node => node -> Adjacency node -> [node]
-getNodePreds node adj = Set.elems $ getNodePredsSet node adj
+getNodePredNodes :: Ord node => node -> Adjacency node -> [node]
+getNodePredNodes node adj = Set.elems $ getNodePredsSet node adj
 
 -- A set with the node successors.
 getNodeSuccsSet :: Ord node => node -> Adjacency node -> Set.Set node
@@ -171,7 +171,7 @@ getNodeSuccAdjacencies node adj = [(node, x) | x <- getNodeSuccNodes node adj]
 
 -- The different adjacencies were this node is successor.
 getNodePredAdjacencies :: Ord node => node -> Adjacency node -> [(node, node)]
-getNodePredAdjacencies node adj = [(x, node) | x <- getNodePreds node adj]
+getNodePredAdjacencies node adj = [(x, node) | x <- getNodePredNodes node adj]
 
 -- The different nodes that are adjacencent, either succs or preds.
 getNodeAdjacents :: Ord node => node -> Adjacency node -> [node]
@@ -262,7 +262,7 @@ prop_removeNodeSuccs arcs node = (nodesSuccsFromCreatedAdjacency adj == []) && (
 prop_removeNodePreds :: [(Int, Int)] -> Int -> Bool
 prop_removeNodePreds arcs node = (nodesPredsFromCreatedAdjacency adj == []) && (not $ nodeIsInSuccs adj) where
 	adj = removeNodePredAdjacencies node $ addArcList arcs empty
-	nodesPredsFromCreatedAdjacency adj = List.sort $ getNodePreds node adj
+	nodesPredsFromCreatedAdjacency adj = List.sort $ getNodePredNodes node adj
 	nodeIsInSuccs (Adjacency succs _) = Map.fold (\succsSet ans -> ans || (Set.member node succsSet)) False succs
 
 --prop_addAdjacency arcs = (Set.fromList nodes) == (Set.fromList $ getNodes $ foldl (\adj node -> addNode node adj) empty nodes)
