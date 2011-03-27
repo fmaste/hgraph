@@ -15,7 +15,7 @@ module Data.Graph.Adjacency (
 	getNodeCount,
 	getNodeSuccNodes,
 	getNodePredNodes,
-	getNodeSuccsSet,
+	getNodeSuccNodesSet,
 	getNodePredsSet,
 	getNodeAdjacencies,
 	getNodeSuccAdjacencies,
@@ -144,15 +144,15 @@ getNodeCount (Adjacency succs _) = Map.size succs
 
 -- Get all the different nodes that are successors.
 getNodeSuccNodes :: Ord node => node -> Adjacency node -> [node]
-getNodeSuccNodes node adj = Set.elems $ getNodeSuccsSet node adj
+getNodeSuccNodes node adj = Set.elems $ getNodeSuccNodesSet node adj
 
 -- Get all the different nodes that are predecessors.
 getNodePredNodes :: Ord node => node -> Adjacency node -> [node]
 getNodePredNodes node adj = Set.elems $ getNodePredsSet node adj
 
 -- A set with the node successors.
-getNodeSuccsSet :: Ord node => node -> Adjacency node -> Set.Set node
-getNodeSuccsSet node (Adjacency succs _) = 
+getNodeSuccNodesSet :: Ord node => node -> Adjacency node -> Set.Set node
+getNodeSuccNodesSet node (Adjacency succs _) = 
 	Map.findWithDefault Set.empty node succs
 
 -- A set with the node predecessors.
@@ -176,7 +176,7 @@ getNodePredAdjacencies node adj = [(x, node) | x <- getNodePredNodes node adj]
 -- The different nodes that are adjacencent, either succs or preds.
 getNodeAdjacents :: Ord node => node -> Adjacency node -> [node]
 getNodeAdjacents node adj = 
-	Set.elems $ Set.union (getNodeSuccsSet node adj) (getNodePredsSet node adj)
+	Set.elems $ Set.union (getNodeSuccNodesSet node adj) (getNodePredsSet node adj)
 
 -- All the different adjacencies that exist.
 getAdjacencies :: Ord node => Adjacency node -> [(node, node)]
@@ -202,7 +202,7 @@ containsNodePred node pred adj = containsAdjacency pred node adj
 
 -- Adjacency exists?
 containsAdjacency :: Ord node => node -> node -> Adjacency node -> Bool
-containsAdjacency src dst adj = Set.member dst $ getNodeSuccsSet src adj
+containsAdjacency src dst adj = Set.member dst $ getNodeSuccNodesSet src adj
 
 -- QUICKCHECK
 -------------------------------------------------------------------------------
