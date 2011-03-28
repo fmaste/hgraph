@@ -56,7 +56,7 @@ addArcLabel src dst edge (Arcs labelArcs arcLabels) = Arcs labelArcs' arcLabels'
 	arcLabels' = Map.insertWith' g (src, dst) (Map.singleton edge       1) arcLabels where
 		g new old = Map.adjust (+ 1) edge       old
 		-- g = flip $ Map.unionWith (+) -- InsertWith calls f (new, old), but union is more efficinet with (bigger, smaller)
-		
+
 addOrReplaceArcLabel :: (Ord node, Ord edge) => node -> node -> edge -> Arcs node edge -> Arcs node edge
 addOrReplaceArcLabel src dst edge (Arcs labelArcs arcLabels) = Arcs labelArcs' arcLabels' where
 	labelArcs' = Map.insertWith' f edge       (Map.singleton (src, dst) 1) labelArcs where
