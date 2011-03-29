@@ -240,7 +240,7 @@ reconstruct (Adjacency succs preds) = Adjacency succs' preds' where
 
 prop_addNode :: [Int] -> Bool
 prop_addNode nodes = nonRepeatInsertedNodesList == nodesFromCreatedAdjacency where
-	nonRepeatInsertedNodesList = Set.toAscList $ Set.fromList nodes
+	nonRepeatInsertedNodesList = List.sort $ List.nub nodes
 	nodesFromCreatedAdjacency = List.sort $ getNodes $ addNodeList nodes empty
 
 prop_removeNode :: [Int] -> Bool
@@ -249,7 +249,7 @@ prop_removeNode nodes = nodesFromCreatedAdjacency == [] where
 
 prop_addAdjacency :: [(Int, Int)] -> Bool
 prop_addAdjacency arcs = nonRepeatInsertedAdjacenciesList == adjacenciesFromCreatedAdjacency where
-	nonRepeatInsertedAdjacenciesList = Set.toAscList $ Set.fromList arcs 
+	nonRepeatInsertedAdjacenciesList = List.sort $ List.nub arcs
 	adjacenciesFromCreatedAdjacency = List.sort $ getAdjacencies $ addArcList arcs empty
 
 prop_removeAdjacency :: [(Int, Int)] -> Bool
