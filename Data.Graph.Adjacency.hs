@@ -257,7 +257,8 @@ prop_removeAdjacency adjacencies = adjacenciesFromCreatedAdjacency == [] where
 	adjacenciesFromCreatedAdjacency = getAdjacencies $ removeArcList adjacencies $ addArcList adjacencies empty
 
 prop_structure :: [(Int, Int)] -> Bool
-prop_structure arcs = (addArcList arcs empty) == (reconstruct $ addArcList arcs empty)
+prop_structure arcs = adj == (reconstruct $ reconstruct $ adj) where
+	adj = addArcList arcs empty
 
 prop_removeNodeSuccs :: [(Int, Int)] -> Int -> Bool
 prop_removeNodeSuccs arcs node = (nodesSuccsFromCreatedAdjacency adj == []) && (not $ nodeIsInPreds adj) where
