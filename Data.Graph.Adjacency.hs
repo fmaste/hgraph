@@ -219,6 +219,10 @@ addNodeList nodes adj = foldl (\adj' node -> addNode node adj') adj nodes
 removeNodeList :: Ord node => [node] -> Adjacency node -> Adjacency node
 removeNodeList nodes adj = foldl (\adj' node -> removeNode node adj') adj nodes
 
+-- Adds the nodes on the list of adjacencies.
+addNodesOnArcList :: Ord node => [(node, node)] -> Adjacency node -> Adjacency node
+addNodesOnArcList arcs adj = foldl (\adj' (src, dst) -> addNode src $ addNode dst adj') adj arcs
+
 -- Adds the list of adjacencies.
 addArcList :: Ord node => [(node, node)] -> Adjacency node -> Adjacency node
 addArcList arcs adj = foldl (\adj' arc -> uncurry addAdjacency arc adj') adj arcs
@@ -246,6 +250,15 @@ prop_addNode nodes = nonRepeatInsertedNodesList == nodesFromCreatedAdjacency whe
 prop_removeNode :: [Int] -> Bool
 prop_removeNode nodes = nodesFromCreatedAdjacency == [] where
 	nodesFromCreatedAdjacency = List.sort $ getNodes $ removeNodeList nodes $ addNodeList nodes empty
+
+prop_removeNodeFromEmpty :: [Int] -> Bool
+prop_removeNodeFromEmpty nodes = nodesFromEmptyAdjacency == [] where
+	nodesFromEmptyAdjacency = List.sort $ getNodes $ removeNodeList nodes empty
+
+prop_addNodesAndAdjacency :: [(Int, Int)] -> Bool
+prop_addNodesAndAdjacency arcs = nonRepeatInsertedAdjacenciesList == adjacenciesFromCreatedAdjacency where
+	nonRepeatInsertedAdjacenciesList = List.sort $ List.nub arcs
+	adjacenciesFromCreatedAdjacency = List.sort $ getAdjacencies $ addArcList arcs $ addNodesOnArcList arcs empty
 
 prop_addAdjacency :: [(Int, Int)] -> Bool
 prop_addAdjacency arcs = nonRepeatInsertedAdjacenciesList == adjacenciesFromCreatedAdjacency where
