@@ -297,6 +297,10 @@ prop_notContainsAdjacency :: [(Int, Int)] -> Bool
 prop_notContainsAdjacency arcs = not $ any id [ containsAdjacency src dst adj | (src, dst) <- arcs] where
 	adj = removeArcList arcs $ addArcList arcs empty
 
+prop_notContainsNodeSucc :: [(Int, Int)] -> Bool
+prop_notContainsNodeSucc arcs = not $ any id [ containsNodeSucc src dst adj | (src, dst) <- arcs] where
+	adj = removeArcList arcs $ addArcList arcs empty
+
 prop_notContainsNodePred :: [(Int, Int)] -> Bool
 prop_notContainsNodePred arcs = not $ any id [ containsNodePred dst src adj | (src, dst) <- arcs] where
 	adj = removeArcList arcs $ addArcList arcs empty
