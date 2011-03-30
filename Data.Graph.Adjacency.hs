@@ -1,4 +1,4 @@
--- | Author: Federico Mastellone (fmaste@gmail.com)
+-- Author: Federico Mastellone (fmaste@gmail.com)
 
 module Data.Graph.Adjacency (
 	Adjacency(),
@@ -30,7 +30,7 @@ module Data.Graph.Adjacency (
 	containsAdjacency,
 	revert) where
 
--- * IMPORTS
+-- IMPORTS
 -------------------------------------------------------------------------------
 
 import qualified Data.Map as Map
