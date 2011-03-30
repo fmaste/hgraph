@@ -28,7 +28,8 @@ module Data.Graph.Adjacency (
 	containsNodeSucc,
 	containsNodePred,
 	containsAdjacency,
-	revert) where
+	revert,
+	reconstruct) where
 
 -- IMPORTS
 -------------------------------------------------------------------------------
@@ -220,6 +221,20 @@ containsAdjacency src dst adj = Set.member dst $ getNodeSuccNodesSet src adj
 revert :: Ord node => Adjacency node -> Adjacency node
 revert (Adjacency succs preds) = Adjacency preds succs where
 
+-- * DEBUGGING
+-------------------------------------------------------------------------------
+
+-- Reconstruct succs using preds and viceversa.
+-- Used to demostrate that both structures have the same info but in defferent formats.
+reconstruct :: Ord node => Adjacency node -> Adjacency node
+reconstruct (Adjacency succs preds) = Adjacency succs' preds' where
+	succs' = Map.foldWithKey f Map.empty preds where
+		f succNode predsSet succs'' = Set.fold g (Map.insertWith (\new old -> old) succNode Set.empty succs'') predsSet where
+			g predNode succs''' = Map.insertWith (\new old -> Set.insert succNode old) predNode (Set.singleton succNode) succs'''
+	preds' = Map.foldWithKey f Map.empty succs where
+		f predNode succsSet preds'' = Set.fold g (Map.insertWith (\new old -> old) predNode Set.empty preds'') succsSet where
+			g succNode preds''' = Map.insertWith (\new old -> Set.insert predNode old) succNode (Set.singleton predNode) preds'''
+
 -- * QUICKCHECK
 -------------------------------------------------------------------------------
 
@@ -244,17 +259,6 @@ removeArcList arcs adj = foldl (\adj' arc -> uncurry removeAdjacency arc adj') a
 -- Removes the list of adjacencies.
 removeFullArcList :: Ord node => [(node, node)] -> Adjacency node -> Adjacency node
 removeFullArcList arcs adj = foldl (\adj' arc -> uncurry removeFullAdjacency arc adj') adj arcs
-
--- Reconstruct succs using preds and viceversa.
--- Used to demostrate that both structures have the same info but in defferent formats.
-reconstruct :: Ord node => Adjacency node -> Adjacency node
-reconstruct (Adjacency succs preds) = Adjacency succs' preds' where
-	succs' = Map.foldWithKey f Map.empty preds where
-		f succNode predsSet succs'' = Set.fold g (Map.insertWith (\new old -> old) succNode Set.empty succs'') predsSet where
-			g predNode succs''' = Map.insertWith (\new old -> Set.insert succNode old) predNode (Set.singleton succNode) succs'''
-	preds' = Map.foldWithKey f Map.empty succs where
-		f predNode succsSet preds'' = Set.fold g (Map.insertWith (\new old -> old) predNode Set.empty preds'') succsSet where
-			g succNode preds''' = Map.insertWith (\new old -> Set.insert predNode old) succNode (Set.singleton predNode) preds'''
 
 prop_addNode :: [Int] -> Bool
 prop_addNode nodes = nonRepeatInsertedNodesList == nodesFromCreatedAdjacency where
