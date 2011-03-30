@@ -285,6 +285,10 @@ prop_removeAdjacency :: [(Int, Int)] -> Bool
 prop_removeAdjacency adjacencies = adjacenciesFromCreatedAdjacency == [] where
 	adjacenciesFromCreatedAdjacency = getAdjacencies $ removeArcList adjacencies $ addArcList adjacencies empty
 
+prop_notContainsAdjacency :: [(Int, Int)] -> Bool
+prop_notContainsAdjacency arcs = not $ any id [ containsAdjacency src dst adj | (src, dst) <- arcs] where
+	adj = removeArcList arcs $ addArcList arcs empty
+
 prop_removeFullAdjacency :: [(Int, Int)] -> Bool
 prop_removeFullAdjacency adjacencies = adjacenciesFromCreatedAdjacency == [] where
 	adjacenciesFromCreatedAdjacency = getAdjacencies $ removeFullArcList (revertAdjs adjacencies) $ addArcList adjacencies empty where
