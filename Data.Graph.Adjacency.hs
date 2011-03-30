@@ -277,6 +277,10 @@ prop_addAdjacency arcs = nonRepeatInsertedAdjacenciesList == adjacenciesFromCrea
 	nonRepeatInsertedAdjacenciesList = List.sort $ List.nub arcs
 	adjacenciesFromCreatedAdjacency = List.sort $ getAdjacencies $ addArcList arcs empty
 
+prop_containsAdjacency :: [(Int, Int)] -> Bool
+prop_containsAdjacency arcs = all id [ containsAdjacency src dst adj | (src, dst) <- arcs] where
+	adj = addArcList arcs empty
+
 prop_removeAdjacency :: [(Int, Int)] -> Bool
 prop_removeAdjacency adjacencies = adjacenciesFromCreatedAdjacency == [] where
 	adjacenciesFromCreatedAdjacency = getAdjacencies $ removeArcList adjacencies $ addArcList adjacencies empty
