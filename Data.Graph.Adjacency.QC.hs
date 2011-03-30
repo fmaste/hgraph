@@ -147,12 +147,14 @@ prop_notContainsFullAdjacency :: [(Int, Int)] -> Bool
 prop_notContainsFullAdjacency arcs = not $ any id [ (Adj.containsAdjacency src dst adj) && (Adj.containsAdjacency dst src adj) | (src, dst) <- arcs] where
 	adj = removeFullArcList arcs $ addArcList arcs Adj.empty
 
+-- | Remove all the node's succ adjacencies and check if they were removed with getAdjacencies.
 prop_removeNodeSuccs :: [(Int, Int)] -> Int -> Bool
 prop_removeNodeSuccs arcs node = (nodesSuccsFromCreatedAdjacency adj == []) && (not $ nodeIsInPreds adj) where
 	adj = Adj.removeNodeSuccAdjacencies node $ addArcList arcs Adj.empty
 	nodesSuccsFromCreatedAdjacency adj = List.sort $ Adj.getNodeSuccNodes node adj
 	nodeIsInPreds adj = foldl (\ans (src, dst) -> ans || (src == node)) False (Adj.getAdjacencies adj)
 
+-- | Remove all the node's pred adjacencies and check if they were removed with getAdjacencies.
 prop_removeNodePreds :: [(Int, Int)] -> Int -> Bool
 prop_removeNodePreds arcs node = (nodesPredsFromCreatedAdjacency adj == []) && (not $ nodeIsInSuccs adj) where
 	adj = Adj.removeNodePredAdjacencies node $ addArcList arcs Adj.empty
