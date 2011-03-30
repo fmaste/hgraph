@@ -48,6 +48,8 @@ type ArcLabels node edge = Map.Map (node, node) (Map.Map edge Int)
 empty :: (Ord node, Ord edge) => Arcs node edge
 empty = Arcs Map.empty Map.empty
 
+-- Adds a label to the arc that goes from src to dst.
+-- If one or more labels already existed for this arc and edge it is appended.
 addArcLabel :: (Ord node, Ord edge) => node -> node -> edge -> Arcs node edge -> Arcs node edge
 addArcLabel src dst edge (Arcs labelArcs arcLabels) = Arcs labelArcs' arcLabels' where
 	labelArcs' = Map.insertWith' f edge       (Map.singleton (src, dst) 1) labelArcs where
@@ -57,6 +59,8 @@ addArcLabel src dst edge (Arcs labelArcs arcLabels) = Arcs labelArcs' arcLabels'
 		g new old = Map.adjust (+ 1) edge       old
 		-- g = flip $ Map.unionWith (+) -- InsertWith calls f (new, old), but union is more efficinet with (bigger, smaller)
 
+-- Adds a label to the arc that goes from src to dst.
+-- If one or more labels already existed for this arc and edge they are replaced.
 addOrReplaceArcLabel :: (Ord node, Ord edge) => node -> node -> edge -> Arcs node edge -> Arcs node edge
 addOrReplaceArcLabel src dst edge (Arcs labelArcs arcLabels) = Arcs labelArcs' arcLabels' where
 	labelArcs' = Map.insertWith' f edge       (Map.singleton (src, dst) 1) labelArcs where
@@ -64,6 +68,8 @@ addOrReplaceArcLabel src dst edge (Arcs labelArcs arcLabels) = Arcs labelArcs' a
 	arcLabels' = Map.insertWith' g (src, dst) (Map.singleton edge       1) arcLabels where
 		g new old = old -- Same as flip $ const
 
+-- Removes a label from the arc that goes from src to dst.
+-- If one or more labels already existed for this arc and edge only one is removed.
 removeArcLabel :: (Ord node, Ord edge) => node -> node -> edge -> Arcs node edge -> Arcs node edge
 removeArcLabel src dst edge (Arcs labelArcs arcLabels) = Arcs labelArcs' arcLabels' where
 	labelArcs' = Map.update f edge 		labelArcs where
@@ -81,6 +87,8 @@ removeArcLabel src dst edge (Arcs labelArcs arcLabels) = Arcs labelArcs' arcLabe
 					| labelsCount <= 1 = Nothing
 					| otherwise = Just $ labelsCount - 1
 
+-- Removes all the labels from the arc that goes from src to dst that contain edge.
+-- If one or more labels already existed for this arc and edge they are all removed.
 removeArcLabelsAll :: (Ord node, Ord edge) => node -> node -> edge -> Arcs node edge -> Arcs node edge
 removeArcLabelsAll src dst edge (Arcs labelArcs arcLabels) = Arcs labelArcs' arcLabels' where
 	labelArcs' = Map.update f edge 		labelArcs where
