@@ -251,6 +251,10 @@ prop_addNode nodes = nonRepeatInsertedNodesList == nodesFromCreatedAdjacency whe
 	nonRepeatInsertedNodesList = List.sort $ List.nub nodes
 	nodesFromCreatedAdjacency = List.sort $ getNodes $ addNodeList nodes empty
 
+prop_containsNode :: [Int] -> Bool
+prop_containsNode nodes = all id [ containsNode x adj | x <- nodes] where
+	adj = addNodeList nodes empty
+
 prop_removeNode :: [Int] -> Bool
 prop_removeNode nodes = nodesFromCreatedAdjacency == [] where
 	nodesFromCreatedAdjacency = List.sort $ getNodes $ removeNodeList nodes $ addNodeList nodes empty
