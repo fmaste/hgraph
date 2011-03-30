@@ -231,6 +231,10 @@ addArcList arcs adj = foldl (\adj' arc -> uncurry addAdjacency arc adj') adj arc
 removeArcList :: Ord node => [(node, node)] -> Adjacency node -> Adjacency node
 removeArcList arcs adj = foldl (\adj' arc -> uncurry removeAdjacency arc adj') adj arcs
 
+-- Removes the list of adjacencies.
+removeFullArcList :: Ord node => [(node, node)] -> Adjacency node -> Adjacency node
+removeFullArcList arcs adj = foldl (\adj' arc -> uncurry removeFullAdjacency arc adj') adj arcs
+
 -- Reconstruct succs using preds and viceversa.
 -- Used to demostrate that both structures have the same info but in defferent formats.
 reconstruct :: Ord node => Adjacency node -> Adjacency node
@@ -268,6 +272,11 @@ prop_addAdjacency arcs = nonRepeatInsertedAdjacenciesList == adjacenciesFromCrea
 prop_removeAdjacency :: [(Int, Int)] -> Bool
 prop_removeAdjacency adjacencies = adjacenciesFromCreatedAdjacency == [] where
 	adjacenciesFromCreatedAdjacency = getAdjacencies $ removeArcList adjacencies $ addArcList adjacencies empty
+
+prop_removeFullAdjacency :: [(Int, Int)] -> Bool
+prop_removeFullAdjacency adjacencies = adjacenciesFromCreatedAdjacency == [] where
+	adjacenciesFromCreatedAdjacency = getAdjacencies $ removeFullArcList (revertAdjs adjacencies) $ addArcList adjacencies empty where
+		revertAdjs adjs = foldl (\ans (src, dst) -> ans ++ [(dst, src)]) [] adjs
 
 prop_structure :: [(Int, Int)] -> Bool
 prop_structure arcs = adj == (reconstruct $ reconstruct $ adj) where
