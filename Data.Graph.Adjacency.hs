@@ -27,7 +27,8 @@ module Data.Graph.Adjacency (
 	containsNode,
 	containsNodeSucc,
 	containsNodePred,
-	containsAdjacency) where
+	containsAdjacency,
+	revert) where
 
 -- IMPORTS
 -------------------------------------------------------------------------------
@@ -209,6 +210,13 @@ containsNodePred node pred adj = containsAdjacency pred node adj
 -- Adjacency exists?
 containsAdjacency :: Ord node => node -> node -> Adjacency node -> Bool
 containsAdjacency src dst adj = Set.member dst $ getNodeSuccNodesSet src adj
+
+-- CONVERSION
+-------------------------------------------------------------------------------
+
+-- All connections are reverted, every src -> dst becomes src <- dst.
+revert :: Ord node => Adjacency node -> Adjacency node
+revert (Adjacency succs preds) = Adjacency preds succs where
 
 -- QUICKCHECK
 -------------------------------------------------------------------------------
