@@ -281,6 +281,10 @@ prop_containsAdjacency :: [(Int, Int)] -> Bool
 prop_containsAdjacency arcs = all id [ containsAdjacency src dst adj | (src, dst) <- arcs] where
 	adj = addArcList arcs empty
 
+prop_containsNodeSucc :: [(Int, Int)] -> Bool
+prop_containsNodeSucc arcs = all id [ containsNodeSucc src dst adj | (src, dst) <- arcs] where
+	adj = addArcList arcs empty
+
 prop_removeAdjacency :: [(Int, Int)] -> Bool
 prop_removeAdjacency adjacencies = adjacenciesFromCreatedAdjacency == [] where
 	adjacenciesFromCreatedAdjacency = getAdjacencies $ removeArcList adjacencies $ addArcList adjacencies empty
