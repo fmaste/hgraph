@@ -81,7 +81,7 @@ removeArcLabel src dst edge (Arcs labelArcs arcLabels) = Arcs labelArcs' arcLabe
 					| otherwise = Just $ arcsCount - 1
 	arcLabels' = Map.update g (src, dst)    arcLabels where
 		g labelsMap
-			| Map.size labelsMap == 1 && Map.member edge labelsMap && labelsMap Map.! edge <= 1 = Nothing
+			| Map.size labelsMap == 1 && Map.member edge     labelsMap && labelsMap Map.! edge   <= 1 = Nothing
 			| otherwise = Just $ Map.update g' edge labelsMap where
 				g' labelsCount
 					| labelsCount <= 1 = Nothing
