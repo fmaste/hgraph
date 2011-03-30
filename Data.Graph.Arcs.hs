@@ -100,6 +100,20 @@ removeArcLabelsAll src dst edge (Arcs labelArcs arcLabels) = Arcs labelArcs' arc
 			| Map.size labelsMap == 1 && Map.member edge labelsMap = Nothing
 			| otherwise = Just $ Map.delete edge labelsMap where
 
+{--
+removeArc :: (Ord node, Ord edge) => node -> node -> Arcs node edge -> Arcs node edge
+removeArc src dst (Arcs labelArcs arcLabels) = Arcs labelArcs' arcLabels' where
+	labelArcs' = Map.foldWithKey f labelArcs arcLabels where
+		f edge arcMap labelArcs'' = foldl (removeArcLabelsAll src dst edge) labelArcs'' (Map.keys arcMap)		
+	arcLabels' = Map.delete (src, dst) arcLabels
+
+removeLabel :: (Ord node, Ord edge) => edge -> Arcs node edge -> Arcs node edge
+removeLabel edge (Arcs labelArcs arcLabels) = Arcs labelArcs' arcLabels' where
+	labelArcs' = Map.delete edge labelArcs
+	arcLabels' = Map.foldWithKey f arcLabels labelArcs where
+		f (src, dst) edgeMap arcLabels'' = foldl (removeArcLabelsAll src dst edge) arcLabels'' (Map.keys edgeMap)
+--}
+
 -- QUERY
 -------------------------------------------------------------------------------
 
