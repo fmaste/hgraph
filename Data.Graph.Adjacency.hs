@@ -295,7 +295,7 @@ prop_removeFullAdjacency adjacencies = adjacenciesFromCreatedAdjacency == [] whe
 		revertAdjs adjs = foldl (\ans (src, dst) -> ans ++ [(dst, src)]) [] adjs
 
 prop_notContainsFullAdjacency :: [(Int, Int)] -> Bool
-prop_notContainsFullAdjacency arcs = not $ any id [ containsAdjacency dst src adj | (src, dst) <- arcs] where
+prop_notContainsFullAdjacency arcs = not $ any id [ (containsAdjacency src dst adj) && (containsAdjacency dst src adj) | (src, dst) <- arcs] where
 	adj = removeFullArcList arcs $ addArcList arcs empty
 
 prop_structure :: [(Int, Int)] -> Bool
