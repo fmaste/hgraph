@@ -1,6 +1,6 @@
 -- Author: Federico Mastellone (fmaste@gmail.com)
 
-module Data.Graph.Adjacency.Test () where
+module Main where
 
 import qualified Test.QuickCheck as QC
 import Data.Graph.Adjacency.QC as AdjQC
