@@ -259,6 +259,10 @@ prop_removeNode :: [Int] -> Bool
 prop_removeNode nodes = nodesFromCreatedAdjacency == [] where
 	nodesFromCreatedAdjacency = List.sort $ getNodes $ removeNodeList nodes $ addNodeList nodes empty
 
+prop_notContainsNode :: [Int] -> Bool
+prop_notContainsNode nodes = not $ any id [ containsNode x adj | x <- nodes] where
+	adj = removeNodeList nodes $ addNodeList nodes empty
+
 prop_removeNodeFromEmpty :: [Int] -> Bool
 prop_removeNodeFromEmpty nodes = nodesFromEmptyAdjacency == [] where
 	nodesFromEmptyAdjacency = List.sort $ getNodes $ removeNodeList nodes empty
