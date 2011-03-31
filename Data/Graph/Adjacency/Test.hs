@@ -3,7 +3,7 @@
 module Main where
 
 import qualified Test.QuickCheck as QC
-import Data.Graph.Adjacency.QC as AdjQC
+import Data.Graph.Adjacency.Quickcheck as AdjQC
 import Text.Printf
 
 main  = mapM_ (\(s,a) -> printf "%-30s: " s >> a) tests

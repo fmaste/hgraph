@@ -1,6 +1,6 @@
 -- Author: Federico Mastellone (fmaste@gmail.com)
 
-module Data.Graph.Adjacency.QC (
+module Data.Graph.Adjacency.Quickcheck (
 	prop_structure,
 	prop_addNode,
 	prop_containsNode,
