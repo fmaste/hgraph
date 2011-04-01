@@ -32,7 +32,7 @@ import qualified Data.Map as Map
 
 -- Graphs whose edges or vertices have names or labels are known as labeled, 
 -- those without as unlabeled. 
--- Labels can be for the nodes of the arcs. Graphs with labeled vertices only 
+-- Labels can be for the nodes or the arcs. Graphs with labeled vertices only 
 -- are vertex-labeled, those with labeled edges only are edge-labeled.
 -- Nodes are already indentifiable, but labels can be used for what you want.
 -- The difference between a edge-labeled and an edge-unlabeled graph is that 
