@@ -30,8 +30,18 @@ import qualified Data.Map as Map
 -- DATA DEFINITION
 -------------------------------------------------------------------------------
 
--- The labels (sometimes weight) of a graph is the data associated with an arc (the connection between two edges).
--- We defined Labels with two structures, one with the label -> arc relationships and the other with the arc -> label.
+-- Graphs whose edges or vertices have names or labels are known as labeled, 
+-- those without as unlabeled. 
+-- Labels can be for the nodes of the arcs. Graphs with labeled vertices only 
+-- are vertex-labeled, those with labeled edges only are edge-labeled.
+-- Nodes are already indentifiable, but labels can be used for what you want.
+-- The difference between a edge-labeled and an edge-unlabeled graph is that 
+-- the latter has no specific set of edges; it is regarded as another way to 
+-- look upon an isomorphism type of graphs. (Thus, this usage distinguishes 
+-- between graphs with identifiable edge sets on the one hand, and isomorphism 
+-- types or classes of graphs on the other.)
+-- We defined Labels with two structures, one with the label -> elem 
+-- relationships and the other with the elem -> label.
 data Labels node edge = Labels (LabelArcs node edge) (ArcLabels node edge)
     deriving (Show, Read, Ord, Eq)
 
