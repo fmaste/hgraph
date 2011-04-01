@@ -40,13 +40,13 @@ import qualified Data.Map as Map
 -- look upon an isomorphism type of graphs. (Thus, this usage distinguishes 
 -- between graphs with identifiable edge sets on the one hand, and isomorphism 
 -- types or classes of graphs on the other.)
--- We defined Labels with two structures, one with the label -> elem 
--- relationships and the other with the elem -> label.
-data Labels node edge = Labels (LabelArcs node edge) (ArcLabels node edge)
+-- We defined Labels with two structures, one with the label -> element 
+-- relationships and the other with the element -> label.
+data Labels node edge = Labels (LabelElements node edge) (ArcLabels node edge)
     deriving (Show, Read, Ord, Eq)
 
 -- A label may appear on any arc and can be repeated.
-type LabelArcs node edge = Map.Map edge (Map.Map (node, node) Int)
+type LabelElements node edge = Map.Map edge (Map.Map (node, node) Int)
 
 -- An arc can be repeated with equal or different labels.
 type ArcLabels node edge = Map.Map (node, node) (Map.Map edge Int)
