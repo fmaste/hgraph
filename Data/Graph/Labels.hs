@@ -42,14 +42,14 @@ import qualified Data.Map as Map
 -- types or classes of graphs on the other.)
 -- We defined Labels with two structures, one with the label -> element 
 -- relationships and the other with the element -> label.
-data Labels node edge = Labels (LabelElements node edge) (ArcLabels node edge)
+data Labels node edge = Labels (LabelElements node edge) (ElementLabels node edge)
     deriving (Show, Read, Ord, Eq)
 
 -- A label may appear on any arc and can be repeated.
 type LabelElements node edge = Map.Map edge (Map.Map (node, node) Int)
 
 -- An arc can be repeated with equal or different labels.
-type ArcLabels node edge = Map.Map (node, node) (Map.Map edge Int)
+type ElementLabels node edge = Map.Map (node, node) (Map.Map edge Int)
 
 -- CONSTRUCTION
 -------------------------------------------------------------------------------
