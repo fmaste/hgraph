@@ -65,12 +65,16 @@ addElement :: (Ord element, Ord label) => element -> Labels element label -> Lab
 addElement element (Labels labelElements elementLabels) = Labels labelElements elementLabels' where
 	elementLabels' = Map.insert element Set.empty elementLabels
 
+-- Removes a label and all its elements relationships.
+-- If this label does not exists the original Labels is returned.
 removeLabel :: (Ord element, Ord label) => label -> Labels element label -> Labels element label
 removeLabel label adj@(Labels labelElements elementLabels) = Labels labelElements' elementLabels' where
 	labelElements' = Map.delete label labelElements
 	elementLabels' = foldl f elementLabels $ getLabelElements label adj where
 		f elementLabels'' element = Map.adjust (Set.delete label) element elementLabels''
 
+-- Removes an element and all its labels relationships.
+-- If this element does not exists the original Labels is returned.
 removeElement :: (Ord element, Ord label) => element -> Labels element label -> Labels element label
 removeElement element adj@(Labels labelElements elementLabels) = Labels labelElements' elementLabels' where
 	labelElements' = foldl f labelElements $ getElementLabels element adj where
