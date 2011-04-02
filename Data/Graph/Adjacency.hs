@@ -1,5 +1,9 @@
 -- Author: Federico Mastellone (fmaste@gmail.com)
 
+-- Module that describes a node and its inmediate relationships with other nodes.
+-- There are two types of inmediate relationsips that a node can have:
+-- Being a successor or a predecessor to another node.
+-- Higher grade relationships are not handled by this module.
 module Data.Graph.Adjacency (
 	Adjacency(),
 	empty,
