@@ -101,14 +101,6 @@ removeElementLabel element label (Labels labelElements elementLabels) =
 			g aSet = Set.delete v aSet
 	in Labels labelElements' elementLabels'
 
-{--
-removeArc :: (Ord element, Ord label) => element -> element -> Labels element label -> Labels element label
-removeArc src dst (Labels labelElements elementLabels) = Labels labelElements' elementLabels' where
-	labelElements' = Map.foldWithKey f labelElements elementLabels where
-		f label arcMap labelElements'' = foldl (removeElementLabelsAll src dst label) labelElements'' (Map.keys arcMap)		
-	elementLabels' = Map.delete (src, dst) elementLabels
---}
-
 -- QUERY
 -------------------------------------------------------------------------------
 
