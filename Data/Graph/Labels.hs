@@ -58,14 +58,16 @@ empty :: (Ord element, Ord label) => Labels element label
 empty = Labels Map.empty Map.empty
 
 -- Adds a label without any elements relationships.
+-- If this label already exists the original Labels is returned.
 addLabel :: (Ord element, Ord label) => label -> Labels element label -> Labels element label
 addLabel label (Labels labelElements elementLabels) = Labels labelElements' elementLabels where
-	labelElements' = Map.insert label Set.empty labelElements
+	labelElements' = Map.insertWith (\new old -> old) label Set.empty labelElements
 
 -- Adds an element without any labels relationships.
+-- If this element already exists the original Labels is returned.
 addElement :: (Ord element, Ord label) => element -> Labels element label -> Labels element label
 addElement element (Labels labelElements elementLabels) = Labels labelElements elementLabels' where
-	elementLabels' = Map.insert element Set.empty elementLabels
+	elementLabels' = Map.insertWith (\new old -> old) element Set.empty elementLabels
 
 -- Removes a label and all its elements relationships.
 -- If this label does not exists the original Labels is returned.
