@@ -4,7 +4,7 @@ module Data.Graph.Labels (
 	Labels(),
 	empty,
 	addLabel,
-	-- TODO: removeLabel,
+	removeLabel,
 	addElement,
 	-- TODO: removeElement,
 	addElementLabel,
@@ -59,6 +59,12 @@ addLabel :: (Ord element, Ord label) => label -> Labels element label -> Labels 
 addLabel label (Labels labelElements elementLabels) = Labels labelElements' elementLabels where
 	labelElements' = Map.insert label Set.empty labelElements
 
+removeLabel :: (Ord element, Ord label) => label -> Labels element label -> Labels element label
+removeLabel label adj@(Labels labelElements elementLabels) = Labels labelElements' elementLabels' where
+	labelElements' = Map.delete label labelElements
+	elementLabels' = foldl f elementLabels $ getLabelElements label adj where
+		f elementLabels'' element = Map.adjust (Set.delete label) element elementLabels''
+
 addElement :: (Ord element, Ord label) => element -> Labels element label -> Labels element label
 addElement element (Labels labelElements elementLabels) = Labels labelElements elementLabels' where
 	elementLabels' = Map.insert element Set.empty elementLabels
@@ -91,12 +97,6 @@ removeArc src dst (Labels labelElements elementLabels) = Labels labelElements' e
 	labelElements' = Map.foldWithKey f labelElements elementLabels where
 		f label arcMap labelElements'' = foldl (removeElementLabelsAll src dst label) labelElements'' (Map.keys arcMap)		
 	elementLabels' = Map.delete (src, dst) elementLabels
-
-removeLabel :: (Ord element, Ord label) => label -> Labels element label -> Labels element label
-removeLabel label (Labels labelElements elementLabels) = Labels labelElements' elementLabels' where
-	labelElements' = Map.delete label labelElements
-	elementLabels' = Map.foldWithKey f elementLabels labelElements where
-		f (src, dst) edgeMap elementLabels'' = foldl (removeElementLabelsAll src dst label) elementLabels'' (Map.keys edgeMap)
 --}
 
 -- QUERY
