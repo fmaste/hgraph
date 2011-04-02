@@ -104,11 +104,11 @@ removeLabelsAll element label (Labels labelElements elementLabels) = Labels labe
 	labelElements' = Map.update f label   labelElements where
 		f arcsMap
 			| Map.size arcsMap == 1 && Map.member element arcsMap = Nothing
-			| otherwise = Just $ Map.delete element arcsMap where
+			| otherwise = Just $ Map.delete element arcsMap
 	elementLabels' = Map.update g element elementLabels where
 		g labelsMap
 			| Map.size labelsMap == 1 && Map.member label labelsMap = Nothing
-			| otherwise = Just $ Map.delete label labelsMap where
+			| otherwise = Just $ Map.delete label labelsMap
 
 {--
 removeArc :: (Ord element, Ord label) => element -> element -> Labels element label -> Labels element label
