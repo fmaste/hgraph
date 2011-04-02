@@ -14,7 +14,9 @@ module Data.Graph.Labels (
 	getLabelsCount,
 	getElementsCount,
 	getLabelElements,
-	getElementLabels) where
+	getElementLabels,
+	getLabelElementsCount,
+	getElementLabelsCount) where
 
 -- IMPORTS
 -------------------------------------------------------------------------------
@@ -124,9 +126,10 @@ getElementLabels :: (Ord element, Ord label) => element -> Labels element label 
 getElementLabels element (Labels _ elementLabels) = 
 	Set.elems $ Map.findWithDefault Set.empty element elementLabels
 
-{-- TODO
-getArcLabelCount :: (Ord element, Ord label) => element -> element -> label -> Labels element label -> [(element, element)]
-getArcLabelCount src dst label (Labels labelElements _) = 
-	Map.findWithDefault $ Map.findWithDefault Map.empty label labelElements where
-		f arc count ans = ans ++ (replicate count arc)
--}
+getLabelElementsCount :: (Ord element, Ord label) => label -> Labels element label -> Int
+getLabelElementsCount label (Labels labelElements _) = 
+	Set.size $ Map.findWithDefault Set.empty label labelElements
+
+getElementLabelsCount :: (Ord element, Ord label) => element -> Labels element label -> Int
+getElementLabelsCount element (Labels _ elementLabels) = 
+	Set.size $ Map.findWithDefault Set.empty element elementLabels
