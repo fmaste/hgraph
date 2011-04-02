@@ -161,7 +161,7 @@ getUniqueElementsCount (Labels _ elementLabels) = Map.size elementLabels
 getLabelElements :: (Ord element, Ord label) => label -> Labels element label -> [element]
 getLabelElements label (Labels labelElements _) = 
 	Map.foldWithKey f [] $ Map.findWithDefault Map.empty label labelElements where
-		f arc count ans = ans ++ (replicate count arc)
+		f element count ans = ans ++ (replicate count element)
 
 getLabelUniqueElements :: (Ord element, Ord label) => label -> Labels element label -> [element]
 getLabelUniqueElements label (Labels labelElements _) = 
