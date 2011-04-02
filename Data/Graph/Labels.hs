@@ -130,8 +130,8 @@ removeLabel label (Labels labelElements elementLabels) = Labels labelElements' e
 
 getLabels :: (Ord element, Ord label) => Labels element label -> [label]
 getLabels (Labels labelElements _) = Map.foldWithKey f [] labelElements where
-	f label arcMap ans = ans ++ replicateLabels where
-		replicateLabels = Map.fold (\count labels -> labels ++ (replicate count label)) [] arcMap
+	f label elementsMap ans = ans ++ replicateLabels where
+		replicateLabels = Map.fold (\count labels -> labels ++ (replicate count label)) [] elementsMap
 
 getUniqueLabels :: (Ord element, Ord label) => Labels element label -> [label]
 getUniqueLabels (Labels labelElements _) = Map.keys labelElements
