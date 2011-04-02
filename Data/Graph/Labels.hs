@@ -73,11 +73,13 @@ addLabel element label (Labels labelElements elementLabels) =
 -- Adds a label to the element.
 -- If one or more labels already existed for this element they are replaced.
 addOrReplaceLabel :: (Ord element, Ord label) => element -> label -> Labels element label -> Labels element label
-addOrReplaceLabel element label (Labels labelElements elementLabels) = Labels labelElements' elementLabels' where
-	labelElements' = Map.insertWith' f label   (Map.singleton element 1) labelElements where
-		f new old = old -- Same as flip $ const
-	elementLabels' = Map.insertWith' g element (Map.singleton label   1) elementLabels where
-		g new old = old -- Same as flip $ const
+addOrReplaceLabel element label (Labels labelElements elementLabels) = 
+	let 
+		labelElements' = f labelElements label element
+		elementLabels' = f elementLabels element label
+		f aMap k v = Map.insertWith' g k (Map.singleton v 1) aMap where
+			g new old = old -- Same as flip $ const
+	in Labels labelElements' elementLabels'
 
 -- Removes a label from the element.
 -- If one or more labels already existed for this element only one is removed.
