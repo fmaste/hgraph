@@ -4,7 +4,7 @@ module Data.Graph.Labels (
 	Labels(),
 	empty,
 	addLabel,
-	addOrReplaceArcLabel,
+	addOrReplaceLabel,
 	-- TODO: removeLabel,
 	-- TODO: removeArc,
 	removeArcLabel,
@@ -71,8 +71,8 @@ addLabel element label (Labels labelElements elementLabels) = Labels labelElemen
 
 -- Adds a label to the element.
 -- If one or more labels already existed for this element they are replaced.
-addOrReplaceArcLabel :: (Ord element, Ord label) => element -> label -> Labels element label -> Labels element label
-addOrReplaceArcLabel element label (Labels labelElements elementLabels) = Labels labelElements' elementLabels' where
+addOrReplaceLabel :: (Ord element, Ord label) => element -> label -> Labels element label -> Labels element label
+addOrReplaceLabel element label (Labels labelElements elementLabels) = Labels labelElements' elementLabels' where
 	labelElements' = Map.insertWith' f label   (Map.singleton element 1) labelElements where
 		f new old = old -- Same as flip $ const
 	elementLabels' = Map.insertWith' g element (Map.singleton label   1) elementLabels where
