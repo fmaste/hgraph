@@ -7,7 +7,7 @@ module Data.Graph.Labels (
 	addOrReplaceLabel,
 	-- TODO: removeLabel,
 	-- TODO: removeArc,
-	removeArcLabel,
+	removeLabel,
 	removeArcLabelsAll,
 	getLabels,
 	getUniqueLabels,
@@ -80,8 +80,8 @@ addOrReplaceLabel element label (Labels labelElements elementLabels) = Labels la
 
 -- Removes a label from the element.
 -- If one or more labels already existed for this element only one is removed.
-removeArcLabel :: (Ord element, Ord label) => element -> label -> Labels element label -> Labels element label
-removeArcLabel element label (Labels labelElements elementLabels) = Labels labelElements' elementLabels' where
+removeLabel :: (Ord element, Ord label) => element -> label -> Labels element label -> Labels element label
+removeLabel element label (Labels labelElements elementLabels) = Labels labelElements' elementLabels' where
 	labelElements' = Map.update f label 		labelElements where
 		f arcsMap
 			| Map.size arcsMap == 1 && Map.member element arcsMap && arcsMap Map.! element <= 1 = Nothing
