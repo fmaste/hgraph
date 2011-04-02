@@ -11,7 +11,7 @@ module Data.Graph.Labels (
 	removeLabelsAll,
 	getLabels,
 	getUniqueLabels,
-	getArcs,
+	getElements,
 	getUniqueArcs,
 	getLabelsCount,
 	getUniqueLabelsCount,
@@ -135,8 +135,8 @@ getLabels (Labels labelElements _) = Map.foldWithKey f [] labelElements where
 getUniqueLabels :: (Ord element, Ord label) => Labels element label -> [label]
 getUniqueLabels (Labels labelElements _) = Map.keys labelElements
 
-getArcs :: (Ord element, Ord label) => Labels element label -> [element]
-getArcs (Labels _ elementLabels) = Map.foldWithKey f [] elementLabels where
+getElements :: (Ord element, Ord label) => Labels element label -> [element]
+getElements (Labels _ elementLabels) = Map.foldWithKey f [] elementLabels where
 	f arc labelMap ans = ans ++ replicateArcs where
 		replicateArcs = Map.fold (\count arcs -> arcs ++ (replicate count arc)) [] labelMap
 
