@@ -61,8 +61,8 @@ empty = Labels Map.empty Map.empty
 -- Adds a label to the arc that goes from src to dst.
 -- If one or more labels already existed for this arc and edge it is appended.
 addArcLabel :: (Ord element, Ord label) => element -> label -> Labels element label -> Labels element label
-addArcLabel element label (Labels labelArcs arcLabels) = Labels labelArcs' arcLabels' where
-	labelArcs' = Map.insertWith' f label   (Map.singleton element 1) labelArcs where
+addArcLabel element label (Labels labelElements arcLabels) = Labels labelElements' arcLabels' where
+	labelElements' = Map.insertWith' f label   (Map.singleton element 1) labelElements where
 		f new old = Map.adjust (+ 1) element old
 		-- f = flip $ Map.unionWith (+) -- InsertWith calls f (new, old), but union is more efficinet with (bigger, smaller)
 	arcLabels' = Map.insertWith' g element (Map.singleton label   1) arcLabels where
@@ -72,8 +72,8 @@ addArcLabel element label (Labels labelArcs arcLabels) = Labels labelArcs' arcLa
 -- Adds a label to the arc that goes from src to dst.
 -- If one or more labels already existed for this arc and edge they are replaced.
 addOrReplaceArcLabel :: (Ord element, Ord label) => element -> label -> Labels element label -> Labels element label
-addOrReplaceArcLabel element label (Labels labelArcs arcLabels) = Labels labelArcs' arcLabels' where
-	labelArcs' = Map.insertWith' f label   (Map.singleton element 1) labelArcs where
+addOrReplaceArcLabel element label (Labels labelElements arcLabels) = Labels labelElements' arcLabels' where
+	labelElements' = Map.insertWith' f label   (Map.singleton element 1) labelElements where
 		f new old = old -- Same as flip $ const
 	arcLabels' = Map.insertWith' g element (Map.singleton label   1) arcLabels where
 		g new old = old -- Same as flip $ const
@@ -81,8 +81,8 @@ addOrReplaceArcLabel element label (Labels labelArcs arcLabels) = Labels labelAr
 -- Removes a label from the arc that goes from src to dst.
 -- If one or more labels already existed for this arc and edge only one is removed.
 removeArcLabel :: (Ord element, Ord label) => element -> label -> Labels element label -> Labels element label
-removeArcLabel element label (Labels labelArcs arcLabels) = Labels labelArcs' arcLabels' where
-	labelArcs' = Map.update f label 		labelArcs where
+removeArcLabel element label (Labels labelElements arcLabels) = Labels labelElements' arcLabels' where
+	labelElements' = Map.update f label 		labelElements where
 		f arcsMap
 			| Map.size arcsMap == 1 && Map.member element arcsMap && arcsMap Map.! element <= 1 = Nothing
 			| otherwise = Just $ Map.update f' element arcsMap where
@@ -100,8 +100,8 @@ removeArcLabel element label (Labels labelArcs arcLabels) = Labels labelArcs' ar
 -- Removes all the labels from the arc that goes from src to dst that contain edge.
 -- If one or more labels already existed for this arc and edge they are all removed.
 removeArcLabelsAll :: (Ord element, Ord label) => element -> label -> Labels element label -> Labels element label
-removeArcLabelsAll element label (Labels labelArcs arcLabels) = Labels labelArcs' arcLabels' where
-	labelArcs' = Map.update f label   labelArcs where
+removeArcLabelsAll element label (Labels labelElements arcLabels) = Labels labelElements' arcLabels' where
+	labelElements' = Map.update f label   labelElements where
 		f arcsMap
 			| Map.size arcsMap == 1 && Map.member element arcsMap = Nothing
 			| otherwise = Just $ Map.delete element arcsMap where
@@ -112,15 +112,15 @@ removeArcLabelsAll element label (Labels labelArcs arcLabels) = Labels labelArcs
 
 {--
 removeArc :: (Ord element, Ord label) => element -> element -> Labels element label -> Labels element label
-removeArc src dst (Labels labelArcs arcLabels) = Labels labelArcs' arcLabels' where
-	labelArcs' = Map.foldWithKey f labelArcs arcLabels where
-		f label arcMap labelArcs'' = foldl (removeArcLabelsAll src dst label) labelArcs'' (Map.keys arcMap)		
+removeArc src dst (Labels labelElements arcLabels) = Labels labelElements' arcLabels' where
+	labelElements' = Map.foldWithKey f labelElements arcLabels where
+		f label arcMap labelElements'' = foldl (removeArcLabelsAll src dst label) labelElements'' (Map.keys arcMap)		
 	arcLabels' = Map.delete (src, dst) arcLabels
 
 removeLabel :: (Ord element, Ord label) => label -> Labels element label -> Labels element label
-removeLabel label (Labels labelArcs arcLabels) = Labels labelArcs' arcLabels' where
-	labelArcs' = Map.delete label labelArcs
-	arcLabels' = Map.foldWithKey f arcLabels labelArcs where
+removeLabel label (Labels labelElements arcLabels) = Labels labelElements' arcLabels' where
+	labelElements' = Map.delete label labelElements
+	arcLabels' = Map.foldWithKey f arcLabels labelElements where
 		f (src, dst) edgeMap arcLabels'' = foldl (removeArcLabelsAll src dst label) arcLabels'' (Map.keys edgeMap)
 --}
 
@@ -128,12 +128,12 @@ removeLabel label (Labels labelArcs arcLabels) = Labels labelArcs' arcLabels' wh
 -------------------------------------------------------------------------------
 
 getLabels :: (Ord element, Ord label) => Labels element label -> [label]
-getLabels (Labels labelArcs _) = Map.foldWithKey f [] labelArcs where
+getLabels (Labels labelElements _) = Map.foldWithKey f [] labelElements where
 	f label arcMap ans = ans ++ replicateLabels where
 		replicateLabels = Map.fold (\count labels -> labels ++ (replicate count label)) [] arcMap
 
 getUniqueLabels :: (Ord element, Ord label) => Labels element label -> [label]
-getUniqueLabels (Labels labelArcs _) = Map.keys labelArcs
+getUniqueLabels (Labels labelElements _) = Map.keys labelElements
 
 getArcs :: (Ord element, Ord label) => Labels element label -> [element]
 getArcs (Labels _ arcLabels) = Map.foldWithKey f [] arcLabels where
@@ -145,10 +145,10 @@ getUniqueArcs (Labels _ arcLabels) = Map.keys arcLabels
 
  -- TODO
 getLabelsCount :: (Ord element, Ord label) => Labels element label -> Int
-getLabelsCount (Labels labelArcs _) = Map.size labelArcs
+getLabelsCount (Labels labelElements _) = Map.size labelElements
 
 getUniqueLabelsCount :: (Ord element, Ord label) => Labels element label -> Int
-getUniqueLabelsCount (Labels labelArcs _) = Map.size labelArcs
+getUniqueLabelsCount (Labels labelElements _) = Map.size labelElements
 
 -- TODO
 getArcsCount :: (Ord element, Ord label) => Labels element label -> Int
@@ -158,13 +158,13 @@ getUniqueArcsCount :: (Ord element, Ord label) => Labels element label -> Int
 getUniqueArcsCount (Labels _ arcLabels) = Map.size arcLabels
 
 getLabelArcs :: (Ord element, Ord label) => label -> Labels element label -> [element]
-getLabelArcs label (Labels labelArcs _) = 
-	Map.foldWithKey f [] $ Map.findWithDefault Map.empty label labelArcs where
+getLabelArcs label (Labels labelElements _) = 
+	Map.foldWithKey f [] $ Map.findWithDefault Map.empty label labelElements where
 		f arc count ans = ans ++ (replicate count arc)
 
 getLabelUniqueArcs :: (Ord element, Ord label) => label -> Labels element label -> [element]
-getLabelUniqueArcs label (Labels labelArcs _) = 
-	Map.keys $ Map.findWithDefault Map.empty label labelArcs
+getLabelUniqueArcs label (Labels labelElements _) = 
+	Map.keys $ Map.findWithDefault Map.empty label labelElements
 
 getArcLabels :: (Ord element, Ord label) => element -> Labels element label -> [label]
 getArcLabels element (Labels _ arcLabels) = 
@@ -177,7 +177,7 @@ getArcUniqueLabels element (Labels _ arcLabels) =
 
 {-- TODO
 getArcLabelCount :: (Ord element, Ord label) => element -> element -> label -> Labels element label -> [(element, element)]
-getArcLabelCount src dst label (Labels labelArcs _) = 
-	Map.findWithDefault $ Map.findWithDefault Map.empty label labelArcs where
+getArcLabelCount src dst label (Labels labelElements _) = 
+	Map.findWithDefault $ Map.findWithDefault Map.empty label labelElements where
 		f arc count ans = ans ++ (replicate count arc)
 -}
