@@ -78,8 +78,8 @@ addOrReplaceLabel element label (Labels labelElements elementLabels) = Labels la
 	elementLabels' = Map.insertWith' g element (Map.singleton label   1) elementLabels where
 		g new old = old -- Same as flip $ const
 
--- Removes a label from the arc that goes from src to dst.
--- If one or more labels already existed for this arc and edge only one is removed.
+-- Removes a label from the element.
+-- If one or more labels already existed for this element only one is removed.
 removeArcLabel :: (Ord element, Ord label) => element -> label -> Labels element label -> Labels element label
 removeArcLabel element label (Labels labelElements elementLabels) = Labels labelElements' elementLabels' where
 	labelElements' = Map.update f label 		labelElements where
