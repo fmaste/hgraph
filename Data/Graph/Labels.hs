@@ -45,10 +45,10 @@ import qualified Data.Map as Map
 data Labels element label = Labels (LabelElements element label) (ElementLabels element label)
     deriving (Show, Read, Ord, Eq)
 
--- A label may appear on any arc and can be repeated.
+-- A label may appear on any element and can be repeated.
 type LabelElements element label = Map.Map label (Map.Map element Int)
 
--- An arc can be repeated with equal or different labels.
+-- An element can be repeated with equal or different labels.
 type ElementLabels element label = Map.Map element (Map.Map label Int)
 
 -- CONSTRUCTION
