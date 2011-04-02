@@ -69,8 +69,8 @@ addLabel element label (Labels labelElements elementLabels) = Labels labelElemen
 		g new old = Map.adjust (+ 1) label   old
 		-- g = flip $ Map.unionWith (+) -- InsertWith calls f (new, old), but union is more efficinet with (bigger, smaller)
 
--- Adds a label to the arc that goes from src to dst.
--- If one or more labels already existed for this arc and edge they are replaced.
+-- Adds a label to the element.
+-- If one or more labels already existed for this element they are replaced.
 addOrReplaceArcLabel :: (Ord element, Ord label) => element -> label -> Labels element label -> Labels element label
 addOrReplaceArcLabel element label (Labels labelElements elementLabels) = Labels labelElements' elementLabels' where
 	labelElements' = Map.insertWith' f label   (Map.singleton element 1) labelElements where
