@@ -3,29 +3,24 @@
 module Data.Graph.Labels (
 	Labels(),
 	empty,
-	addElementLabel,
-	addOrReplaceElementLabel,
+	-- TODO: addLabel
 	-- TODO: removeLabel,
-	-- TODO: removeArc,
+	-- TODO: addElement,
+	-- TODO: removeElement,
+	addElementLabel,
 	removeElementLabel,
-	removeElementLabelsAll,
 	getLabels,
-	getUniqueLabels,
 	getElements,
-	getUniqueElements,
 	getLabelsCount,
-	getUniqueLabelsCount,
 	getElementsCount,
-	getUniqueElementsCount,
 	getLabelElements,
-	getLabelUniqueElements,
-	getElementLabels,
-	getElementUniqueLabels) where
+	getElementLabels) where
 
 -- IMPORTS
 -------------------------------------------------------------------------------
 
 import qualified Data.Map as Map
+import qualified Data.Set as Set
 
 -- DATA DEFINITION
 -------------------------------------------------------------------------------
@@ -45,13 +40,13 @@ import qualified Data.Map as Map
 data Labels element label = Labels (LabelElements element label) (ElementLabels element label)
     deriving (Show, Read, Ord, Eq)
 
--- A label may appear on any element and can be repeated.
--- A labels contains: elements, each one with a counter to allow repetitions.
-type LabelElements element label = Map.Map label (Map.Map element Int)
+-- A label may appear on any element.
+-- A labels contains a Set of elements.
+type LabelElements element label = Map.Map label (Set.Set element)
 
--- An element can be repeated with equal or different labels.
--- An element contains: labels, each one with a counter to allow repetitions.
-type ElementLabels element label = Map.Map element (Map.Map label Int)
+-- An element may contain any labels.
+-- An element contains a Set of labels.
+type ElementLabels element label = Map.Map element (Set.Set label)
 
 -- CONSTRUCTION
 -------------------------------------------------------------------------------
@@ -67,19 +62,8 @@ addElementLabel element label (Labels labelElements elementLabels) =
 	let 
 		labelElements' = f labelElements label element
 		elementLabels' = f elementLabels element label
-		f parentMap k v = Map.insertWith' g k (Map.singleton v 1) parentMap where
-			g new old = Map.adjust (+ 1) v old
-			-- f = flip $ Map.unionWith (+) -- InsertWith calls f (new, old), but union is more efficinet with (bigger, smaller)
-	in Labels labelElements' elementLabels'
-
--- Adds a label to the element.
--- If one or more labels already existed for this element they are replaced.
-addOrReplaceElementLabel :: (Ord element, Ord label) => element -> label -> Labels element label -> Labels element label
-addOrReplaceElementLabel element label (Labels labelElements elementLabels) = 
-	let 
-		labelElements' = f labelElements label element
-		elementLabels' = f elementLabels element label
-		f parentMap k v = Map.insert k (Map.singleton v 1) parentMap where
+		f parentMap k v = Map.insertWith' g k (Set.singleton v) parentMap where
+			g new old = Set.insert v old
 	in Labels labelElements' elementLabels'
 
 -- Removes a label from the element.
@@ -89,26 +73,8 @@ removeElementLabel element label (Labels labelElements elementLabels) =
 	let 
 		labelElements' = f labelElements label element
 		elementLabels' = f elementLabels element label
-		f parentMap k v = Map.update g k parentMap where
-			g childMap
-				| Map.size childMap == 1 && Map.member v childMap && childMap Map.! v <= 1 = Nothing
-				| otherwise = Just $ Map.update g' v childMap where
-					g' vCount
-						| vCount <= 1 = Nothing
-						| otherwise = Just $ vCount - 1
-	in Labels labelElements' elementLabels'
-
--- Removes all the labels from the element.
--- If one or more labels already existed for this element they are all removed.
-removeElementLabelsAll :: (Ord element, Ord label) => element -> label -> Labels element label -> Labels element label
-removeElementLabelsAll element label (Labels labelElements elementLabels) = 
-	let 
-		labelElements' = f labelElements label element
-		elementLabels' = f elementLabels element label
-		f parentMap k v = Map.update g k parentMap where
-			g childMap
-				| Map.size childMap == 1 && Map.member v childMap = Nothing
-				| otherwise = Just $ Map.delete v childMap
+		f parentMap k v = Map.adjust g k parentMap where
+			g aSet = Set.delete v aSet
 	in Labels labelElements' elementLabels'
 
 {--
@@ -129,52 +95,24 @@ removeLabel label (Labels labelElements elementLabels) = Labels labelElements' e
 -------------------------------------------------------------------------------
 
 getLabels :: (Ord element, Ord label) => Labels element label -> [label]
-getLabels (Labels labelElements _) = Map.foldWithKey f [] labelElements where
-	f label elementsMap ans = ans ++ replicateLabels where
-		replicateLabels = Map.fold (\count labels -> labels ++ (replicate count label)) [] elementsMap
-
-getUniqueLabels :: (Ord element, Ord label) => Labels element label -> [label]
-getUniqueLabels (Labels labelElements _) = Map.keys labelElements
+getLabels (Labels labelElements _) = Map.keys labelElements
 
 getElements :: (Ord element, Ord label) => Labels element label -> [element]
-getElements (Labels _ elementLabels) = Map.foldWithKey f [] elementLabels where
-	f arc labelsMap ans = ans ++ replicateArcs where
-		replicateArcs = Map.fold (\count arcs -> arcs ++ (replicate count arc)) [] labelsMap
+getElements (Labels _ elementLabels) = Map.keys elementLabels
 
-getUniqueElements :: (Ord element, Ord label) => Labels element label -> [element]
-getUniqueElements (Labels _ elementLabels) = Map.keys elementLabels
-
- -- TODO
 getLabelsCount :: (Ord element, Ord label) => Labels element label -> Int
 getLabelsCount (Labels labelElements _) = Map.size labelElements
 
-getUniqueLabelsCount :: (Ord element, Ord label) => Labels element label -> Int
-getUniqueLabelsCount (Labels labelElements _) = Map.size labelElements
-
--- TODO
 getElementsCount :: (Ord element, Ord label) => Labels element label -> Int
 getElementsCount (Labels _ elementLabels) = Map.size elementLabels
 
-getUniqueElementsCount :: (Ord element, Ord label) => Labels element label -> Int
-getUniqueElementsCount (Labels _ elementLabels) = Map.size elementLabels
-
 getLabelElements :: (Ord element, Ord label) => label -> Labels element label -> [element]
 getLabelElements label (Labels labelElements _) = 
-	Map.foldWithKey f [] $ Map.findWithDefault Map.empty label labelElements where
-		f element count ans = ans ++ (replicate count element)
-
-getLabelUniqueElements :: (Ord element, Ord label) => label -> Labels element label -> [element]
-getLabelUniqueElements label (Labels labelElements _) = 
-	Map.keys $ Map.findWithDefault Map.empty label labelElements
+	Set.elems $ Map.findWithDefault Set.empty label labelElements
 
 getElementLabels :: (Ord element, Ord label) => element -> Labels element label -> [label]
 getElementLabels element (Labels _ elementLabels) = 
-	Map.foldWithKey f [] $ Map.findWithDefault Map.empty element elementLabels where
-		f label count ans = ans ++ (replicate count label)
-
-getElementUniqueLabels :: (Ord element, Ord label) => element -> Labels element label -> [label]
-getElementUniqueLabels element (Labels _ elementLabels) = 
-	Map.keys $ Map.findWithDefault Map.empty element elementLabels
+	Set.elems $ Map.findWithDefault Set.empty element elementLabels
 
 {-- TODO
 getArcLabelCount :: (Ord element, Ord label) => element -> element -> label -> Labels element label -> [(element, element)]
