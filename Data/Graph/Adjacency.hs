@@ -4,6 +4,9 @@
 -- There are two types of inmediate relationsips that a node can have:
 -- Being a successor or a predecessor to another node.
 -- Higher grade relationships are not handled by this module.
+-- Also, if node a and b are connected in the same direction by two different edges, 
+-- each one with different values, this module only tells that they are connected 
+-- by an edge, but not which one. You can't distinguish edges.
 module Data.Graph.Adjacency (
 	Adjacency(),
 	empty,
