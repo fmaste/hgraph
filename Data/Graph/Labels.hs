@@ -58,8 +58,8 @@ type ElementLabels element label = Map.Map element (Map.Map label Int)
 empty :: (Ord element, Ord label) => Labels element label
 empty = Labels Map.empty Map.empty
 
--- Adds a label to the arc that goes from src to dst.
--- If one or more labels already existed for this arc and edge it is appended.
+-- Adds a label to the element.
+-- If one or more labels already existed for this element it is appended.
 addArcLabel :: (Ord element, Ord label) => element -> label -> Labels element label -> Labels element label
 addArcLabel element label (Labels labelElements elementLabels) = Labels labelElements' elementLabels' where
 	labelElements' = Map.insertWith' f label   (Map.singleton element 1) labelElements where
