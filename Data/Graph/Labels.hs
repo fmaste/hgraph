@@ -79,8 +79,7 @@ addOrReplaceLabel element label (Labels labelElements elementLabels) =
 	let 
 		labelElements' = f labelElements label element
 		elementLabels' = f elementLabels element label
-		f parentMap k v = Map.insertWith' g k (Map.singleton v 1) parentMap where
-			g new old = new -- Same as flip $ const
+		f parentMap k v = Map.insert k (Map.singleton v 1) parentMap where
 	in Labels labelElements' elementLabels'
 
 -- Removes a label from the element.
