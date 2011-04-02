@@ -16,7 +16,7 @@ module Data.Graph.Labels (
 	getLabelsCount,
 	getUniqueLabelsCount,
 	getElementsCount,
-	getUniqueArcsCount,
+	getUniqueElementsCount,
 	getLabelArcs,
 	getLabelUniqueArcs,
 	getArcLabels,
@@ -154,8 +154,8 @@ getUniqueLabelsCount (Labels labelElements _) = Map.size labelElements
 getElementsCount :: (Ord element, Ord label) => Labels element label -> Int
 getElementsCount (Labels _ elementLabels) = Map.size elementLabels
 
-getUniqueArcsCount :: (Ord element, Ord label) => Labels element label -> Int
-getUniqueArcsCount (Labels _ elementLabels) = Map.size elementLabels
+getUniqueElementsCount :: (Ord element, Ord label) => Labels element label -> Int
+getUniqueElementsCount (Labels _ elementLabels) = Map.size elementLabels
 
 getLabelArcs :: (Ord element, Ord label) => label -> Labels element label -> [element]
 getLabelArcs label (Labels labelElements _) = 
