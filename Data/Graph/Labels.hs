@@ -100,15 +100,15 @@ removeLabel element label (Labels labelElements elementLabels) =
 -- Removes all the labels from the element.
 -- If one or more labels already existed for this element they are all removed.
 removeLabelsAll :: (Ord element, Ord label) => element -> label -> Labels element label -> Labels element label
-removeLabelsAll element label (Labels labelElements elementLabels) = Labels labelElements' elementLabels' where
-	labelElements' = Map.update f label   labelElements where
-		f arcsMap
-			| Map.size arcsMap == 1 && Map.member element arcsMap = Nothing
-			| otherwise = Just $ Map.delete element arcsMap
-	elementLabels' = Map.update g element elementLabels where
-		g labelsMap
-			| Map.size labelsMap == 1 && Map.member label labelsMap = Nothing
-			| otherwise = Just $ Map.delete label labelsMap
+removeLabelsAll element label (Labels labelElements elementLabels) = 
+	let 
+		labelElements' = f labelElements label element
+		elementLabels' = f elementLabels element label
+		f aMap k v = Map.update g k aMap where
+			g aMap'
+				| Map.size aMap' == 1 && Map.member v aMap' = Nothing
+				| otherwise = Just $ Map.delete v aMap'
+	in Labels labelElements' elementLabels'
 
 {--
 removeArc :: (Ord element, Ord label) => element -> element -> Labels element label -> Labels element label
