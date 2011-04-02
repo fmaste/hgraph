@@ -46,9 +46,11 @@ data Labels element label = Labels (LabelElements element label) (ElementLabels 
     deriving (Show, Read, Ord, Eq)
 
 -- A label may appear on any element and can be repeated.
+-- A labels contains: elements, each one with a counter to allow repetitions.
 type LabelElements element label = Map.Map label (Map.Map element Int)
 
 -- An element can be repeated with equal or different labels.
+-- An element contains: labels, each one with a counter to allow repetitions.
 type ElementLabels element label = Map.Map element (Map.Map label Int)
 
 -- CONSTRUCTION
