@@ -51,11 +51,11 @@ import qualified Data.Set as Set
 data Adjacency node = Adjacency (NodeSuccs node) (NodePreds node)
     deriving (Show, Read, Ord, Eq)
 
--- | The nodes that can be reached from a given node.
+-- | The nodes that can be reached by a single edge from a given node.
 -- A map of nodes as keys and a set of the nodes that are a direct successor of that node as value.
 type NodeSuccs node = Map.Map node (Set.Set node)
 
--- | The nodes that can reach a given node.
+-- | The nodes that can reach by a single edge a given node.
 -- A map of nodes as keys and a set of the nodes that are a direct predecessor of that node as value.
 type NodePreds node = Map.Map node (Set.Set node)
 
