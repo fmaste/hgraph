@@ -4,8 +4,8 @@ module Data.Graph.Labels (
 	Labels(),
 	empty,
 	addLabel,
-	removeLabel,
 	addElement,
+	removeLabel,
 	removeElement,
 	addElementLabel,
 	removeElementLabel,
@@ -59,15 +59,15 @@ addLabel :: (Ord element, Ord label) => label -> Labels element label -> Labels 
 addLabel label (Labels labelElements elementLabels) = Labels labelElements' elementLabels where
 	labelElements' = Map.insert label Set.empty labelElements
 
+addElement :: (Ord element, Ord label) => element -> Labels element label -> Labels element label
+addElement element (Labels labelElements elementLabels) = Labels labelElements elementLabels' where
+	elementLabels' = Map.insert element Set.empty elementLabels
+
 removeLabel :: (Ord element, Ord label) => label -> Labels element label -> Labels element label
 removeLabel label adj@(Labels labelElements elementLabels) = Labels labelElements' elementLabels' where
 	labelElements' = Map.delete label labelElements
 	elementLabels' = foldl f elementLabels $ getLabelElements label adj where
 		f elementLabels'' element = Map.adjust (Set.delete label) element elementLabels''
-
-addElement :: (Ord element, Ord label) => element -> Labels element label -> Labels element label
-addElement element (Labels labelElements elementLabels) = Labels labelElements elementLabels' where
-	elementLabels' = Map.insert element Set.empty elementLabels
 
 removeElement :: (Ord element, Ord label) => element -> Labels element label -> Labels element label
 removeElement element adj@(Labels labelElements elementLabels) = Labels labelElements' elementLabels' where
