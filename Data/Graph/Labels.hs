@@ -84,21 +84,18 @@ addOrReplaceLabel element label (Labels labelElements elementLabels) =
 -- Removes a label from the element.
 -- If one or more labels already existed for this element only one is removed.
 removeLabel :: (Ord element, Ord label) => element -> label -> Labels element label -> Labels element label
-removeLabel element label (Labels labelElements elementLabels) = Labels labelElements' elementLabels' where
-	labelElements' = Map.update f label 		labelElements where
-		f arcsMap
-			| Map.size arcsMap == 1 && Map.member element arcsMap && arcsMap Map.! element <= 1 = Nothing
-			| otherwise = Just $ Map.update f' element arcsMap where
-				f' arcsCount
-					| arcsCount <= 1 = Nothing
-					| otherwise = Just $ arcsCount - 1
-	elementLabels' = Map.update g element elementLabels where
-		g labelsMap
-			| Map.size labelsMap == 1 && Map.member label labelsMap && labelsMap Map.! label <= 1 = Nothing
-			| otherwise = Just $ Map.update g' label labelsMap where
-				g' labelsCount
-					| labelsCount <= 1 = Nothing
-					| otherwise = Just $ labelsCount - 1
+removeLabel element label (Labels labelElements elementLabels) = 
+	let 
+		labelElements' = f labelElements label element
+		elementLabels' = f elementLabels element label
+		f aMap k v = Map.update g k aMap where
+			g aMap'
+				| Map.size aMap' == 1 && Map.member v aMap' && aMap' Map.! v <= 1 = Nothing
+				| otherwise = Just $ Map.update g' v aMap' where
+					g' vCount
+						| vCount <= 1 = Nothing
+						| otherwise = Just $ vCount - 1
+	in Labels labelElements' elementLabels'
 
 -- Removes all the labels from the element.
 -- If one or more labels already existed for this element they are all removed.
