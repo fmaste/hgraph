@@ -86,7 +86,7 @@ removeElement element adj@(Labels labelElements elementLabels) = Labels labelEle
 	elementLabels' = Map.delete element elementLabels
 
 -- Adds a label to the element.
--- TODO: Insert the element or label if they don't exist.
+-- If the element or label don't exist they are added.
 -- If one or more labels already existed for this element it is appended.
 -- If this label already exists for this element the original Labels is returned.
 addElementLabel :: (Ord element, Ord label) => element -> label -> Labels element label -> Labels element label
@@ -99,7 +99,7 @@ addElementLabel element label (Labels labelElements elementLabels) =
 	in Labels labelElements' elementLabels'
 
 -- Removes a label from the element.
--- TODO: Insert the element or label if they don't exist.
+-- If the element or label don't exist the original Labels is returned.
 -- If one or more labels already existed for this element only one is removed.
 -- If this element already exists for this label the original Labels is returned.
 removeElementLabel :: (Ord element, Ord label) => element -> label -> Labels element label -> Labels element label
