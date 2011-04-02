@@ -88,6 +88,7 @@ addElementLabel element label (Labels labelElements elementLabels) =
 	in Labels labelElements' elementLabels'
 
 -- Removes a label from the element.
+-- TODO: Insert the element or label if they don't exist.
 -- If one or more labels already existed for this element only one is removed.
 -- If this element already exists for this label the original Labels is returned.
 removeElementLabel :: (Ord element, Ord label) => element -> label -> Labels element label -> Labels element label
