@@ -6,7 +6,7 @@ module Data.Graph.Labels (
 	addLabel,
 	removeLabel,
 	addElement,
-	-- TODO: removeElement,
+	removeElement,
 	addElementLabel,
 	removeElementLabel,
 	getLabels,
@@ -68,6 +68,12 @@ removeLabel label adj@(Labels labelElements elementLabels) = Labels labelElement
 addElement :: (Ord element, Ord label) => element -> Labels element label -> Labels element label
 addElement element (Labels labelElements elementLabels) = Labels labelElements elementLabels' where
 	elementLabels' = Map.insert element Set.empty elementLabels
+
+removeElement :: (Ord element, Ord label) => element -> Labels element label -> Labels element label
+removeElement element adj@(Labels labelElements elementLabels) = Labels labelElements' elementLabels' where
+	labelElements' = foldl f labelElements $ getElementLabels element adj where
+		f labelElements'' label = Map.adjust (Set.delete element) label labelElements''
+	elementLabels' = Map.delete element elementLabels
 
 -- Adds a label to the element.
 -- If one or more labels already existed for this element it is appended.
