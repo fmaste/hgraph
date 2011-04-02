@@ -7,6 +7,7 @@
 -- Also, if node a and b are connected in the same direction by two different edges, 
 -- each one with different values, this module only tells that they are connected 
 -- by an edge, but not which one. You can't distinguish edges.
+-- In short, this module handles two-way inmediate relationships between things of the same type.
 module Data.Graph.Adjacency (
 	Adjacency(),
 	empty,
