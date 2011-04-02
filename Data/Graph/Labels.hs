@@ -3,7 +3,7 @@
 module Data.Graph.Labels (
 	Labels(),
 	empty,
-	addLabel,
+	addElementLabel,
 	addOrReplaceLabel,
 	-- TODO: removeLabel,
 	-- TODO: removeArc,
@@ -62,8 +62,8 @@ empty = Labels Map.empty Map.empty
 
 -- Adds a label to the element.
 -- If one or more labels already existed for this element it is appended.
-addLabel :: (Ord element, Ord label) => element -> label -> Labels element label -> Labels element label
-addLabel element label (Labels labelElements elementLabels) =
+addElementLabel :: (Ord element, Ord label) => element -> label -> Labels element label -> Labels element label
+addElementLabel element label (Labels labelElements elementLabels) =
 	let 
 		labelElements' = f labelElements label element
 		elementLabels' = f elementLabels element label
