@@ -77,6 +77,7 @@ removeElement element adj@(Labels labelElements elementLabels) = Labels labelEle
 
 -- Adds a label to the element.
 -- If one or more labels already existed for this element it is appended.
+-- If this label already exists for this element the original Labels is returned.
 addElementLabel :: (Ord element, Ord label) => element -> label -> Labels element label -> Labels element label
 addElementLabel element label (Labels labelElements elementLabels) =
 	let 
@@ -88,6 +89,7 @@ addElementLabel element label (Labels labelElements elementLabels) =
 
 -- Removes a label from the element.
 -- If one or more labels already existed for this element only one is removed.
+-- If this element already exists for this label the original Labels is returned.
 removeElementLabel :: (Ord element, Ord label) => element -> label -> Labels element label -> Labels element label
 removeElementLabel element label (Labels labelElements elementLabels) = 
 	let 
