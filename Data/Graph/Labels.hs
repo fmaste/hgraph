@@ -138,8 +138,8 @@ getUniqueLabels (Labels labelElements _) = Map.keys labelElements
 
 getElements :: (Ord element, Ord label) => Labels element label -> [element]
 getElements (Labels _ elementLabels) = Map.foldWithKey f [] elementLabels where
-	f arc labelMap ans = ans ++ replicateArcs where
-		replicateArcs = Map.fold (\count arcs -> arcs ++ (replicate count arc)) [] labelMap
+	f arc labelsMap ans = ans ++ replicateArcs where
+		replicateArcs = Map.fold (\count arcs -> arcs ++ (replicate count arc)) [] labelsMap
 
 getUniqueElements :: (Ord element, Ord label) => Labels element label -> [element]
 getUniqueElements (Labels _ elementLabels) = Map.keys elementLabels
