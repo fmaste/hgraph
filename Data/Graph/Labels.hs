@@ -8,7 +8,7 @@ module Data.Graph.Labels (
 	-- TODO: removeLabel,
 	-- TODO: removeArc,
 	removeLabel,
-	removeLabelsAll,
+	removeElementLabelsAll,
 	getLabels,
 	getUniqueLabels,
 	getElements,
@@ -100,8 +100,8 @@ removeLabel element label (Labels labelElements elementLabels) =
 
 -- Removes all the labels from the element.
 -- If one or more labels already existed for this element they are all removed.
-removeLabelsAll :: (Ord element, Ord label) => element -> label -> Labels element label -> Labels element label
-removeLabelsAll element label (Labels labelElements elementLabels) = 
+removeElementLabelsAll :: (Ord element, Ord label) => element -> label -> Labels element label -> Labels element label
+removeElementLabelsAll element label (Labels labelElements elementLabels) = 
 	let 
 		labelElements' = f labelElements label element
 		elementLabels' = f elementLabels element label
@@ -115,14 +115,14 @@ removeLabelsAll element label (Labels labelElements elementLabels) =
 removeArc :: (Ord element, Ord label) => element -> element -> Labels element label -> Labels element label
 removeArc src dst (Labels labelElements elementLabels) = Labels labelElements' elementLabels' where
 	labelElements' = Map.foldWithKey f labelElements elementLabels where
-		f label arcMap labelElements'' = foldl (removeLabelsAll src dst label) labelElements'' (Map.keys arcMap)		
+		f label arcMap labelElements'' = foldl (removeElementLabelsAll src dst label) labelElements'' (Map.keys arcMap)		
 	elementLabels' = Map.delete (src, dst) elementLabels
 
 removeLabel :: (Ord element, Ord label) => label -> Labels element label -> Labels element label
 removeLabel label (Labels labelElements elementLabels) = Labels labelElements' elementLabels' where
 	labelElements' = Map.delete label labelElements
 	elementLabels' = Map.foldWithKey f elementLabels labelElements where
-		f (src, dst) edgeMap elementLabels'' = foldl (removeLabelsAll src dst label) elementLabels'' (Map.keys edgeMap)
+		f (src, dst) edgeMap elementLabels'' = foldl (removeElementLabelsAll src dst label) elementLabels'' (Map.keys edgeMap)
 --}
 
 -- QUERY
