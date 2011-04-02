@@ -61,13 +61,14 @@ empty = Labels Map.empty Map.empty
 -- Adds a label to the element.
 -- If one or more labels already existed for this element it is appended.
 addLabel :: (Ord element, Ord label) => element -> label -> Labels element label -> Labels element label
-addLabel element label (Labels labelElements elementLabels) = Labels labelElements' elementLabels' where
-	labelElements' = Map.insertWith' f label   (Map.singleton element 1) labelElements where
-		f new old = Map.adjust (+ 1) element old
-		-- f = flip $ Map.unionWith (+) -- InsertWith calls f (new, old), but union is more efficinet with (bigger, smaller)
-	elementLabels' = Map.insertWith' g element (Map.singleton label   1) elementLabels where
-		g new old = Map.adjust (+ 1) label   old
-		-- g = flip $ Map.unionWith (+) -- InsertWith calls f (new, old), but union is more efficinet with (bigger, smaller)
+addLabel element label (Labels labelElements elementLabels) =
+	let 
+		labelElements' = f labelElements label element
+		elementLabels' = f elementLabels element label
+		f aMap k v = Map.insertWith' g k (Map.singleton v 1) aMap where
+			g new old = Map.adjust (+ 1) v old
+			-- f = flip $ Map.unionWith (+) -- InsertWith calls f (new, old), but union is more efficinet with (bigger, smaller)
+	in Labels labelElements' elementLabels'
 
 -- Adds a label to the element.
 -- If one or more labels already existed for this element they are replaced.
