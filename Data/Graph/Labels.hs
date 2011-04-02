@@ -19,7 +19,7 @@ module Data.Graph.Labels (
 	getUniqueElementsCount,
 	getLabelElements,
 	getLabelUniqueElements,
-	getArcLabels,
+	getElementLabels,
 	getArcUniqueLabels) where
 
 -- IMPORTS
@@ -166,8 +166,8 @@ getLabelUniqueElements :: (Ord element, Ord label) => label -> Labels element la
 getLabelUniqueElements label (Labels labelElements _) = 
 	Map.keys $ Map.findWithDefault Map.empty label labelElements
 
-getArcLabels :: (Ord element, Ord label) => element -> Labels element label -> [label]
-getArcLabels element (Labels _ elementLabels) = 
+getElementLabels :: (Ord element, Ord label) => element -> Labels element label -> [label]
+getElementLabels element (Labels _ elementLabels) = 
 	Map.foldWithKey f [] $ Map.findWithDefault Map.empty element elementLabels where
 		f label count ans = ans ++ (replicate count label)
 
