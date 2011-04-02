@@ -97,8 +97,8 @@ removeLabel element label (Labels labelElements elementLabels) = Labels labelEle
 					| labelsCount <= 1 = Nothing
 					| otherwise = Just $ labelsCount - 1
 
--- Removes all the labels from the arc that goes from src to dst that contain edge.
--- If one or more labels already existed for this arc and edge they are all removed.
+-- Removes all the labels from the element.
+-- If one or more labels already existed for this element they are all removed.
 removeArcLabelsAll :: (Ord element, Ord label) => element -> label -> Labels element label -> Labels element label
 removeArcLabelsAll element label (Labels labelElements elementLabels) = Labels labelElements' elementLabels' where
 	labelElements' = Map.update f label   labelElements where
