@@ -89,9 +89,9 @@ removeLabel element label (Labels labelElements elementLabels) =
 		labelElements' = f labelElements label element
 		elementLabels' = f elementLabels element label
 		f parentMap k v = Map.update g k parentMap where
-			g aMap'
-				| Map.size aMap' == 1 && Map.member v aMap' && aMap' Map.! v <= 1 = Nothing
-				| otherwise = Just $ Map.update g' v aMap' where
+			g childMap
+				| Map.size childMap == 1 && Map.member v childMap && childMap Map.! v <= 1 = Nothing
+				| otherwise = Just $ Map.update g' v childMap where
 					g' vCount
 						| vCount <= 1 = Nothing
 						| otherwise = Just $ vCount - 1
