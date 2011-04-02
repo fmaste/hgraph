@@ -104,7 +104,7 @@ removeLabelsAll element label (Labels labelElements elementLabels) =
 	let 
 		labelElements' = f labelElements label element
 		elementLabels' = f elementLabels element label
-		f aMap k v = Map.update g k aMap where
+		f parentMap k v = Map.update g k parentMap where
 			g aMap'
 				| Map.size aMap' == 1 && Map.member v aMap' = Nothing
 				| otherwise = Just $ Map.delete v aMap'
