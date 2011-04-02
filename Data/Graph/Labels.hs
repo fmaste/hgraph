@@ -3,7 +3,7 @@
 module Data.Graph.Labels (
 	Labels(),
 	empty,
-	addArcLabel,
+	addLabel,
 	addOrReplaceArcLabel,
 	-- TODO: removeLabel,
 	-- TODO: removeArc,
@@ -60,8 +60,8 @@ empty = Labels Map.empty Map.empty
 
 -- Adds a label to the element.
 -- If one or more labels already existed for this element it is appended.
-addArcLabel :: (Ord element, Ord label) => element -> label -> Labels element label -> Labels element label
-addArcLabel element label (Labels labelElements elementLabels) = Labels labelElements' elementLabels' where
+addLabel :: (Ord element, Ord label) => element -> label -> Labels element label -> Labels element label
+addLabel element label (Labels labelElements elementLabels) = Labels labelElements' elementLabels' where
 	labelElements' = Map.insertWith' f label   (Map.singleton element 1) labelElements where
 		f new old = Map.adjust (+ 1) element old
 		-- f = flip $ Map.unionWith (+) -- InsertWith calls f (new, old), but union is more efficinet with (bigger, smaller)
