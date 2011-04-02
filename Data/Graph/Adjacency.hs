@@ -46,9 +46,9 @@ import qualified Data.Set as Set
 
 -- | The adjacency of a graph here is defined with an incidence list with the 
 -- direct node successors and another one with the direct predecessors.
--- This incidence lists only represent to which nodes a node is connected, but not how it is connected. For example: If node
--- a and b are connected by two different edges, each one with different values, this lists only tell you that a path exists 
--- between the two nodes, but nothing specific about that path(s).
+-- This incidence lists only represent to which nodes a node is connected by 
+-- a single edge. Being the difference between both lists the diretion of the 
+-- edge, either "to" or "from" the node.
 data Adjacency node = Adjacency (NodeSuccs node) (NodePreds node)
     deriving (Show, Read, Ord, Eq)
 
