@@ -80,7 +80,7 @@ addOrReplaceLabel element label (Labels labelElements elementLabels) =
 		labelElements' = f labelElements label element
 		elementLabels' = f elementLabels element label
 		f parentMap k v = Map.insertWith' g k (Map.singleton v 1) parentMap where
-			g new old = old -- Same as flip $ const
+			g new old = new -- Same as flip $ const
 	in Labels labelElements' elementLabels'
 
 -- Removes a label from the element.
