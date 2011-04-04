@@ -1,5 +1,16 @@
 -- Author: Federico Mastellone (fmaste@gmail.com)
 
+-- Graphs whose edges or vertices have names or labels are known as labeled, 
+-- those without as unlabeled. 
+-- Labels can be for the nodes or the arcs. Graphs with labeled vertices only 
+-- are vertex-labeled, those with labeled edges only are edge-labeled.
+-- Nodes are already indentifiable, but labels can be used for what you want.
+-- The difference between a edge-labeled and an edge-unlabeled graph is that 
+-- the latter has no specific set of edges; it is regarded as another way to 
+-- look upon an isomorphism type of graphs. (Thus, this usage distinguishes 
+-- between graphs with identifiable edge sets on the one hand, and isomorphism 
+-- types or classes of graphs on the other.)
+-- In short, this module tells if things of different type are related or not.
 module Data.Graph.Labels (
 	Labels(),
 	empty,
@@ -27,16 +38,6 @@ import qualified Data.Set as Set
 -- DATA DEFINITION
 -------------------------------------------------------------------------------
 
--- Graphs whose edges or vertices have names or labels are known as labeled, 
--- those without as unlabeled. 
--- Labels can be for the nodes or the arcs. Graphs with labeled vertices only 
--- are vertex-labeled, those with labeled edges only are edge-labeled.
--- Nodes are already indentifiable, but labels can be used for what you want.
--- The difference between a edge-labeled and an edge-unlabeled graph is that 
--- the latter has no specific set of edges; it is regarded as another way to 
--- look upon an isomorphism type of graphs. (Thus, this usage distinguishes 
--- between graphs with identifiable edge sets on the one hand, and isomorphism 
--- types or classes of graphs on the other.)
 -- We defined Labels with two structures, one with the label -> element 
 -- relationships and the other with the element -> label.
 data Labels element label = Labels (LabelElements element label) (ElementLabels element label)
