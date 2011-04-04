@@ -146,8 +146,8 @@ getElementLabelsSet element (Labels _ elementLabels) =
 	Map.findWithDefault Set.empty element elementLabels
 
 getLabelElementsCount :: (Ord element, Ord label) => label -> Labels element label -> Int
-getLabelElementsCount label (Labels labelElements _) = 
-	Set.size $ Map.findWithDefault Set.empty label labelElements
+getLabelElementsCount label l = 
+	Set.size $ getLabelElementsSet label l
 
 getElementLabelsCount :: (Ord element, Ord label) => element -> Labels element label -> Int
 getElementLabelsCount element (Labels _ elementLabels) = 
