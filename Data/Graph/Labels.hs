@@ -26,6 +26,7 @@ module Data.Graph.Labels (
 	getElementsCount,
 	getLabelElements,
 	getElementLabels,
+	getLabelElementsSet,
 	getLabelElementsCount,
 	getElementLabelsCount) where
 
@@ -128,12 +129,16 @@ getElementsCount :: (Ord element, Ord label) => Labels element label -> Int
 getElementsCount (Labels _ elementLabels) = Map.size elementLabels
 
 getLabelElements :: (Ord element, Ord label) => label -> Labels element label -> [element]
-getLabelElements label (Labels labelElements _) = 
-	Set.elems $ Map.findWithDefault Set.empty label labelElements
+getLabelElements label l = 
+	Set.elems $ getLabelElementsSet label l
 
 getElementLabels :: (Ord element, Ord label) => element -> Labels element label -> [label]
 getElementLabels element (Labels _ elementLabels) = 
 	Set.elems $ Map.findWithDefault Set.empty element elementLabels
+
+getLabelElementsSet :: (Ord element, Ord label) => label -> Labels element label -> Set.Set element
+getLabelElementsSet label (Labels labelElements _) = 
+	Map.findWithDefault Set.empty label labelElements
 
 getLabelElementsCount :: (Ord element, Ord label) => label -> Labels element label -> Int
 getLabelElementsCount label (Labels labelElements _) = 
