@@ -31,7 +31,9 @@ module Data.Graph.Labels (
 	getLabelElementsCount,
 	getElementLabelsCount,
 	containsLabel,
-	containsElement) where
+	containsElement,
+	labelContainsElement,
+	elementContainsLabel) where
 
 -- IMPORTS
 -------------------------------------------------------------------------------
@@ -162,3 +164,11 @@ containsLabel label (Labels labelElements _) =
 containsElement :: (Ord element, Ord label) => element -> Labels element label -> Bool
 containsElement element (Labels _ elementLabels) = 
 	Map.member element elementLabels
+
+labelContainsElement :: (Ord element, Ord label) => label -> element -> Labels element label -> Bool
+labelContainsElement label element l = 
+	Set.member element $ getLabelElementsSet label l
+
+elementContainsLabel :: (Ord element, Ord label) => element -> label -> Labels element label -> Bool
+elementContainsLabel element label l = 
+	Set.member label $ getElementLabelsSet element l
