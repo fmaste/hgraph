@@ -12,8 +12,8 @@ module Data.MultiMap (
 	getKeys,
 	getKeyCount,
 	getValues,
-	getValueCount,
 	getValuesSet,
+	getValueCount,
 	containsKey,
 	containsValue) where
 
@@ -81,14 +81,14 @@ getKeyCount m = Map.size m
 getValues :: (Ord k, Ord v) => k -> MultiMap k v -> [v]
 getValues k m = Set.elems $ getValuesSet k m
 
--- | The number of different values that exist for the key.
-getValueCount :: (Ord k, Ord v) => k -> MultiMap k v -> Int
-getValueCount k m = Set.size $ getValuesSet k m
-
 -- | A set with the different values that exist for the key.
 -- If key does not exist an empty Set is returned.
 getValuesSet :: (Ord k, Ord v) => k -> MultiMap k v -> Set.Set v
 getValuesSet k m = Map.findWithDefault Set.empty k m
+
+-- | The number of different values that exist for the key.
+getValueCount :: (Ord k, Ord v) => k -> MultiMap k v -> Int
+getValueCount k m = Set.size $ getValuesSet k m
 
 -- | Key exists?
 containsKey :: (Ord k, Ord v) => k -> MultiMap k v -> Bool
