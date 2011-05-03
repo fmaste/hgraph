@@ -8,6 +8,7 @@ module Data.MultiMap (
 	addValue,
 	removeValue,
 	removeAllValues,
+	isEmpty,
 	getKeys,
 	getKeyCount,
 	getValues,
@@ -64,6 +65,9 @@ removeAllValues k m = Map.adjust (const Set.empty) k m
 
 -- * QUERY FUNCTIONS
 -------------------------------------------------------------------------------
+
+isEmpty :: (Ord k, Ord v) => MultiMap k v -> Bool
+isEmpty m = Map.null m
 
 -- | A list with all the different keys.
 getKeys :: (Ord k, Ord v) => MultiMap k v -> [k]
