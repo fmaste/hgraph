@@ -56,7 +56,7 @@ addValue k v m = Map.insertWith (\new old -> Set.insert v old) k (Set.singleton 
 removeValue :: (Ord k, Ord v) => k -> v ->  MultiMap k v ->  MultiMap k v
 removeValue k v m = Map.adjust (Set.delete v) k m
 
--- | Removes all the values from the key.
+-- | Removes all the values from the key and the key is retained with no values.
 -- If key does not exist the original MultiMap is returned.
 -- If there are no values the original MultiMap is returned.
 removeAllValues :: (Ord k, Ord v) => k -> MultiMap k v ->  MultiMap k v
