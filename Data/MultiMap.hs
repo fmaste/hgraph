@@ -7,7 +7,6 @@ module Data.MultiMap (
 	removeKey,
 	addValue,
 	removeValue,
-	removeAllValues,
 	isEmpty,
 	getKeys,
 	getKeysSet,
@@ -16,7 +15,8 @@ module Data.MultiMap (
 	getValuesSet,
 	getValueCount,
 	containsKey,
-	containsValue) where
+	containsValue,
+	removeAllValues) where
 
 -- IMPORTS
 -------------------------------------------------------------------------------
@@ -29,7 +29,7 @@ import qualified Data.Set as Set
 
 type MultiMap k v = Map.Map k (Set.Set v)
 
--- * CONSTRUCTION FUNCTIONS
+-- * ATOMIC CONSTRUCTION FUNCTIONS
 -------------------------------------------------------------------------------
 
 -- | The empty MultiMap.
@@ -58,13 +58,7 @@ addValue k v m = Map.insertWith (\new old -> Set.insert v old) k (Set.singleton 
 removeValue :: (Ord k, Ord v) => k -> v ->  MultiMap k v ->  MultiMap k v
 removeValue k v m = Map.adjust (Set.delete v) k m
 
--- | Removes all the values from the key and the key is retained with no values.
--- If key does not exist the original MultiMap is returned.
--- If there are no values the original MultiMap is returned.
-removeAllValues :: (Ord k, Ord v) => k -> MultiMap k v ->  MultiMap k v
-removeAllValues k m = Map.adjust (const Set.empty) k m
-
--- * QUERY FUNCTIONS
+-- * ATOMIC QUERY FUNCTIONS
 -------------------------------------------------------------------------------
 
 isEmpty :: (Ord k, Ord v) => MultiMap k v -> Bool
@@ -102,3 +96,17 @@ containsKey k m = Map.member k m
 -- | Value exists?
 containsValue :: (Ord k, Ord v) => k -> v -> MultiMap k v -> Bool
 containsValue k v m = Set.member v $ getValuesSet k m
+
+-- * CONSTRUCTION FUNCTIONS
+-------------------------------------------------------------------------------
+
+-- | Removes all the values from the key and the key is retained with no values.
+-- If key does not exist the original MultiMap is returned.
+-- If there are no values the original MultiMap is returned.
+removeAllValues :: (Ord k, Ord v) => k -> MultiMap k v ->  MultiMap k v
+removeAllValues k m = Map.adjust (const Set.empty) k m
+
+-- * QUERY FUNCTIONS
+-------------------------------------------------------------------------------
+
+-- TODO
