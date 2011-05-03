@@ -10,6 +10,7 @@ module Data.MultiMap (
 	removeAllValues,
 	isEmpty,
 	getKeys,
+	getKeysSet,
 	getKeyCount,
 	getValues,
 	getValuesSet,
@@ -72,6 +73,10 @@ isEmpty m = Map.null m
 -- | A list with all the different keys.
 getKeys :: (Ord k, Ord v) => MultiMap k v -> [k]
 getKeys m = Map.keys m
+
+-- | A set with all the different keys.
+getKeysSet :: (Ord k, Ord v) => MultiMap k v -> Set.Set k
+getKeysSet m = Map.keysSet m
 
 -- | The number of different keys present.
 getKeyCount :: (Ord k, Ord v) => MultiMap k v -> Int
