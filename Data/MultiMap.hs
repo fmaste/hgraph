@@ -46,7 +46,7 @@ addKey k m = Map.insertWith (\new old -> old) k Set.empty m
 removeKey :: (Ord k, Ord v) => k -> MultiMap k v -> MultiMap k v
 removeKey k m = Map.delete k m
 
--- | Adds an value to key.
+-- | Adds a value to key.
 -- If key does not exist it is added.
 -- If the value already exists the original MultiMap is returned.
 addValue :: (Ord k, Ord v) => k -> v -> MultiMap k v -> MultiMap k v
