@@ -24,8 +24,7 @@ class Graph graph where
 	-- Creates a link from the first node to the second.
 	-- Is implementation dependent to decide if the order of the nodes is important (directed or undirected).
 	-- Is implementation dependent to allow or not multiple edges (simple or multigraph).
-	-- TODO: Add edge parameter
-	addEdge		:: (Ord node, Ord edge) => node -> node -> graph node edge -> graph node edge
+	addEdge		:: (Ord node, Ord edge) => node -> node -> edge -> graph node edge -> graph node edge
 
 	-- Removes the link(s) from the first node to the second.
 	-- Is implementation dependent to decide if the order of the nodes is important (directed or undirected).
