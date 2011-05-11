@@ -10,7 +10,6 @@ module Data.Graph.Digraph (
 
 import qualified Data.Graph as Graph
 import qualified Data.Graph.Adjacency as Adj
-import qualified Data.Map as Map
 
 -- DATA DEFINITION
 -------------------------------------------------------------------------------
