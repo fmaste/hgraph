@@ -9,12 +9,15 @@ module Data.Graph.Digraph (
 -------------------------------------------------------------------------------
 
 import qualified Data.Graph as Graph
+import qualified Data.Graph.Labels as L
 import qualified Data.Graph.Adjacency as Adj
 
 -- DATA DEFINITION
 -------------------------------------------------------------------------------
 
-data Digraph node edge = Digraph (Adj.Adjacency node)
+type EdgeLabels node edge = L.Labels (node, node) edge
+
+data Digraph node edge = Digraph (Adj.Adjacency node) (EdgeLabels node edge)
     deriving (Show, Read, Ord, Eq)
 
 -- CLASS DEFINITION
@@ -22,29 +25,29 @@ data Digraph node edge = Digraph (Adj.Adjacency node)
 
 instance Graph.Graph Digraph where
 
-	empty = Digraph Adj.empty
+	empty = Digraph Adj.empty L.empty
 
-	addNode node (Digraph adj) = Digraph adj' where
+	addNode node (Digraph adj labels) = Digraph adj' labels where
 		adj' = Adj.addNode node adj
 
-	removeNode node (Digraph adj) = Digraph adj' where
+	removeNode node (Digraph adj labels) = Digraph adj' labels where
 		adj' = Adj.removeNode node adj
 
-	addEdge src dst (Digraph adj) = Digraph adj' where
+	addEdge src dst (Digraph adj labels) = Digraph adj' labels where
 		adj' = Adj.addAdjacency src dst adj
 
-	removeEdge src dst (Digraph adj) = Digraph adj' where
+	removeEdge src dst (Digraph adj labels) = Digraph adj' labels where
 		adj' = Adj.removeAdjacency src dst adj
 
-	getNodes (Digraph adj) = Adj.getNodes adj
+	getNodes (Digraph adj _) = Adj.getNodes adj
 
-	getEdges (Digraph adj) = Adj.getAdjacencies adj
+	getEdges (Digraph adj _) = Adj.getAdjacencies adj
 
-	getNodeCount (Digraph adj) = Adj.getNodeCount adj
+	getNodeCount (Digraph adj _) = Adj.getNodeCount adj
 
 	-- TODO: getEdgeCount
 
-	containsNode node (Digraph adj) = Adj.containsNode node adj
+	containsNode node (Digraph adj _) = Adj.containsNode node adj
 
 	-- TODO: containsEdge
 
@@ -68,11 +71,11 @@ generatesCycle tail head digraph = isParent [tail] where
 
 -- Gets a list of all the nodes with no predecessors.
 roots :: (Ord node, Ord edge) => Digraph node edge -> [node]
-roots (Digraph adj) = filter (\x -> (Adj.getNodePredNodes x adj) == []) (Adj.getNodes adj)
+roots (Digraph adj _) = filter (\x -> (Adj.getNodePredNodes x adj) == []) (Adj.getNodes adj)
 
 -- Gets a list of all the nodes with no successors.
 leafs :: (Ord node, Ord edge) => Digraph node edge -> [node]
-leafs (Digraph adj) = filter (\x -> (Adj.getNodeSuccNodes x adj) == []) (Adj.getNodes adj)
+leafs (Digraph adj _) = filter (\x -> (Adj.getNodeSuccNodes x adj) == []) (Adj.getNodes adj)
 
 -- TODO: isolated (The nodes without connections)
 
@@ -81,7 +84,7 @@ leafs (Digraph adj) = filter (\x -> (Adj.getNodeSuccNodes x adj) == []) (Adj.get
 
 -- Gets a list with the direct successors of a node.
 heads :: (Ord node, Ord edge) => node -> Digraph node edge -> [node]
-heads node (Digraph adj) = Adj.getNodeSuccNodes node adj
+heads node (Digraph adj _) = Adj.getNodeSuccNodes node adj
 
 -- Generates a list of connection tuples (tail, head) with the direct successors of this node.
 headArcs :: (Ord node, Ord edge) => node -> Digraph node edge -> [(node, node)]
@@ -89,7 +92,7 @@ headArcs node digraph = map (\a -> (node, a)) (heads node digraph)
 
 -- Gets a list with the direct predecessors of a node.
 tails :: (Ord node, Ord edge) => node -> Digraph node edge -> [node]
-tails node (Digraph adj) = Adj.getNodePredNodes node adj
+tails node (Digraph adj _) = Adj.getNodePredNodes node adj
 
 -- Generates a list of connection tuples (tail, head) with the direct predecessors of this node.
 tailArcs :: (Ord node, Ord edge) => node -> Digraph node edge -> [(node, node)]
