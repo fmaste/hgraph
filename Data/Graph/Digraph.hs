@@ -20,12 +20,16 @@ type EdgeLabels node edge = Labels.Labels (node, node) edge
 data Digraph node edge = Digraph (Adj.Adjacency node) (EdgeLabels node edge)
     deriving (Show, Read, Ord, Eq)
 
+-- CONSTRUCTION FUNCTIONS
+-------------------------------------------------------------------------------
+
+empty :: (Ord node, Ord edge) => Digraph node edge
+empty = Digraph Adj.empty Labels.empty
+
 -- CLASS DEFINITION
 -------------------------------------------------------------------------------
 
 instance Graph.Graph Digraph where
-
-	empty = Digraph Adj.empty L.empty
 
 	addNode node (Digraph adj labels) = Digraph adj' labels where
 		adj' = Adj.addNode node adj

@@ -15,9 +15,6 @@ class Graph graph where
 	---- CONSTRUCTION FUNCTIONS -------------------------------------------
 	-----------------------------------------------------------------------
 
-	-- Create the empty graph.
-	empty		:: (Ord node, Ord edge) => graph node edge
-
 	-- Inserts a node to the graph without making any connection.
 	addNode 	:: (Ord node, Ord edge) => node -> graph node edge -> graph node edge
 
