@@ -9,13 +9,13 @@ module Data.Graph.Digraph (
 -------------------------------------------------------------------------------
 
 import qualified Data.Graph as Graph
-import qualified Data.Graph.Labels as L
+import qualified Data.Graph.Labels as Labels
 import qualified Data.Graph.Adjacency as Adj
 
 -- DATA DEFINITION
 -------------------------------------------------------------------------------
 
-type EdgeLabels node edge = L.Labels (node, node) edge
+type EdgeLabels node edge = Labels.Labels (node, node) edge
 
 data Digraph node edge = Digraph (Adj.Adjacency node) (EdgeLabels node edge)
     deriving (Show, Read, Ord, Eq)
