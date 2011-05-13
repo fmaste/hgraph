@@ -34,8 +34,9 @@ instance Graph.Graph Digraph where
 	addNode node (Digraph adj labels) = Digraph adj' labels where
 		adj' = Adj.addNode node adj
 
-	removeNode node (Digraph adj labels) = Digraph adj' labels where
+	removeNode node digraph@(Digraph adj labels) = Digraph adj' labels' where
 		adj' = Adj.removeNode node adj
+		labels' = foldl (\ans arc -> Labels.removeElement arc ans) labels $ Graph.nodeEdges node digraph
 
 	addEdge src dst edge (Digraph adj labels) = Digraph adj' labels' where
 		adj' = Adj.addAdjacency src dst adj
