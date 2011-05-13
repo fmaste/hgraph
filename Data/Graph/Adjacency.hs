@@ -233,8 +233,10 @@ revert (Adjacency succs preds) = Adjacency preds succs where
 reconstruct :: Ord node => Adjacency node -> Adjacency node
 reconstruct (Adjacency succs preds) = Adjacency succs' preds' where
 	succs' = foldl f MM.empty $ MM.getKeys preds where
+		-- TODO: The (MM.addKey key mm) should not be necessary, but QuickCheck fails without it!
 		f mm key = foldl g (MM.addKey key mm) $ MM.getValues key preds where
 			g mm pred = MM.addValue pred key mm 
 	preds' = foldl f MM.empty $ MM.getKeys succs where
+		-- TODO: The (MM.addKey key mm) should not be necessary, but QuickCheck fails without it!
 		f mm key = foldl g (MM.addKey key mm) $ MM.getValues key succs where
 			g mm succ = MM.addValue succ key mm 
