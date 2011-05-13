@@ -12,8 +12,8 @@ module Data.BinaryRelation (
 	removeRelation,
 	getDomain,
 	getCodomain,
-        getDomainSet,
-        getCodomainSet,
+        getDomainElements,
+        getCodomainElements,
 	getDomainCount,
 	getCodomainCount,
 	containsDomainElement,
@@ -107,17 +107,17 @@ removeRelation domain codomain (BinaryRelation relatedTo relatedFrom) =
 -- QUERY
 -------------------------------------------------------------------------------
 
-getDomain :: (Ord domain, Ord codomain) => BinaryRelation domain codomain -> [domain]
-getDomain (BinaryRelation relatedTo _) = MM.getKeys relatedTo
+getDomain :: (Ord domain, Ord codomain) => BinaryRelation domain codomain -> Set.Set domain
+getDomain (BinaryRelation relatedTo _) = MM.getKeysSet relatedTo
 
-getCodomain :: (Ord domain, Ord codomain) => BinaryRelation domain codomain -> [codomain]
-getCodomain (BinaryRelation _ relatedFrom) = MM.getKeys relatedFrom
+getCodomain :: (Ord domain, Ord codomain) => BinaryRelation domain codomain -> Set.Set codomain
+getCodomain (BinaryRelation _ relatedFrom) = MM.getKeysSet relatedFrom
 
-getDomainSet :: (Ord domain, Ord codomain) => BinaryRelation domain codomain -> Set.Set domain
-getDomainSet (BinaryRelation relatedTo _) = MM.getKeysSet relatedTo
+getDomainElements :: (Ord domain, Ord codomain) => BinaryRelation domain codomain -> [domain]
+getDomainElements (BinaryRelation relatedTo _) = MM.getKeys relatedTo
 
-getCodomainSet :: (Ord domain, Ord codomain) => BinaryRelation domain codomain -> Set.Set codomain
-getCodomainSet (BinaryRelation _ relatedFrom) = MM.getKeysSet relatedFrom
+getCodomainElements :: (Ord domain, Ord codomain) => BinaryRelation domain codomain -> [codomain]
+getCodomainElements (BinaryRelation _ relatedFrom) = MM.getKeys relatedFrom
 
 getDomainCount :: (Ord domain, Ord codomain) => BinaryRelation domain codomain -> Int
 getDomainCount (BinaryRelation relatedTo _) = MM.getKeyCount relatedTo
@@ -157,7 +157,7 @@ isRelatedFrom codomain domain (BinaryRelation _ relatedFrom) = MM.containsValue 
 
 -- All the relationships. Elements without relationships are not shown.
 getGraph :: (Ord domain, Ord codomain) => BinaryRelation domain codomain -> [(domain, codomain)]
-getGraph br = [ (domain, codomain) | domain <- getDomain br, codomain <- getRelatedTo domain br]
+getGraph br = [ (domain, codomain) | domain <- getDomainElements br, codomain <- getRelatedTo domain br]
 
 revert :: (Ord domain, Ord codomain) => BinaryRelation domain codomain -> BinaryRelation codomain domain
 revert (BinaryRelation relatedTo relatedFrom) = BinaryRelation relatedFrom relatedTo

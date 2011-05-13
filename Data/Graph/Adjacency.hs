@@ -125,7 +125,7 @@ removeNodePredAdjacencies node adj@(Adjacency br) = Adjacency br' where
 
 -- | A list with all the different nodes.
 getNodes :: Ord node => Adjacency node -> [node]
-getNodes (Adjacency br) = BR.getDomain br
+getNodes (Adjacency br) = BR.getDomainElements br
 
 -- | The number of different nodes present.
 getNodeCount :: Ord node => Adjacency node -> Int
@@ -178,7 +178,7 @@ getAdjacencies adj =
 -- | The number of different adjacencies.
 getAdjacencyCount :: Ord node => Adjacency node -> Int
 getAdjacencyCount (Adjacency br) = 
-	foldl (\ans key -> ans + (BR.getRelatedToCount key br)) 0 $ BR.getDomain br
+	foldl (\ans key -> ans + (BR.getRelatedToCount key br)) 0 $ BR.getDomainElements br
 
 -- | Node exists?
 containsNode :: Ord node => node -> Adjacency node -> Bool
