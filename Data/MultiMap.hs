@@ -102,14 +102,14 @@ getValueCount k mm = Set.size $ getValuesSet k mm
 containsKey :: (Ord k, Ord v) => k -> MultiMap k v -> Bool
 containsKey k (MultiMap m) = Map.member k m
 
--- | Value exists?
+-- | Value exists for the key?
 containsValue :: (Ord k, Ord v) => k -> v -> MultiMap k v -> Bool
 containsValue k v mm = Set.member v $ getValuesSet k mm
 
 -- * CONSTRUCTION FUNCTIONS
 -------------------------------------------------------------------------------
 
--- | Removes all the values from the key and the key is retained with no values.
+-- | Removes all the values from the key, the key is retained with no values.
 -- If key does not exist the original MultiMap is returned.
 -- If there are no values the original MultiMap is returned.
 removeValuesAll :: (Ord k, Ord v) => k -> MultiMap k v ->  MultiMap k v
