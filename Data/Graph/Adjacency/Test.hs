@@ -9,7 +9,6 @@ import Text.Printf
 main  = mapM_ (\(s,a) -> printf "%-30s: " s >> a) tests
 
 tests  = [
-	("Structure", QC.quickCheck AdjQC.prop_structure),
 	("Add node", QC.quickCheck AdjQC.prop_addNode),
 	("Contains node", QC.quickCheck AdjQC.prop_containsNode),
 	("Remove node", QC.quickCheck AdjQC.prop_removeNode),

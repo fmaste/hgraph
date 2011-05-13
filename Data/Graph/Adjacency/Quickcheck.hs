@@ -1,7 +1,6 @@
 -- Author: Federico Mastellone (fmaste@gmail.com)
 
 module Data.Graph.Adjacency.Quickcheck (
-	prop_structure,
 	prop_addNode,
 	prop_containsNode,
 	prop_removeNode,
@@ -57,11 +56,6 @@ removeFullArcList arcs adj = foldl (\adj' arc -> uncurry Adj.removeFullAdjacency
 
 -- * QUICKCHECK
 -------------------------------------------------------------------------------
-
--- | Reconstruct twice the Adjacency structure and check if it remains the same.
-prop_structure :: [(Int, Int)] -> Bool
-prop_structure arcs = adj == (Adj.reconstruct $ Adj.reconstruct $ adj) where
-	adj = addArcList arcs Adj.empty
 
 -- | Add all the nodes and check if they were added with getNodes.
 prop_addNode :: [Int] -> Bool
