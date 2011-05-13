@@ -40,7 +40,7 @@ instance Graph.Graph Digraph where
 
 	addEdge src dst edge (Digraph adj labels) = Digraph adj' labels' where
 		adj' = Adj.addAdjacency src dst adj
-		labels' = Labels.addElementLabel (src, dst) edge labels
+		labels' = Labels.addLabelToElement (src, dst) edge labels
 
 	removeEdge src dst edge (Digraph adj labels) = Digraph adj' labels' where
 		adj' = Adj.removeAdjacency src dst adj
