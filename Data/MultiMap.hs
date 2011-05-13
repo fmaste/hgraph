@@ -16,7 +16,7 @@ module Data.MultiMap (
 	getValueCount,
 	containsKey,
 	containsValue,
-	removeAllValues) where
+	removeValuesAll) where
 
 -- IMPORTS
 -------------------------------------------------------------------------------
@@ -112,8 +112,8 @@ containsValue k v mm = Set.member v $ getValuesSet k mm
 -- | Removes all the values from the key and the key is retained with no values.
 -- If key does not exist the original MultiMap is returned.
 -- If there are no values the original MultiMap is returned.
-removeAllValues :: (Ord k, Ord v) => k -> MultiMap k v ->  MultiMap k v
-removeAllValues k (MultiMap m) = MultiMap $ Map.adjust (const Set.empty) k m
+removeValuesAll :: (Ord k, Ord v) => k -> MultiMap k v ->  MultiMap k v
+removeValuesAll k (MultiMap m) = MultiMap $ Map.adjust (const Set.empty) k m
 
 -- * QUERY FUNCTIONS
 -------------------------------------------------------------------------------

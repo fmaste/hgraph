@@ -129,7 +129,7 @@ removeNodeAdjacencies node adj =
 -- If there are no adjacencies were this node is predecessor the original Adjacency is returned.
 removeNodeSuccAdjacencies :: Ord node => node -> Adjacency node -> Adjacency node
 removeNodeSuccAdjacencies node adj@(Adjacency succs preds) = Adjacency succs' preds' where
-	succs' = MM.removeAllValues node succs
+	succs' = MM.removeValuesAll node succs
 	preds' = foldl removeSuccFromPreds preds (getNodeSuccNodes node adj) where
 		removeSuccFromPreds predsMap predNode = MM.removeValue predNode node predsMap
 
@@ -140,7 +140,7 @@ removeNodePredAdjacencies :: Ord node => node -> Adjacency node -> Adjacency nod
 removeNodePredAdjacencies node adj@(Adjacency succs preds) = Adjacency succs' preds' where
 	succs' = foldl removePredFromSuccs succs (getNodePredNodes node adj) where
 		removePredFromSuccs succsMap succNode = MM.removeValue succNode node succsMap
-	preds' = MM.removeAllValues node preds
+	preds' = MM.removeValuesAll node preds
 
 -- * QUERY FUNCTIONS
 -------------------------------------------------------------------------------
