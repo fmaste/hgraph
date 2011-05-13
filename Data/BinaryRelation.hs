@@ -29,7 +29,7 @@ module Data.BinaryRelation (
 -- IMPORTS
 -------------------------------------------------------------------------------
 
-import Data.List (foldl')
+import Data.List (foldl, foldl', foldr)
 import qualified Data.Set as Set
 import qualified Data.MultiMap as MM
 
@@ -149,4 +149,47 @@ isRelatedFrom codomain domain (BinaryRelation _ relatedFrom) = MM.containsValue 
 -- All the relationships. Elements without relationships are not shown.
 getGraph :: (Ord domain, Ord codomain) => BinaryRelation domain codomain -> [(domain, codomain)]
 getGraph br = [ (domain, codomain) | domain <- getDomain br, codomain <- getRelatedTo domain br]
+
+-- TEST
+-------------------------------------------------------------------------------
+
+testWithFoldl' n =
+	foldl' 
+		(\ans (d,c) -> addRelation d c ans) 
+		(foldl' 
+			(\ans e -> addCodomainElement e ans) 
+			(foldl' 
+				(\ans e -> addDomainElement e ans) 
+				empty 
+				[1..n]
+			) 
+			[1..n]
+		) 
+		[ (d,c) | d <- [1..n], c <- [1..n]]
+
+testWithLetFoldl' n =
+	let
+		domainAdded = foldl' (\ans e -> addDomainElement e ans) empty [1..n]
+		domainAndCodomainAdded = foldl' (\ans e -> addCodomainElement e ans) domainAdded [1..n]
+	in foldl' (\ans (d,c) -> addRelation d c ans) domainAndCodomainAdded [ (d,c) | d <- [1..n], c <- [1..n]]
+
+testWithFoldr n =
+        foldr 
+                (\(d,c) ans -> addRelation d c ans)
+                (foldr
+                        (\e ans -> addCodomainElement e ans)
+                        (foldr
+                                (\e ans -> addDomainElement e ans)
+                                empty
+                                [1..n]
+                        )
+                        [1..n]
+                )
+                [ (d,c) | d <- [1..n], c <- [1..n]]
+
+testWithLetFoldr n =
+        let
+                domainAdded = foldr (\e ans -> addDomainElement e ans) empty [1..n]
+                domainAndCodomainAdded = foldr (\e ans-> addCodomainElement e ans) domainAdded [1..n]
+        in foldr (\(d,c) ans-> addRelation d c ans) domainAndCodomainAdded [ (d,c) | d <- [1..n], c <- [1..n]]
 
