@@ -12,6 +12,8 @@ module Data.BinaryRelation (
 	removeRelation,
 	getDomain,
 	getCodomain,
+        getDomainSet,
+        getCodomainSet,
 	getDomainCount,
 	getCodomainCount,
 	containsDomainElement,
@@ -24,7 +26,8 @@ module Data.BinaryRelation (
 	getRelatedFromCount,
 	isRelatedTo,
 	isRelatedFrom,
-	getGraph) where
+	getGraph,
+	revert) where
 
 -- IMPORTS
 -------------------------------------------------------------------------------
@@ -110,6 +113,12 @@ getDomain (BinaryRelation relatedTo _) = MM.getKeys relatedTo
 getCodomain :: (Ord domain, Ord codomain) => BinaryRelation domain codomain -> [codomain]
 getCodomain (BinaryRelation _ relatedFrom) = MM.getKeys relatedFrom
 
+getDomainSet :: (Ord domain, Ord codomain) => BinaryRelation domain codomain -> Set.Set domain
+getDomainSet (BinaryRelation relatedTo _) = MM.getKeysSet relatedTo
+
+getCodomainSet :: (Ord domain, Ord codomain) => BinaryRelation domain codomain -> Set.Set codomain
+getCodomainSet (BinaryRelation _ relatedFrom) = MM.getKeysSet relatedFrom
+
 getDomainCount :: (Ord domain, Ord codomain) => BinaryRelation domain codomain -> Int
 getDomainCount (BinaryRelation relatedTo _) = MM.getKeyCount relatedTo
 
@@ -149,6 +158,9 @@ isRelatedFrom codomain domain (BinaryRelation _ relatedFrom) = MM.containsValue 
 -- All the relationships. Elements without relationships are not shown.
 getGraph :: (Ord domain, Ord codomain) => BinaryRelation domain codomain -> [(domain, codomain)]
 getGraph br = [ (domain, codomain) | domain <- getDomain br, codomain <- getRelatedTo domain br]
+
+revert :: (Ord domain, Ord codomain) => BinaryRelation domain codomain -> BinaryRelation codomain domain
+revert (BinaryRelation relatedTo relatedFrom) = BinaryRelation relatedFrom relatedTo
 
 -- TEST
 -------------------------------------------------------------------------------
