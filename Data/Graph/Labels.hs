@@ -38,6 +38,7 @@ module Data.Graph.Labels (
 -- IMPORTS
 -------------------------------------------------------------------------------
 
+import Data.List (foldl')
 import qualified Data.Set as Set
 import qualified Data.MultiMap as MM
 
@@ -81,14 +82,14 @@ addElement element (Labels labelElements elementLabels) = Labels labelElements e
 removeLabel :: (Ord element, Ord label) => label -> Labels element label -> Labels element label
 removeLabel label adj@(Labels labelElements elementLabels) = Labels labelElements' elementLabels' where
 	labelElements' = MM.removeKey label labelElements
-	elementLabels' = foldl f elementLabels $ getLabelElements label adj where
+	elementLabels' = foldl' f elementLabels $ getLabelElements label adj where
 		f elementLabels'' element = MM.removeValue element label elementLabels''
 
 -- Removes an element and all its labels relationships.
 -- If this element does not exists the original Labels is returned.
 removeElement :: (Ord element, Ord label) => element -> Labels element label -> Labels element label
 removeElement element adj@(Labels labelElements elementLabels) = Labels labelElements' elementLabels' where
-	labelElements' = foldl f labelElements $ getElementLabels element adj where
+	labelElements' = foldl' f labelElements $ getElementLabels element adj where
 		f labelElements'' label = MM.removeValue label element labelElements''
 	elementLabels' = MM.removeKey element elementLabels
 

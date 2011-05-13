@@ -42,6 +42,7 @@ module Data.Graph.Adjacency (
 -- IMPORTS
 -------------------------------------------------------------------------------
 
+import Data.List (foldl')
 import qualified Data.Set as Set
 import qualified Data.Map as Map
 import qualified Data.MultiMap as MM
@@ -130,7 +131,7 @@ removeNodeAdjacencies node adj =
 removeNodeSuccAdjacencies :: Ord node => node -> Adjacency node -> Adjacency node
 removeNodeSuccAdjacencies node adj@(Adjacency succs preds) = Adjacency succs' preds' where
 	succs' = MM.removeValuesAll node succs
-	preds' = foldl removeSuccFromPreds preds (getNodeSuccNodes node adj) where
+	preds' = foldl' removeSuccFromPreds preds (getNodeSuccNodes node adj) where
 		removeSuccFromPreds predsMap predNode = MM.removeValue predNode node predsMap
 
 -- | Removes all the adjacencies were this node is successor.
@@ -138,7 +139,7 @@ removeNodeSuccAdjacencies node adj@(Adjacency succs preds) = Adjacency succs' pr
 -- If there are no adjacencies were this node is successor the original Adjacency is returned.
 removeNodePredAdjacencies :: Ord node => node -> Adjacency node -> Adjacency node
 removeNodePredAdjacencies node adj@(Adjacency succs preds) = Adjacency succs' preds' where
-	succs' = foldl removePredFromSuccs succs (getNodePredNodes node adj) where
+	succs' = foldl' removePredFromSuccs succs (getNodePredNodes node adj) where
 		removePredFromSuccs succsMap succNode = MM.removeValue succNode node succsMap
 	preds' = MM.removeValuesAll node preds
 
@@ -232,11 +233,11 @@ revert (Adjacency succs preds) = Adjacency preds succs where
 -- Used to demostrate that both structures have the same info but in defferent formats.
 reconstruct :: Ord node => Adjacency node -> Adjacency node
 reconstruct (Adjacency succs preds) = Adjacency succs' preds' where
-	succs' = foldl f MM.empty $ MM.getKeys preds where
+	succs' = foldl' f MM.empty $ MM.getKeys preds where
 		-- TODO: The (MM.addKey key mm) should not be necessary, but QuickCheck fails without it!
-		f mm key = foldl g (MM.addKey key mm) $ MM.getValues key preds where
+		f mm key = foldl' g (MM.addKey key mm) $ MM.getValues key preds where
 			g mm pred = MM.addValue pred key mm 
-	preds' = foldl f MM.empty $ MM.getKeys succs where
+	preds' = foldl' f MM.empty $ MM.getKeys succs where
 		-- TODO: The (MM.addKey key mm) should not be necessary, but QuickCheck fails without it!
-		f mm key = foldl g (MM.addKey key mm) $ MM.getValues key succs where
+		f mm key = foldl' g (MM.addKey key mm) $ MM.getValues key succs where
 			g mm succ = MM.addValue succ key mm 
