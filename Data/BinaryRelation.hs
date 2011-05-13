@@ -1,7 +1,7 @@
 -- Author: Federico Mastellone (fmaste@gmail.com)
 
 -- Generic module to manage binary relationships.
-module Data.Graph.BinaryRelation (
+module Data.BinaryRelation (
 	BinaryRelation(),
 	empty,
 	addDomainElement,
