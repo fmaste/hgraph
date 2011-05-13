@@ -23,7 +23,8 @@ module Data.Graph.BinaryRelation (
 	getRelatedToCount,
 	getRelatedFromCount,
 	isRelatedTo,
-	isRelatedFrom) where
+	isRelatedFrom,
+	getGraph) where
 
 -- IMPORTS
 -------------------------------------------------------------------------------
@@ -144,3 +145,8 @@ isRelatedTo domain codomain (BinaryRelation relatedTo _) = MM.containsValue doma
 
 isRelatedFrom :: (Ord domain, Ord codomain) => codomain -> domain -> BinaryRelation domain codomain -> Bool
 isRelatedFrom codomain domain (BinaryRelation _ relatedFrom) = MM.containsValue codomain domain relatedFrom
+
+-- All the relationships. Elements without relationships are not shown.
+getGraph :: (Ord domain, Ord codomain) => BinaryRelation domain codomain -> [(domain, codomain)]
+getGraph br = [ (domain, codomain) | domain <- getDomain br, codomain <- getRelatedTo domain br]
+
