@@ -41,10 +41,10 @@ module Data.Graph.Adjacency (
 -- IMPORTS
 -------------------------------------------------------------------------------
 
-import Data.List (foldl')
+import Data.List (foldl, foldl', foldr)
 import qualified Data.Set as Set
 import qualified Data.Map as Map
-import qualified Data.MultiMap as MM
+import qualified Data.BinaryRelation as BR
 
 -- * DATA DEFINITION
 -------------------------------------------------------------------------------
@@ -54,61 +54,41 @@ import qualified Data.MultiMap as MM
 -- This incidence lists only represent to which nodes a node is connected by 
 -- a single edge. Being the difference between both lists the diretion of the 
 -- edge, either "to" or "from" the node.
-data Adjacency node = Adjacency (NodeSuccs node) (NodePreds node)
+data Adjacency node = Adjacency (BR.BinaryRelation node node)
     deriving (Show, Read, Ord, Eq)
-
--- | The nodes that can be reached by a single edge from a given node.
--- A map of nodes as keys and a set of the nodes that are a direct successor of that node as value.
-type NodeSuccs node = MM.MultiMap node node
-
--- | The nodes that can reach by a single edge a given node.
--- A map of nodes as keys and a set of the nodes that are a direct predecessor of that node as value.
-type NodePreds node = MM.MultiMap node node
 
 -- * CONSTRUCTION FUNCTIONS
 -------------------------------------------------------------------------------
 
 -- | The empty Adjacency.
 empty :: Ord node => Adjacency node
-empty = Adjacency (MM.empty) (MM.empty)
+empty = Adjacency BR.empty
 
 -- | Adds a node without any adjacencies.
 -- If the node already exists the original Adjacency is returned.
 addNode :: Ord node => node -> Adjacency node -> Adjacency node
-addNode node (Adjacency succs preds) = Adjacency succs' preds' where
-	succs' = MM.addKey node succs
-	preds' = MM.addKey node preds
+addNode node (Adjacency br) = Adjacency br' where
+	br' = BR.addCodomainElement node $ BR.addDomainElement node br
 
 -- | Removes the node and all the adjacencies were the node participates.
 -- If the node does not exists the original Adjacency is returned.
 removeNode :: Ord node => node -> Adjacency node -> Adjacency node
-removeNode node adj = removeNode' $ removeNodeAdjacencies node adj where
-	removeNode' (Adjacency succs preds) = Adjacency succs' preds' where
-		succs' = MM.removeKey node succs
-		preds' = MM.removeKey node preds
-{- Can also be done as:
-	removeNode node (Adjacency succs preds) = Adjacency succs' preds' where
-		succs' = Map.delete node (Map.map (Set.delete node) succs)
-		preds' = Map.delete node (Map.map (Set.delete node) preds)
-	But this means interating through all the internal sets (can be very big)
-	and I already know which sets because of the succ/preds indexes.
--}
+removeNode node (Adjacency br) = Adjacency br' where
+	br' = BR.removeCodomainElement node $ BR.removeDomainElement node br
 
 -- | Adds an adjacency from src to dst.
 -- If src or dst do not exist they are added.
 -- If the adjacency already exists the original Adjacency is returned.
 addAdjacency :: Ord node => node -> node -> Adjacency node -> Adjacency node
-addAdjacency src dst (Adjacency succs preds) = Adjacency succs' preds' where
-	succs' = MM.addKey dst $ MM.addValue src dst succs
-	preds' = MM.addKey src $ MM.addValue dst src preds
+addAdjacency src dst (Adjacency br) = Adjacency br' where
+	br' = BR.addRelation src dst br
 
 -- | Removes the adjacency from src to dst.
 -- If src or dst do not exist the original Adjacency is returned.
 -- If the adjancecy does not exists the original Adjacency is returned.
 removeAdjacency :: Ord node => node -> node -> Adjacency node -> Adjacency node
-removeAdjacency src dst (Adjacency succs preds) = Adjacency succs' preds' where
-	succs' = MM.removeValue src dst succs
-	preds' = MM.removeValue dst src preds
+removeAdjacency src dst (Adjacency br) = Adjacency br' where
+	br' = BR.removeRelation src dst br
 
 -- | Removes all the adjacencies between node1 and node2.
 -- If node1 or node2 do not exist the original Adjacency is returned.
@@ -128,46 +108,44 @@ removeNodeAdjacencies node adj =
 -- If node does not exists the original Adjacency is returned.
 -- If there are no adjacencies were this node is predecessor the original Adjacency is returned.
 removeNodeSuccAdjacencies :: Ord node => node -> Adjacency node -> Adjacency node
-removeNodeSuccAdjacencies node adj@(Adjacency succs preds) = Adjacency succs' preds' where
-	succs' = MM.removeValuesAll node succs
-	preds' = foldl' removeSuccFromPreds preds (getNodeSuccNodes node adj) where
-		removeSuccFromPreds predsMap predNode = MM.removeValue predNode node predsMap
+removeNodeSuccAdjacencies node adj@(Adjacency br) = Adjacency br' where
+	br' = foldl' removeSuccFromPreds br (getNodeSuccNodes node adj) where
+		removeSuccFromPreds br'' predNode = BR.removeRelation predNode node br
 
 -- | Removes all the adjacencies were this node is successor.
 -- If node does not exists the original Adjacency is returned.
 -- If there are no adjacencies were this node is successor the original Adjacency is returned.
 removeNodePredAdjacencies :: Ord node => node -> Adjacency node -> Adjacency node
-removeNodePredAdjacencies node adj@(Adjacency succs preds) = Adjacency succs' preds' where
-	succs' = foldl' removePredFromSuccs succs (getNodePredNodes node adj) where
-		removePredFromSuccs succsMap succNode = MM.removeValue succNode node succsMap
-	preds' = MM.removeValuesAll node preds
+removeNodePredAdjacencies node adj@(Adjacency br) = Adjacency br' where
+	br' = foldl' removePredFromSuccs br (getNodePredNodes node adj) where
+		removePredFromSuccs br'' succNode = BR.removeRelation succNode node br
 
 -- * QUERY FUNCTIONS
 -------------------------------------------------------------------------------
 
 -- | A list with all the different nodes.
 getNodes :: Ord node => Adjacency node -> [node]
-getNodes (Adjacency succs _) = MM.getKeys succs
+getNodes (Adjacency br) = BR.getDomain br
 
 -- | The number of different nodes present.
 getNodeCount :: Ord node => Adjacency node -> Int
-getNodeCount (Adjacency succs _) = MM.getKeyCount succs
+getNodeCount (Adjacency br) = BR.getDomainCount br
 
 -- | Get all the different nodes that are successors.
 getNodeSuccNodes :: Ord node => node -> Adjacency node -> [node]
-getNodeSuccNodes node (Adjacency succs _) = MM.getValues node succs
+getNodeSuccNodes node (Adjacency br) = BR.getRelatedTo node br
 
 -- | Get all the different nodes that are predecessors.
 getNodePredNodes :: Ord node => node -> Adjacency node -> [node]
-getNodePredNodes node (Adjacency _ preds) = MM.getValues node preds
+getNodePredNodes node (Adjacency br) = BR.getRelatedFrom node br
 
 -- | A set with the node successors.
 getNodeSuccNodesSet :: Ord node => node -> Adjacency node -> Set.Set node
-getNodeSuccNodesSet node (Adjacency succs _) = MM.getValuesSet node succs
+getNodeSuccNodesSet node (Adjacency br) = BR.getRelatedToSet node br
 
 -- | A set with the node predecessors.
 getNodePredNodesSet :: Ord node => node -> Adjacency node -> Set.Set node
-getNodePredNodesSet node (Adjacency _ preds) = MM.getValuesSet node preds
+getNodePredNodesSet node (Adjacency br) = BR.getRelatedFromSet node br
 
 -- | The different nodes that are adjacencent, either succs or preds.
 getNodeAdjacentNodes :: Ord node => node -> Adjacency node -> [node]
@@ -199,12 +177,12 @@ getAdjacencies adj =
 
 -- | The number of different adjacencies.
 getAdjacencyCount :: Ord node => Adjacency node -> Int
-getAdjacencyCount (Adjacency succs _) = 
-	foldl (\ans key -> ans + (MM.getValueCount key succs)) 0 $ MM.getKeys succs
+getAdjacencyCount (Adjacency br) = 
+	foldl (\ans key -> ans + (BR.getRelatedToCount key br)) 0 $ BR.getDomain br
 
 -- | Node exists?
 containsNode :: Ord node => node -> Adjacency node -> Bool
-containsNode node (Adjacency succs _) = MM.containsKey node succs
+containsNode node (Adjacency br) = BR.containsDomainElement node br
 
 -- | Is this a successor of node?
 containsNodeSucc :: Ord node => node -> node -> Adjacency node -> Bool
@@ -216,12 +194,12 @@ containsNodePred node pred adj = containsAdjacency pred node adj
 
 -- | Adjacency exists?
 containsAdjacency :: Ord node => node -> node -> Adjacency node -> Bool
-containsAdjacency src dst (Adjacency succs _) = MM.containsValue src dst succs
+containsAdjacency src dst (Adjacency br) = BR.isRelatedTo src dst br
 
 -- * CONVERSION
 -------------------------------------------------------------------------------
 
 -- | All connections are reverted, every src -> dst becomes src <- dst.
 revert :: Ord node => Adjacency node -> Adjacency node
-revert (Adjacency succs preds) = Adjacency preds succs where
+revert (Adjacency br) = Adjacency (BR.revert br) where
 
