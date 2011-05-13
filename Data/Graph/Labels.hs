@@ -19,7 +19,7 @@ module Data.Graph.Labels (
 	removeLabel,
 	removeElement,
 	addLabelToElement,
-	removeElementLabel,
+	removeLabelFromElement,
 	getLabels,
 	getElements,
 	getLabelsCount,
@@ -107,8 +107,8 @@ addLabelToElement element label (Labels labelElements elementLabels) =
 -- If the element or label don't exist the original Labels is returned.
 -- If one or more labels already existed for this element only one is removed.
 -- If this element already exists for this label the original Labels is returned.
-removeElementLabel :: (Ord element, Ord label) => element -> label -> Labels element label -> Labels element label
-removeElementLabel element label (Labels labelElements elementLabels) = 
+removeLabelFromElement :: (Ord element, Ord label) => element -> label -> Labels element label -> Labels element label
+removeLabelFromElement element label (Labels labelElements elementLabels) = 
 	let 
 		labelElements' = MM.removeValue label element labelElements
 		elementLabels' = MM.removeValue element label elementLabels
