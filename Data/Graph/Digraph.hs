@@ -8,6 +8,7 @@ module Data.Graph.Digraph (
 -- IMPORTS
 -------------------------------------------------------------------------------
 
+import Data.List (foldl, foldl', foldr)
 import qualified Data.Graph as Graph
 import qualified Data.Graph.Labels as Labels
 import qualified Data.Graph.Adjacency as Adj
@@ -36,7 +37,7 @@ instance Graph.Graph Digraph where
 
 	removeNode node digraph@(Digraph adj labels) = Digraph adj' labels' where
 		adj' = Adj.removeNode node adj
-		labels' = foldl (\ans arc -> Labels.removeElement arc ans) labels $ Graph.nodeEdges node digraph
+		labels' = foldl' (\ans arc -> Labels.removeElement arc ans) labels $ Graph.nodeEdges node digraph
 
 	addEdge src dst edge (Digraph adj labels) = Digraph adj' labels' where
 		adj' = Adj.addAdjacency src dst adj
