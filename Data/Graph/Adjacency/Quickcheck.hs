@@ -146,14 +146,14 @@ prop_removeNodeSuccs :: [(Int, Int)] -> Int -> Bool
 prop_removeNodeSuccs arcs node = (nodesSuccsFromCreatedAdjacency adj == []) && (not $ nodeIsInPreds adj) where
 	adj = Adj.removeNodeSuccAdjacencies node $ addArcList arcs Adj.empty
 	nodesSuccsFromCreatedAdjacency adj = List.sort $ Adj.getNodeSuccNodes node adj
-	nodeIsInPreds adj = foldl (\ans (src, dst) -> ans || (src == node)) False (Adj.getAdjacencies adj)
+	nodeIsInPreds adj = any (\(src, dst) -> src == node) (Adj.getAdjacencies adj)
 
 -- | Remove all the node's pred adjacencies and check if they were removed with getAdjacencies.
 prop_removeNodePreds :: [(Int, Int)] -> Int -> Bool
 prop_removeNodePreds arcs node = (nodesPredsFromCreatedAdjacency adj == []) && (not $ nodeIsInSuccs adj) where
 	adj = Adj.removeNodePredAdjacencies node $ addArcList arcs Adj.empty
 	nodesPredsFromCreatedAdjacency adj = List.sort $ Adj.getNodePredNodes node adj
-	nodeIsInSuccs adj = foldl (\ans (src, dst) -> ans || (dst == node)) False (Adj.getAdjacencies adj)
+	nodeIsInSuccs adj = any (\(src, dst) -> dst == node) (Adj.getAdjacencies adj)
 
 --prop_addAdjacency arcs = (Set.fromList nodes) == (Set.fromList $ getNodes $ foldl (\adj node -> addNode node adj) empty nodes)
 --  where types = arcs :: [(Int, Int)]
