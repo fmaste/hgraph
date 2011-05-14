@@ -9,8 +9,8 @@ import Text.Printf
 main  = mapM_ (\(s,a) -> printf "%-30s: " s >> a) tests
 
 tests  = [
-	("Add to domain, check domain", QC.quickCheck BRQC.prop_addToDomain),
-	("Add to codomain, check codomain", QC.quickCheck BRQC.prop_addToCodomain),
+	("Add to domain, check domain", QC.quickCheck BRQC.prop_addToDomainCheckDomain),
+	("Add to codomain, check codomain", QC.quickCheck BRQC.prop_addToCodomainCheckCodomain),
 	("Add to domain, check domain count", QC.quickCheck BRQC.prop_addToDomainCount),
 	("Add to codomain, check codomain count", QC.quickCheck BRQC.prop_addToCodomainCount),
 	("Add to domain, check getCodomain", QC.quickCheck BRQC.prop_addToDomainCheckCodomain),

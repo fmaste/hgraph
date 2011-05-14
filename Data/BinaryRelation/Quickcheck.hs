@@ -1,8 +1,8 @@
 -- Author: Federico Mastellone (fmaste@gmail.com)
 
 module Data.BinaryRelation.Quickcheck (
-	prop_addToDomain,
-	prop_addToCodomain,
+	prop_addToDomainCheckDomain,
+	prop_addToCodomainCheckCodomain,
 	prop_addToDomainCount,
 	prop_addToCodomainCount,
 	prop_addToDomainCheckCodomain,
@@ -49,14 +49,14 @@ removeRelations relations br = List.foldl' (\br' (domain, codomain) -> BR.remove
 -------------------------------------------------------------------------------
 
 -- | Add all the elements to the domain and check if they were added with getDomain.
-prop_addToDomain :: [Int] -> Bool
-prop_addToDomain elements = BR.getDomain createdBR == insertedElementsSet where
+prop_addToDomainCheckDomain :: [Int] -> Bool
+prop_addToDomainCheckDomain elements = BR.getDomain createdBR == insertedElementsSet where
 	createdBR = addElementsToDomain elements (BR.empty :: BR.BinaryRelation Int Int)
 	insertedElementsSet = Set.fromList elements
 
 -- | Add all the elements to the codomain and check if they were added with getCodomain.
-prop_addToCodomain :: [Int] -> Bool
-prop_addToCodomain elements = BR.getCodomain createdBR == insertedElementsSet where
+prop_addToCodomainCheckCodomain :: [Int] -> Bool
+prop_addToCodomainCheckCodomain elements = BR.getCodomain createdBR == insertedElementsSet where
 	createdBR = addElementsToCodomain elements (BR.empty :: BR.BinaryRelation Int Int)
 	insertedElementsSet = Set.fromList elements
 
