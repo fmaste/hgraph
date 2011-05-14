@@ -44,8 +44,11 @@ instance Graph.Graph Digraph where
 		labels' = Labels.addLabelToElement (src, dst) edge labels
 
 	removeEdge src dst edge (Digraph adj labels) = Digraph adj' labels' where
-		adj' = Adj.removeAdjacency src dst adj
 		labels' = Labels.removeLabelFromElement (src, dst) edge labels
+		adj' = 
+			if Labels.getElementLabelsCount (src, dst) labels' == 0 then
+			Adj.removeAdjacency src dst adj else
+			adj
 
 	getNodes (Digraph adj _) = Adj.getNodes adj
 
