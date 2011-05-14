@@ -37,7 +37,7 @@ import qualified Data.BinaryRelation as BR
 
 -- We defined Labels with two structures, one with the label -> element 
 -- relationships and the other with the element -> label.
-data Labels element label = Labels (BR.BinaryRelation element label)
+newtype Labels element label = Labels (BR.BinaryRelation element label)
     deriving (Show, Read, Ord, Eq)
 
 -- CONSTRUCTION
