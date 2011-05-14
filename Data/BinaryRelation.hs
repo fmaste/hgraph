@@ -41,6 +41,7 @@ import qualified Data.MultiMap as MM
 
 -- We defined BinaryRelation with two structures, one with the domain -> codomain 
 -- relationships and the other with the codomain <- domain ones.
+-- This double structure helps to make faster queries but less performant delete operations.
 data BinaryRelation domain codomain = BinaryRelation (RelatedTo domain codomain) (RelatedFrom domain codomain)
     deriving (Show, Read, Ord, Eq)
 
