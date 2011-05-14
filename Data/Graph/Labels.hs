@@ -29,124 +29,105 @@ module Data.Graph.Labels (
 -- IMPORTS
 -------------------------------------------------------------------------------
 
-import Data.List (foldl')
 import qualified Data.Set as Set
-import qualified Data.MultiMap as MM
+import qualified Data.BinaryRelation as BR
 
 -- DATA DEFINITION
 -------------------------------------------------------------------------------
 
 -- We defined Labels with two structures, one with the label -> element 
 -- relationships and the other with the element -> label.
-data Labels element label = Labels (LabelElements element label) (ElementLabels element label)
+data Labels element label = Labels (BR.BinaryRelation element label)
     deriving (Show, Read, Ord, Eq)
-
--- A label may appear on any element.
--- A labels contains a Set of elements.
-type LabelElements element label = MM.MultiMap label element
-
--- An element may contain any labels.
--- An element contains a Set of labels.
-type ElementLabels element label = MM.MultiMap element label
 
 -- CONSTRUCTION
 -------------------------------------------------------------------------------
 
 -- The empty Labels.
 empty :: (Ord element, Ord label) => Labels element label
-empty = Labels MM.empty MM.empty
+empty = Labels BR.empty
 
 -- Adds a label without any elements relationships.
 -- If this label already exists the original Labels is returned.
 addLabel :: (Ord element, Ord label) => label -> Labels element label -> Labels element label
-addLabel label (Labels labelElements elementLabels) = Labels labelElements' elementLabels where
-	labelElements' = MM.addKey label labelElements
+addLabel label (Labels br) = Labels br' where
+	br' = BR.addCodomainElement label br
 
 -- Adds an element without any labels relationships.
 -- If this element already exists the original Labels is returned.
 addElement :: (Ord element, Ord label) => element -> Labels element label -> Labels element label
-addElement element (Labels labelElements elementLabels) = Labels labelElements elementLabels' where
-	elementLabels' = MM.addKey element elementLabels
+addElement element (Labels br) = Labels br' where
+	br' = BR.addDomainElement element br
 
 -- Removes a label and all its elements relationships.
 -- If this label does not exists the original Labels is returned.
 removeLabel :: (Ord element, Ord label) => label -> Labels element label -> Labels element label
-removeLabel label adj@(Labels labelElements elementLabels) = Labels labelElements' elementLabels' where
-	labelElements' = MM.removeKey label labelElements
-	elementLabels' = foldl' f elementLabels $ getLabelElements label adj where
-		f elementLabels'' element = MM.removeValue element label elementLabels''
+removeLabel label (Labels br) = Labels br' where
+	br' = BR.removeCodomainElement label br
 
 -- Removes an element and all its labels relationships.
 -- If this element does not exists the original Labels is returned.
 removeElement :: (Ord element, Ord label) => element -> Labels element label -> Labels element label
-removeElement element adj@(Labels labelElements elementLabels) = Labels labelElements' elementLabels' where
-	labelElements' = foldl' f labelElements $ getElementLabels element adj where
-		f labelElements'' label = MM.removeValue label element labelElements''
-	elementLabels' = MM.removeKey element elementLabels
+removeElement element (Labels br) = Labels br' where
+	br' = BR.removeDomainElement element br
 
 -- Adds a label to the element.
 -- If the element or label don't exist they are added.
 -- If one or more labels already existed for this element it is appended.
 -- If this label already exists for this element the original Labels is returned.
 addLabelToElement :: (Ord element, Ord label) => element -> label -> Labels element label -> Labels element label
-addLabelToElement element label (Labels labelElements elementLabels) =
-	let 
-		labelElements' = MM.addValue label element labelElements
-		elementLabels' = MM.addValue element label elementLabels
-	in Labels labelElements' elementLabels'
+addLabelToElement element label (Labels br) = Labels br' where
+	br' = BR.addRelation element label br
 
 -- Removes a label from the element.
 -- If the element or label don't exist the original Labels is returned.
 -- If one or more labels already existed for this element only one is removed.
 -- If this element already exists for this label the original Labels is returned.
 removeLabelFromElement :: (Ord element, Ord label) => element -> label -> Labels element label -> Labels element label
-removeLabelFromElement element label (Labels labelElements elementLabels) = 
-	let 
-		labelElements' = MM.removeValue label element labelElements
-		elementLabels' = MM.removeValue element label elementLabels
-	in Labels labelElements' elementLabels'
+removeLabelFromElement element label (Labels br) = Labels br' where
+	br' = BR.removeRelation element label br
 
 -- QUERY
 -------------------------------------------------------------------------------
 
 getLabels :: (Ord element, Ord label) => Labels element label -> [label]
-getLabels (Labels labelElements _) = MM.getKeys labelElements
+getLabels (Labels br) = BR.getCodomainElements br
 
 getElements :: (Ord element, Ord label) => Labels element label -> [element]
-getElements (Labels _ elementLabels) = MM.getKeys elementLabels
+getElements (Labels br) = BR.getDomainElements br
 
 getLabelsCount :: (Ord element, Ord label) => Labels element label -> Int
-getLabelsCount (Labels labelElements _) = MM.getKeyCount labelElements
+getLabelsCount (Labels br) = BR.getCodomainCount br
 
 getElementsCount :: (Ord element, Ord label) => Labels element label -> Int
-getElementsCount (Labels _ elementLabels) = MM.getKeyCount elementLabels
+getElementsCount (Labels br) = BR.getDomainCount br
 
 getLabelElements :: (Ord element, Ord label) => label -> Labels element label -> [element]
-getLabelElements label (Labels labelElements _) = MM.getValues label labelElements
+getLabelElements label (Labels br) = BR.getRelatedFromElements label br
 
 getElementLabels :: (Ord element, Ord label) => element -> Labels element label -> [label]
-getElementLabels element (Labels _ elementLabels) = MM.getValues element elementLabels
+getElementLabels element (Labels br) = BR.getRelatedToElements element br
 
 getLabelElementsSet :: (Ord element, Ord label) => label -> Labels element label -> Set.Set element
-getLabelElementsSet label (Labels labelElements _) = MM.getValuesSet label labelElements
+getLabelElementsSet label (Labels br) = BR.getRelatedFrom label br
 
 getElementLabelsSet :: (Ord element, Ord label) => element -> Labels element label -> Set.Set label
-getElementLabelsSet element (Labels _ elementLabels) = MM.getValuesSet element elementLabels
+getElementLabelsSet element (Labels br) = BR.getRelatedTo element br
 
 getLabelElementsCount :: (Ord element, Ord label) => label -> Labels element label -> Int
-getLabelElementsCount label (Labels labelElements _) = MM.getValueCount label labelElements
+getLabelElementsCount label (Labels br) = BR.getRelatedFromCount label br
 
 getElementLabelsCount :: (Ord element, Ord label) => element -> Labels element label -> Int
-getElementLabelsCount element (Labels _ elementLabels) = MM.getValueCount element elementLabels
+getElementLabelsCount element (Labels br) = BR.getRelatedToCount element br
 
 containsLabel :: (Ord element, Ord label) => label -> Labels element label -> Bool
-containsLabel label (Labels labelElements _) = MM.containsKey label labelElements
+containsLabel label (Labels br) = BR.containsCodomainElement label br
 
 containsElement :: (Ord element, Ord label) => element -> Labels element label -> Bool
-containsElement element (Labels _ elementLabels) = MM.containsKey element elementLabels
+containsElement element (Labels br) = BR.containsDomainElement element br
 
 labelContainsElement :: (Ord element, Ord label) => label -> element -> Labels element label -> Bool
-labelContainsElement label element (Labels labelElements _) = MM.containsValue label element labelElements
+labelContainsElement label element (Labels br) = BR.isRelatedFrom label element br
 
 elementContainsLabel :: (Ord element, Ord label) => element -> label -> Labels element label -> Bool
-elementContainsLabel element label (Labels _ elementLabels) = MM.containsValue element label elementLabels
+elementContainsLabel element label (Labels br) = BR.isRelatedTo element label br
