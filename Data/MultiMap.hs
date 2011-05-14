@@ -2,12 +2,14 @@
 
 -- Every key has a set of elements.
 module Data.MultiMap (
+	-- Atomic construction functions
 	MultiMap(),
 	empty,
 	addKey,
 	removeKey,
 	addValue,
 	removeValue,
+	-- Atomic query functions
 	isEmpty,
 	getKeys,
 	getKeyCount,
@@ -15,6 +17,7 @@ module Data.MultiMap (
 	getValueCount,
 	containsKey,
 	containsValue,
+	-- Extra functions
 	getKeysSet,
 	getValuesList,
 	getValuesAndRemoveKey,
