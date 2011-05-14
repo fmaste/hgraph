@@ -8,7 +8,9 @@ module Data.BinaryRelation.Quickcheck (
 	prop_addToDomainCheckCodomain,
 	prop_addToCodomainCheckDomain,
 	prop_addToDomainCheckCodomainCount,
-	prop_addToCodomainCheckDomainCount) where
+	prop_addToCodomainCheckDomainCount,
+	prop_addToDomainCheckRelations,
+	prop_addToCodomainCheckRelations) where
 
 -- IMPORTS
 -------------------------------------------------------------------------------
@@ -90,4 +92,14 @@ prop_addToDomainCheckCodomainCount elements = BR.getCodomainCount createdBR == 0
 -- | Add all the elements to the codomain and check if the domain count is 0.
 prop_addToCodomainCheckDomainCount :: [Int] -> Bool
 prop_addToCodomainCheckDomainCount elements = BR.getDomainCount createdBR == 0 where
+	createdBR = addElementsToCodomain elements (BR.empty :: BR.BinaryRelation Int Int)
+
+-- | Add all the elements to the domain and check if there are relations.
+prop_addToDomainCheckRelations :: [Int] -> Bool
+prop_addToDomainCheckRelations elements = BR.getGraph createdBR == [] where
+	createdBR = addElementsToDomain elements (BR.empty :: BR.BinaryRelation Int Int)
+
+-- | Add all the elements to the codomain and check if there are relations.
+prop_addToCodomainCheckRelations :: [Int] -> Bool
+prop_addToCodomainCheckRelations elements = BR.getGraph createdBR == [] where
 	createdBR = addElementsToCodomain elements (BR.empty :: BR.BinaryRelation Int Int)

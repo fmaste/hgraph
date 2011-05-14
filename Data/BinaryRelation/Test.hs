@@ -6,8 +6,8 @@ import qualified Test.QuickCheck as QC
 import Data.BinaryRelation.Quickcheck as BRQC
 import Text.Printf
 
-main  = mapM_ (\(s,a) -> printf "%-30s: " s >> a) tests
-
+main  = mapM_ (\(s,a) -> printf "%-30s: " s >> a) tests	
+	
 tests  = [
 	("Add to domain, check domain", QC.quickCheck BRQC.prop_addToDomainCheckDomain),
 	("Add to codomain, check codomain", QC.quickCheck BRQC.prop_addToCodomainCheckCodomain),
@@ -16,4 +16,6 @@ tests  = [
 	("Add to domain, check getCodomain", QC.quickCheck BRQC.prop_addToDomainCheckCodomain),
 	("Add to codomain, check getDomain", QC.quickCheck BRQC.prop_addToCodomainCheckDomain),
 	("Add to domain, check getCodomainCount", QC.quickCheck BRQC.prop_addToDomainCheckCodomainCount),
-	("Add to codomain, check getDomainCount", QC.quickCheck BRQC.prop_addToCodomainCheckDomainCount)]
+	("Add to codomain, check getDomainCount", QC.quickCheck BRQC.prop_addToCodomainCheckDomainCount),
+	("Add to domain, check relations", QC.quickCheck BRQC.prop_addToDomainCheckRelations),
+	("Add to codomain, check relations", QC.quickCheck BRQC.prop_addToCodomainCheckRelations)]
