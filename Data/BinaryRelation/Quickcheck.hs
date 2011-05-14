@@ -50,6 +50,8 @@ removeRelations relations br = List.foldl' (\br' (domain, codomain) -> BR.remove
 -- * QUICKCHECK
 -------------------------------------------------------------------------------
 
+-- ADD ELEMENTS
+
 -- | Add all the elements to the domain and check if they were added with getDomain.
 prop_addToDomainCheckDomain :: [Int] -> Bool
 prop_addToDomainCheckDomain elements = BR.getDomain createdBR == insertedElementsSet where
@@ -103,3 +105,7 @@ prop_addToDomainCheckRelations elements = BR.getGraph createdBR == [] where
 prop_addToCodomainCheckRelations :: [Int] -> Bool
 prop_addToCodomainCheckRelations elements = BR.getGraph createdBR == [] where
 	createdBR = addElementsToCodomain elements (BR.empty :: BR.BinaryRelation Int Int)
+
+-- REMOVE ELEMENTS
+
+-- TODO
