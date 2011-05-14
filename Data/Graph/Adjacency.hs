@@ -54,7 +54,7 @@ import qualified Data.BinaryRelation as BR
 -- This incidence lists only represent to which nodes a node is connected by 
 -- a single edge. Being the difference between both lists the diretion of the 
 -- edge, either "to" or "from" the node.
-data Adjacency node = Adjacency (BR.BinaryRelation node node)
+newtype Adjacency node = Adjacency (BR.BinaryRelation node node)
     deriving (Show, Read, Ord, Eq)
 
 -- * CONSTRUCTION FUNCTIONS
