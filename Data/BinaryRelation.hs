@@ -26,6 +26,7 @@ module Data.BinaryRelation (
 	getRelatedFromCount,
 	isRelatedTo,
 	isRelatedFrom,
+	containsRelation,
 	getGraph,
 	revert) where
 
@@ -155,10 +156,13 @@ getRelatedFromCount :: (Ord domain, Ord codomain) => codomain -> BinaryRelation 
 getRelatedFromCount element (BinaryRelation _ relatedFrom) = MM.getValueCount element relatedFrom
 
 isRelatedTo :: (Ord domain, Ord codomain) => domain -> codomain -> BinaryRelation domain codomain -> Bool
-isRelatedTo domain codomain (BinaryRelation relatedTo _) = MM.containsValue domain codomain relatedTo
+isRelatedTo domain codomain br = containsRelation domain codomain br
 
 isRelatedFrom :: (Ord domain, Ord codomain) => codomain -> domain -> BinaryRelation domain codomain -> Bool
-isRelatedFrom codomain domain (BinaryRelation _ relatedFrom) = MM.containsValue codomain domain relatedFrom
+isRelatedFrom codomain domain br = containsRelation domain codomain br
+
+containsRelation :: (Ord domain, Ord codomain) => domain -> codomain ->  BinaryRelation domain codomain -> Bool
+containsRelation domain codomain  (BinaryRelation relatedTo _) = MM.containsValue domain codomain relatedTo
 
 -- RELATION THEORY
 -------------------------------------------------------------------------------
