@@ -110,7 +110,7 @@ removeNodeAdjacencies node adj =
 removeNodeSuccAdjacencies :: Ord node => node -> Adjacency node -> Adjacency node
 removeNodeSuccAdjacencies node adj@(Adjacency br) = Adjacency br' where
 	br' = foldl' removeSuccFromPreds br (getNodeSuccNodes node adj) where
-		removeSuccFromPreds br'' predNode = BR.removeRelation predNode node br
+		removeSuccFromPreds br'' succNode = BR.removeRelation node succNode br''
 
 -- | Removes all the adjacencies were this node is successor.
 -- If node does not exists the original Adjacency is returned.
@@ -118,7 +118,7 @@ removeNodeSuccAdjacencies node adj@(Adjacency br) = Adjacency br' where
 removeNodePredAdjacencies :: Ord node => node -> Adjacency node -> Adjacency node
 removeNodePredAdjacencies node adj@(Adjacency br) = Adjacency br' where
 	br' = foldl' removePredFromSuccs br (getNodePredNodes node adj) where
-		removePredFromSuccs br'' succNode = BR.removeRelation succNode node br
+		removePredFromSuccs br'' predNode = BR.removeRelation predNode node br''
 
 -- * QUERY FUNCTIONS
 -------------------------------------------------------------------------------
