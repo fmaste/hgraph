@@ -160,6 +160,9 @@ isRelatedTo domain codomain (BinaryRelation relatedTo _) = MM.containsValue doma
 isRelatedFrom :: (Ord domain, Ord codomain) => codomain -> domain -> BinaryRelation domain codomain -> Bool
 isRelatedFrom codomain domain (BinaryRelation _ relatedFrom) = MM.containsValue codomain domain relatedFrom
 
+-- RELATION THEORY
+-------------------------------------------------------------------------------
+
 -- All the relationships. Elements without relationships are not shown.
 getGraph :: (Ord domain, Ord codomain) => BinaryRelation domain codomain -> [(domain, codomain)]
 getGraph br = [ (domain, codomain) | domain <- getDomainElements br, codomain <- getRelatedToElements domain br]
