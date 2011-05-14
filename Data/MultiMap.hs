@@ -10,13 +10,13 @@ module Data.MultiMap (
 	removeValue,
 	isEmpty,
 	getKeys,
-	getKeysSet,
 	getKeyCount,
-	getValues,
 	getValuesSet,
 	getValueCount,
 	containsKey,
 	containsValue,
+	getKeysSet,
+	getValues,
 	getValuesAndRemoveKey,
 	removeValuesAll) where
 
@@ -79,17 +79,9 @@ isEmpty (MultiMap m) = Map.null m
 getKeys :: (Ord k, Ord v) => MultiMap k v -> [k]
 getKeys (MultiMap m) = Map.keys m
 
--- | A set with all the different keys.
-getKeysSet :: (Ord k, Ord v) => MultiMap k v -> Set.Set k
-getKeysSet (MultiMap m) = Map.keysSet m
-
 -- | The number of different keys present.
 getKeyCount :: (Ord k, Ord v) => MultiMap k v -> Int
 getKeyCount (MultiMap m) = Map.size m
-
--- | All the different values that exist for the key.
-getValues :: (Ord k, Ord v) => k -> MultiMap k v -> [v]
-getValues k mm = Set.elems $ getValuesSet k mm
 
 -- | A set with the different values that exist for the key.
 -- If key does not exist an empty Set is returned.
@@ -110,6 +102,14 @@ containsValue k v mm = Set.member v $ getValuesSet k mm
 
 -- * CONSTRUCTION FUNCTIONS
 -------------------------------------------------------------------------------
+
+-- | A set with all the different keys.
+getKeysSet :: (Ord k, Ord v) => MultiMap k v -> Set.Set k
+getKeysSet (MultiMap m) = Map.keysSet m
+
+-- | All the different values that exist for the key.
+getValues :: (Ord k, Ord v) => k -> MultiMap k v -> [v]
+getValues k mm = Set.elems $ getValuesSet k mm
 
 getValuesAndRemoveKey :: (Ord k, Ord v) => k -> MultiMap k v -> (MultiMap k v, [v])
 getValuesAndRemoveKey k (MultiMap m) = f $ Map.updateLookupWithKey (\_ _ -> Nothing) k m where
