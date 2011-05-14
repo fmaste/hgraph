@@ -20,8 +20,8 @@ module Data.BinaryRelation (
 	containsCodomainElement,
 	getRelatedTo,
 	getRelatedFrom,
-	getRelatedToSet,
-	getRelatedFromSet,
+	getRelatedToElements,
+	getRelatedFromElements,
 	getRelatedToCount,
 	getRelatedFromCount,
 	isRelatedTo,
@@ -76,7 +76,7 @@ removeDomainElement :: (Ord domain, Ord codomain) => domain -> BinaryRelation do
 removeDomainElement domain br@(BinaryRelation relatedTo relatedFrom) = 
 	let
 		relatedTo' = MM.removeKey domain relatedTo
-		relatedFrom' = foldl' f relatedFrom $ getRelatedTo domain br where
+		relatedFrom' = foldl' f relatedFrom $ getRelatedToElements domain br where
 			f relatedFrom'' codomain = MM.removeValue codomain domain relatedFrom''
 	in BinaryRelation relatedTo' relatedFrom'
 
@@ -85,7 +85,7 @@ removeDomainElement domain br@(BinaryRelation relatedTo relatedFrom) =
 removeCodomainElement :: (Ord domain, Ord codomain) => codomain -> BinaryRelation domain codomain -> BinaryRelation domain codomain
 removeCodomainElement codomain br@(BinaryRelation relatedTo relatedFrom) = 
 	let
-		relatedTo' = foldl' f relatedTo $ getRelatedFrom codomain br where
+		relatedTo' = foldl' f relatedTo $ getRelatedFromElements codomain br where
 			f relatedTo'' domain = MM.removeValue domain codomain relatedTo''
 		relatedFrom' = MM.removeKey codomain relatedFrom
 	in BinaryRelation relatedTo' relatedFrom'
@@ -136,17 +136,17 @@ containsDomainElement element (BinaryRelation relatedTo _) = MM.containsKey elem
 containsCodomainElement :: (Ord domain, Ord codomain) => codomain -> BinaryRelation domain codomain -> Bool
 containsCodomainElement element (BinaryRelation _ relatedFrom) = MM.containsKey element relatedFrom
 
-getRelatedTo :: (Ord domain, Ord codomain) => domain -> BinaryRelation domain codomain -> [codomain]
-getRelatedTo element (BinaryRelation relatedTo _) = MM.getValues element relatedTo
+getRelatedTo :: (Ord domain, Ord codomain) => domain -> BinaryRelation domain codomain -> Set.Set codomain
+getRelatedTo element (BinaryRelation relatedTo _) = MM.getValuesSet element relatedTo
 
-getRelatedFrom :: (Ord domain, Ord codomain) => codomain -> BinaryRelation domain codomain -> [domain]
-getRelatedFrom element (BinaryRelation _ relatedFrom) = MM.getValues element relatedFrom
+getRelatedFrom :: (Ord domain, Ord codomain) => codomain -> BinaryRelation domain codomain -> Set.Set domain
+getRelatedFrom element (BinaryRelation _ relatedFrom) = MM.getValuesSet element relatedFrom
 
-getRelatedToSet :: (Ord domain, Ord codomain) => domain -> BinaryRelation domain codomain -> Set.Set codomain
-getRelatedToSet element (BinaryRelation relatedTo _) = MM.getValuesSet element relatedTo
+getRelatedToElements :: (Ord domain, Ord codomain) => domain -> BinaryRelation domain codomain -> [codomain]
+getRelatedToElements element (BinaryRelation relatedTo _) = MM.getValues element relatedTo
 
-getRelatedFromSet :: (Ord domain, Ord codomain) => codomain -> BinaryRelation domain codomain -> Set.Set domain
-getRelatedFromSet element (BinaryRelation _ relatedFrom) = MM.getValuesSet element relatedFrom
+getRelatedFromElements :: (Ord domain, Ord codomain) => codomain -> BinaryRelation domain codomain -> [domain]
+getRelatedFromElements element (BinaryRelation _ relatedFrom) = MM.getValues element relatedFrom
 
 getRelatedToCount :: (Ord domain, Ord codomain) => domain -> BinaryRelation domain codomain -> Int
 getRelatedToCount element (BinaryRelation relatedTo _) = MM.getValueCount element relatedTo
@@ -162,7 +162,7 @@ isRelatedFrom codomain domain (BinaryRelation _ relatedFrom) = MM.containsValue 
 
 -- All the relationships. Elements without relationships are not shown.
 getGraph :: (Ord domain, Ord codomain) => BinaryRelation domain codomain -> [(domain, codomain)]
-getGraph br = [ (domain, codomain) | domain <- getDomainElements br, codomain <- getRelatedTo domain br]
+getGraph br = [ (domain, codomain) | domain <- getDomainElements br, codomain <- getRelatedToElements domain br]
 
 revert :: (Ord domain, Ord codomain) => BinaryRelation domain codomain -> BinaryRelation codomain domain
 revert (BinaryRelation relatedTo relatedFrom) = BinaryRelation relatedFrom relatedTo

@@ -133,19 +133,19 @@ getNodeCount (Adjacency br) = BR.getDomainCount br
 
 -- | Get all the different nodes that are successors.
 getNodeSuccNodes :: Ord node => node -> Adjacency node -> [node]
-getNodeSuccNodes node (Adjacency br) = BR.getRelatedTo node br
+getNodeSuccNodes node (Adjacency br) = BR.getRelatedToElements node br
 
 -- | Get all the different nodes that are predecessors.
 getNodePredNodes :: Ord node => node -> Adjacency node -> [node]
-getNodePredNodes node (Adjacency br) = BR.getRelatedFrom node br
+getNodePredNodes node (Adjacency br) = BR.getRelatedFromElements node br
 
 -- | A set with the node successors.
 getNodeSuccNodesSet :: Ord node => node -> Adjacency node -> Set.Set node
-getNodeSuccNodesSet node (Adjacency br) = BR.getRelatedToSet node br
+getNodeSuccNodesSet node (Adjacency br) = BR.getRelatedTo node br
 
 -- | A set with the node predecessors.
 getNodePredNodesSet :: Ord node => node -> Adjacency node -> Set.Set node
-getNodePredNodesSet node (Adjacency br) = BR.getRelatedFromSet node br
+getNodePredNodesSet node (Adjacency br) = BR.getRelatedFrom node br
 
 -- | The different nodes that are adjacencent, either succs or preds.
 getNodeAdjacentNodes :: Ord node => node -> Adjacency node -> [node]
