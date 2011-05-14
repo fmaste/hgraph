@@ -138,16 +138,16 @@ containsCodomainElement :: (Ord domain, Ord codomain) => codomain -> BinaryRelat
 containsCodomainElement element (BinaryRelation _ relatedFrom) = MM.containsKey element relatedFrom
 
 getRelatedTo :: (Ord domain, Ord codomain) => domain -> BinaryRelation domain codomain -> Set.Set codomain
-getRelatedTo element (BinaryRelation relatedTo _) = MM.getValuesSet element relatedTo
+getRelatedTo element (BinaryRelation relatedTo _) = MM.getValues element relatedTo
 
 getRelatedFrom :: (Ord domain, Ord codomain) => codomain -> BinaryRelation domain codomain -> Set.Set domain
-getRelatedFrom element (BinaryRelation _ relatedFrom) = MM.getValuesSet element relatedFrom
+getRelatedFrom element (BinaryRelation _ relatedFrom) = MM.getValues element relatedFrom
 
 getRelatedToElements :: (Ord domain, Ord codomain) => domain -> BinaryRelation domain codomain -> [codomain]
-getRelatedToElements element (BinaryRelation relatedTo _) = MM.getValues element relatedTo
+getRelatedToElements element (BinaryRelation relatedTo _) = MM.getValuesList element relatedTo
 
 getRelatedFromElements :: (Ord domain, Ord codomain) => codomain -> BinaryRelation domain codomain -> [domain]
-getRelatedFromElements element (BinaryRelation _ relatedFrom) = MM.getValues element relatedFrom
+getRelatedFromElements element (BinaryRelation _ relatedFrom) = MM.getValuesList element relatedFrom
 
 getRelatedToCount :: (Ord domain, Ord codomain) => domain -> BinaryRelation domain codomain -> Int
 getRelatedToCount element (BinaryRelation relatedTo _) = MM.getValueCount element relatedTo
@@ -170,6 +170,9 @@ containsRelation domain codomain  (BinaryRelation relatedTo _) = MM.containsValu
 -- All the relationships. Elements without relationships are not shown.
 getGraph :: (Ord domain, Ord codomain) => BinaryRelation domain codomain -> [(domain, codomain)]
 getGraph br = [ (domain, codomain) | domain <- getDomainElements br, codomain <- getRelatedToElements domain br]
+
+isInjective :: (Ord domain, Ord codomain) => BinaryRelation domain codomain -> Bool
+isInjective br = all (\codomain -> getRelatedFromCount codomain br <= 1) $ getCodomainElements br
 
 revert :: (Ord domain, Ord codomain) => BinaryRelation domain codomain -> BinaryRelation codomain domain
 revert (BinaryRelation relatedTo relatedFrom) = BinaryRelation relatedFrom relatedTo
