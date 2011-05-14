@@ -81,10 +81,12 @@ removeDomainElement domain br@(BinaryRelation relatedTo relatedFrom) = BinaryRel
 -- Removes an element from the codomain.
 -- If this element does not exists the original BinaryRelation is returned.
 removeCodomainElement :: (Ord domain, Ord codomain) => codomain -> BinaryRelation domain codomain -> BinaryRelation domain codomain
-removeCodomainElement codomain br@(BinaryRelation relatedTo relatedFrom) = BinaryRelation relatedTo' relatedFrom' where
-	relatedTo' = foldl' f relatedTo $ getRelatedFrom codomain br where
-		f relatedTo'' domain = MM.removeValue domain codomain relatedTo''
-	relatedFrom' = MM.removeKey codomain relatedFrom
+removeCodomainElement codomain br@(BinaryRelation relatedTo relatedFrom) = 
+	let
+		relatedTo' = foldl' f relatedTo $ getRelatedFrom codomain br where
+			f relatedTo'' domain = MM.removeValue domain codomain relatedTo''
+		relatedFrom' = MM.removeKey codomain relatedFrom
+	in BinaryRelation relatedTo' relatedFrom'
 
 -- Adds a relation from a domain element to a codomain one.
 -- If the domain or codomain element is not present they are added.
