@@ -57,7 +57,7 @@ removeKey k (MultiMap m) = MultiMap $ Map.delete k m
 
 -- | Adds a value to key.
 -- If key does not exist it is added.
--- If the value already exists the same MultiMap is returned.
+-- If the value already exists the oriignal MultiMap is returned.
 addValue :: (Ord k, Ord v) => k -> v -> MultiMap k v -> MultiMap k v
 addValue k v (MultiMap m) = MultiMap $ Map.insertWith (\new old -> Set.insert v old) k (Set.singleton v) m
 
