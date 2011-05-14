@@ -1,5 +1,6 @@
 -- Author: Federico Mastellone (fmaste@gmail.com)
 
+-- Every key has a set of elements.
 module Data.MultiMap (
 	MultiMap(),
 	empty,
