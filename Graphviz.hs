@@ -1,8 +1,11 @@
 -- Author: Federico Mastellone (fmaste@gmail.com)
 
 module Graphviz (
+	command,
+	graphviz,
+	graphvizGraph,
 	graphvizDigraph,
-	command) where 
+	graphvizBinaryRelation) where 
 
 import qualified Data.Set as Set
 import qualified Data.BinaryRelation as BR
@@ -29,12 +32,6 @@ graphviz nodes edges edgeGlue = "digraph {" ++ body ++ "}" where
 		edgesString = map arc edges where
 			arc (src,dst) = src ++ edgeGlue ++ dst
 
-graphvizBinaryRelation :: (Ord domain, Ord codomain) => (domain -> String) -> (codomain -> String) -> BR.BinaryRelation domain codomain -> String
-graphvizBinaryRelation domainToString codomainToString br = graphviz nodesString edgesString "-->" where
-	nodesString = (map domainToString $ BR.getDomainElements br) ++ (map codomainToString $ BR.getCodomainElements br)
-	edgesString = map arcString $ BR.getGraph br where
-		arcString (src, dst) = (domainToString src, codomainToString dst)
-
 graphvizGraph :: (Graph.Graph graph, Ord node, Ord edge) => (node -> String) -> graph node edge -> String
 graphvizGraph toString graph = graphvizGraph' toString "--" graph
 
@@ -46,6 +43,12 @@ graphvizGraph' toString edgeGlue graph = graphviz nodes edges edgeGlue where
 	nodes = map toString $ Graph.getNodes graph
 	edges = map arcString $ Graph.getEdges graph where
 		arcString (src,dst) = (toString src, toString dst)
+
+graphvizBinaryRelation :: (Ord domain, Ord codomain) => (domain -> String) -> (codomain -> String) -> BR.BinaryRelation domain codomain -> String
+graphvizBinaryRelation domainToString codomainToString br = graphviz nodesString edgesString "->" where
+        nodesString = (map domainToString $ BR.getDomainElements br) ++ (map codomainToString $ BR.getCodomainElements br)
+        edgesString = map arcString $ BR.getGraph br where
+                arcString (src, dst) = (domainToString src, codomainToString dst)
 
 -- writeFile "graphviz.dot" (graphvizdigraph show digraph)
 -- > cat graphviz.dot | dot -Tpng > graphviz.png
