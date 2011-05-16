@@ -4,6 +4,8 @@ module Graphviz (
 	graphvizDigraph,
 	command) where 
 
+import qualified Data.Set as Set
+import qualified Data.BinaryRelation as BR
 import qualified Data.Graph as Graph
 
 implode :: String -> [String] -> String
@@ -21,20 +23,29 @@ scape (x:xs) = (replace x) ++ (scape xs) where
 command :: String -> String
 command dot = "echo '" ++ dot ++ "' | dot -Tpng > dot.png"
 
-graphviz :: (Graph.Graph graph, Ord node, Ord edge) => (node -> String) -> String -> graph node edge -> String
-graphviz toString edgeGlue graph = "digraph {" ++ body ++ "}" where
-	body = implode ";" (nodes ++ edges) where
-		nodes = map toString (Graph.getNodes graph)
-		edges = map arc (Graph.getEdges graph) where
-			arc (src,dst) = (toString src) ++ edgeGlue ++ (toString dst)
-			stringId a = "\"" ++ (scape (toString a)) ++ "\""
+graphviz :: [String] -> [(String, String)] -> String -> String
+graphviz nodes edges edgeGlue = "digraph {" ++ body ++ "}" where
+	body = implode ";" (nodes ++ edgesString) where
+		edgesString = map arc edges where
+			arc (src,dst) = src ++ edgeGlue ++ dst
 
-graphvizGraph 	:: (Graph.Graph graph, Ord node, Ord edge) => (node -> String) -> graph node edge -> String
-graphvizGraph 	toString graph		= graphviz toString "--" graph
+graphvizBinaryRelation :: (Ord domain, Ord codomain) => (domain -> String) -> (codomain -> String) -> BR.BinaryRelation domain codomain -> String
+graphvizBinaryRelation domainToString codomainToString br = graphviz nodesString edgesString "-->" where
+	nodesString = (map domainToString $ BR.getDomainElements br) ++ (map codomainToString $ BR.getCodomainElements br)
+	edgesString = map arcString $ BR.getGraph br where
+		arcString (src, dst) = (domainToString src, codomainToString dst)
+
+graphvizGraph :: (Graph.Graph graph, Ord node, Ord edge) => (node -> String) -> graph node edge -> String
+graphvizGraph toString graph = graphvizGraph' toString "--" graph
 
 graphvizDigraph	:: (Graph.Graph graph, Ord node, Ord edge) => (node -> String) -> graph node edge -> String
-graphvizDigraph	toString digraph 	= graphviz toString "->" digraph
+graphvizDigraph	toString digraph = graphvizGraph' toString "->" digraph
 
+graphvizGraph' :: (Graph.Graph graph, Ord node, Ord edge) => (node -> String) -> String -> graph node edge -> String
+graphvizGraph' toString edgeGlue graph = graphviz nodes edges edgeGlue where
+	nodes = map toString $ Graph.getNodes graph
+	edges = map arcString $ Graph.getEdges graph where
+		arcString (src,dst) = (toString src, toString dst)
 
 -- writeFile "graphviz.dot" (graphvizdigraph show digraph)
 -- > cat graphviz.dot | dot -Tpng > graphviz.png
