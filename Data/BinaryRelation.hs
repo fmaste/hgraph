@@ -77,8 +77,7 @@ removeDomainElement :: (Ord domain, Ord codomain) => domain -> BinaryRelation do
 removeDomainElement domain (BinaryRelation relatedTo relatedFrom) = 
 	let
 		(relatedTo', relatedToElements) = MM.getValuesAndRemoveKey domain relatedTo
-		relatedFrom' = foldl' f relatedFrom relatedToElements where
-			f relatedFrom'' codomain = MM.removeValue codomain domain relatedFrom''
+		relatedFrom' = MM.removeValueFromKeys relatedToElements domain relatedFrom
 	in BinaryRelation relatedTo' relatedFrom'
 
 -- Removes an element from the codomain.
@@ -87,8 +86,7 @@ removeCodomainElement :: (Ord domain, Ord codomain) => codomain -> BinaryRelatio
 removeCodomainElement codomain (BinaryRelation relatedTo relatedFrom) = 
 	let
 		(relatedFrom', relatedFromElements) = MM.getValuesAndRemoveKey codomain relatedFrom
-		relatedTo' = foldl' f relatedTo relatedFromElements where
-			f relatedTo'' domain = MM.removeValue domain codomain relatedTo''
+		relatedTo' = MM.removeValueFromKeys relatedFromElements codomain relatedTo
 	in BinaryRelation relatedTo' relatedFrom'
 
 -- Adds a relation from a domain element to a codomain one.

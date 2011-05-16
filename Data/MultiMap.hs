@@ -21,11 +21,13 @@ module Data.MultiMap (
 	getKeysSet,
 	getValuesList,
 	getValuesAndRemoveKey,
+	removeValueFromKeys,
 	removeValuesAll) where
 
 -- IMPORTS
 -------------------------------------------------------------------------------
 
+import Data.List (foldl, foldl', foldr)
 import qualified Data.Map as Map
 import qualified Data.Set as Set
 
@@ -114,16 +116,16 @@ getKeysSet (MultiMap m) = Map.keysSet m
 getValuesList :: (Ord k, Ord v) => k -> MultiMap k v -> [v]
 getValuesList k mm = Set.elems $ getValues k mm
 
-
 getValuesAndRemoveKey :: (Ord k, Ord v) => k -> MultiMap k v -> (MultiMap k v, [v])
 getValuesAndRemoveKey k (MultiMap m) = f $ Map.updateLookupWithKey (\_ _ -> Nothing) k m where
 	f (Nothing, m) = (MultiMap m, [])
 	f (Just v, m) = (MultiMap m, Set.elems v)
 
--- TODO:
---removeValueFromKeys :: (Ord k, Ord v) => [k] -> v -> MultiMap k v -> MultiMap k v
---removeValueFromKeys [k] v (MultiMap m) = Multimap m' where
---	m' = 
+removeValueFromKeys :: (Ord k, Ord v) => [k] -> v -> MultiMap k v -> MultiMap k v
+removeValueFromKeys ks v (MultiMap m) = MultiMap (Map.unionWith f m m') where
+	f set _ = Set.delete v set
+	m' = Map.fromList $ map g ks where
+		g k = (k, Set.empty)
 
 -- | Removes all the values from the key, the key is retained with no values.
 -- If key does not exist the original MultiMap is returned.
