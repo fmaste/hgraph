@@ -127,8 +127,9 @@ getRelatedFrom :: (Ord domain, Ord codomain) => codomain -> BinaryRelation domai
 getRelatedFrom element (BinaryRelation _ relatedFrom) = MM.getValues element relatedFrom
 
 -- All the relationships. Elements without relationships are not shown.
-getGraph :: (Ord domain, Ord codomain) => BinaryRelation domain codomain -> [(domain, codomain)]
-getGraph br = [ (domain, codomain) | domain <- getDomainList br, codomain <- getRelatedToList domain br]
+getGraph :: (Ord domain, Ord codomain) => BinaryRelation domain codomain -> Set.Set (domain, codomain)
+-- TODO: Make it more performant, it is traversing the sets too many times.
+getGraph br = Set.fromList [ (domain, codomain) | domain <- getDomainList br, codomain <- getRelatedToList domain br]
 
 -- UTIL FUNCTIONS
 -------------------------------------------------------------------------------
