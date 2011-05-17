@@ -133,7 +133,7 @@ getNodeCount (Adjacency br) = BR.getDomainCount br
 
 -- | Get all the different nodes that are successors.
 getNodeSuccNodes :: Ord node => node -> Adjacency node -> [node]
-getNodeSuccNodes node (Adjacency br) = BR.getRelatedToElements node br
+getNodeSuccNodes node (Adjacency br) = BR.getRelatedToList node br
 
 -- | Get all the different nodes that are predecessors.
 getNodePredNodes :: Ord node => node -> Adjacency node -> [node]

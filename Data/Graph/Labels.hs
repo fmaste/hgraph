@@ -106,7 +106,7 @@ getLabelElements :: (Ord element, Ord label) => label -> Labels element label ->
 getLabelElements label (Labels br) = BR.getRelatedFromElements label br
 
 getElementLabels :: (Ord element, Ord label) => element -> Labels element label -> [label]
-getElementLabels element (Labels br) = BR.getRelatedToElements element br
+getElementLabels element (Labels br) = BR.getRelatedToList element br
 
 getLabelElementsSet :: (Ord element, Ord label) => label -> Labels element label -> Set.Set element
 getLabelElementsSet label (Labels br) = BR.getRelatedFrom label br
