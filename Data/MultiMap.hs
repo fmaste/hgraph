@@ -11,17 +11,16 @@ module Data.MultiMap (
 	addValue,
 	removeValue,
 	-- Atomic query functions.
-	isEmpty,
 	getKeys,
-	getKeyCount,
 	getValues,
 	-- Util functions.
+	isEmpty,
+	getKeysSet,
+	getKeyCount,
+	getValuesList,
 	getValueCount,
 	containsKey,
 	containsValue,
-	-- Extra functions
-	getKeysSet,
-	getValuesList,
 	getValuesAndRemoveKey,
 	removeValueFromKeys,
 	removeValuesAll) where
@@ -79,16 +78,9 @@ removeValue k v (MultiMap m) = MultiMap $ Map.adjust (Set.delete v) k m
 -- * ATOMIC QUERY FUNCTIONS
 -------------------------------------------------------------------------------
 
-isEmpty :: (Ord k, Ord v) => MultiMap k v -> Bool
-isEmpty (MultiMap m) = Map.null m
-
 -- | A list with all the different keys.
 getKeys :: (Ord k, Ord v) => MultiMap k v -> [k]
 getKeys (MultiMap m) = Map.keys m
-
--- | The number of different keys present.
-getKeyCount :: (Ord k, Ord v) => MultiMap k v -> Int
-getKeyCount (MultiMap m) = Map.size m
 
 -- | A set with the different values that exist for the key.
 -- If key does not exist an empty Set is returned.
@@ -97,6 +89,21 @@ getValues k (MultiMap m) = Map.findWithDefault Set.empty k m
 
 -- * UTILS FUNCTIONS
 -------------------------------------------------------------------------------
+
+isEmpty :: (Ord k, Ord v) => MultiMap k v -> Bool
+isEmpty (MultiMap m) = Map.null m
+
+-- | A set with all the different keys.
+getKeysSet :: (Ord k, Ord v) => MultiMap k v -> Set.Set k
+getKeysSet (MultiMap m) = Map.keysSet m
+
+-- | The number of different keys present.
+getKeyCount :: (Ord k, Ord v) => MultiMap k v -> Int
+getKeyCount (MultiMap m) = Map.size m
+
+-- | All the different values that exist for the key.
+getValuesList :: (Ord k, Ord v) => k -> MultiMap k v -> [v]
+getValuesList k mm = Set.elems $ getValues k mm
 
 -- | The number of different values that exist for the key.
 getValueCount :: (Ord k, Ord v) => k -> MultiMap k v -> Int
@@ -109,17 +116,6 @@ containsKey k (MultiMap m) = Map.member k m
 -- | Value exists for the key?
 containsValue :: (Ord k, Ord v) => k -> v -> MultiMap k v -> Bool
 containsValue k v mm = Set.member v $ getValues k mm
-
--- * UTILS FUNCTIONS
--------------------------------------------------------------------------------
-
--- | A set with all the different keys.
-getKeysSet :: (Ord k, Ord v) => MultiMap k v -> Set.Set k
-getKeysSet (MultiMap m) = Map.keysSet m
-
--- | All the different values that exist for the key.
-getValuesList :: (Ord k, Ord v) => k -> MultiMap k v -> [v]
-getValuesList k mm = Set.elems $ getValues k mm
 
 getValuesAndRemoveKey :: (Ord k, Ord v) => k -> MultiMap k v -> (MultiMap k v, [v])
 getValuesAndRemoveKey k (MultiMap m) = f $ Map.updateLookupWithKey (\_ _ -> Nothing) k m where
