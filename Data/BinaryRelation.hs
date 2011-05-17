@@ -1,6 +1,7 @@
 -- Author: Federico Mastellone (fmaste@gmail.com)
 
 -- Generic module to manage binary relationships.
+-- TODO: Make it haddock compatibele!
 module Data.BinaryRelation (
 	-- Atomic constructor functions.
 	BinaryRelation(),
@@ -48,6 +49,7 @@ import qualified Data.MultiMap as MM
 -- We defined BinaryRelation with two structures, one with the domain -> codomain 
 -- relationships and the other with the codomain <- domain ones.
 -- This double structure helps to make faster queries but less performant delete operations.
+-- TODO: Make one with only one structure, the domain -> codomain one.
 data BinaryRelation domain codomain = BinaryRelation (RelatedTo domain codomain) (RelatedFrom domain codomain)
     deriving (Show, Read, Ord, Eq)
 
@@ -183,6 +185,8 @@ isInjective br = all (\codomain -> getRelatedFromCount codomain br <= 1) $ getCo
 
 revert :: (Ord domain, Ord codomain) => BinaryRelation domain codomain -> BinaryRelation codomain domain
 revert (BinaryRelation relatedTo relatedFrom) = BinaryRelation relatedFrom relatedTo
+
+--TODO: Add more functions, like image, range, isFunction, biyective, etc, etc.
 
 -- TEST
 -------------------------------------------------------------------------------
