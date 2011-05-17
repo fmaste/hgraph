@@ -12,7 +12,7 @@ module Data.BinaryRelation (
 	removeRelation,
 	getDomain,
 	getCodomain,
-	getDomainElements,
+	getDomainList,
 	getCodomainElements,
 	getDomainCount,
 	getCodomainCount,
@@ -117,8 +117,8 @@ getDomain (BinaryRelation relatedTo _) = MM.getKeysSet relatedTo
 getCodomain :: (Ord domain, Ord codomain) => BinaryRelation domain codomain -> Set.Set codomain
 getCodomain (BinaryRelation _ relatedFrom) = MM.getKeysSet relatedFrom
 
-getDomainElements :: (Ord domain, Ord codomain) => BinaryRelation domain codomain -> [domain]
-getDomainElements (BinaryRelation relatedTo _) = MM.getKeys relatedTo
+getDomainList :: (Ord domain, Ord codomain) => BinaryRelation domain codomain -> [domain]
+getDomainList (BinaryRelation relatedTo _) = MM.getKeys relatedTo
 
 getCodomainElements :: (Ord domain, Ord codomain) => BinaryRelation domain codomain -> [codomain]
 getCodomainElements (BinaryRelation _ relatedFrom) = MM.getKeys relatedFrom
@@ -167,7 +167,7 @@ containsRelation domain codomain  (BinaryRelation relatedTo _) = MM.containsValu
 
 -- All the relationships. Elements without relationships are not shown.
 getGraph :: (Ord domain, Ord codomain) => BinaryRelation domain codomain -> [(domain, codomain)]
-getGraph br = [ (domain, codomain) | domain <- getDomainElements br, codomain <- getRelatedToElements domain br]
+getGraph br = [ (domain, codomain) | domain <- getDomainList br, codomain <- getRelatedToElements domain br]
 
 isInjective :: (Ord domain, Ord codomain) => BinaryRelation domain codomain -> Bool
 isInjective br = all (\codomain -> getRelatedFromCount codomain br <= 1) $ getCodomainElements br

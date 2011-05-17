@@ -94,7 +94,7 @@ getLabels :: (Ord element, Ord label) => Labels element label -> [label]
 getLabels (Labels br) = BR.getCodomainElements br
 
 getElements :: (Ord element, Ord label) => Labels element label -> [element]
-getElements (Labels br) = BR.getDomainElements br
+getElements (Labels br) = BR.getDomainList br
 
 getLabelsCount :: (Ord element, Ord label) => Labels element label -> Int
 getLabelsCount (Labels br) = BR.getCodomainCount br
