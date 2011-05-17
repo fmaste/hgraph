@@ -137,7 +137,7 @@ getNodeSuccNodes node (Adjacency br) = BR.getRelatedToList node br
 
 -- | Get all the different nodes that are predecessors.
 getNodePredNodes :: Ord node => node -> Adjacency node -> [node]
-getNodePredNodes node (Adjacency br) = BR.getRelatedFromElements node br
+getNodePredNodes node (Adjacency br) = BR.getRelatedFromList node br
 
 -- | A set with the node successors.
 getNodeSuccNodesSet :: Ord node => node -> Adjacency node -> Set.Set node

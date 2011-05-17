@@ -21,7 +21,7 @@ module Data.BinaryRelation (
 	getRelatedTo,
 	getRelatedFrom,
 	getRelatedToList,
-	getRelatedFromElements,
+	getRelatedFromList,
 	getRelatedToCount,
 	getRelatedFromCount,
 	isRelatedTo,
@@ -144,8 +144,8 @@ getRelatedFrom element (BinaryRelation _ relatedFrom) = MM.getValues element rel
 getRelatedToList :: (Ord domain, Ord codomain) => domain -> BinaryRelation domain codomain -> [codomain]
 getRelatedToList element (BinaryRelation relatedTo _) = MM.getValuesList element relatedTo
 
-getRelatedFromElements :: (Ord domain, Ord codomain) => codomain -> BinaryRelation domain codomain -> [domain]
-getRelatedFromElements element (BinaryRelation _ relatedFrom) = MM.getValuesList element relatedFrom
+getRelatedFromList :: (Ord domain, Ord codomain) => codomain -> BinaryRelation domain codomain -> [domain]
+getRelatedFromList element (BinaryRelation _ relatedFrom) = MM.getValuesList element relatedFrom
 
 getRelatedToCount :: (Ord domain, Ord codomain) => domain -> BinaryRelation domain codomain -> Int
 getRelatedToCount element (BinaryRelation relatedTo _) = MM.getValueCount element relatedTo
