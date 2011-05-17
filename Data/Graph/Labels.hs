@@ -91,7 +91,7 @@ removeLabelFromElement element label (Labels br) = Labels br' where
 -------------------------------------------------------------------------------
 
 getLabels :: (Ord element, Ord label) => Labels element label -> [label]
-getLabels (Labels br) = BR.getCodomainElements br
+getLabels (Labels br) = BR.getCodomainList br
 
 getElements :: (Ord element, Ord label) => Labels element label -> [element]
 getElements (Labels br) = BR.getDomainList br

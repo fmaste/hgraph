@@ -13,7 +13,7 @@ module Data.BinaryRelation (
 	getDomain,
 	getCodomain,
 	getDomainList,
-	getCodomainElements,
+	getCodomainList,
 	getDomainCount,
 	getCodomainCount,
 	containsDomainElement,
@@ -120,8 +120,8 @@ getCodomain (BinaryRelation _ relatedFrom) = MM.getKeysSet relatedFrom
 getDomainList :: (Ord domain, Ord codomain) => BinaryRelation domain codomain -> [domain]
 getDomainList (BinaryRelation relatedTo _) = MM.getKeys relatedTo
 
-getCodomainElements :: (Ord domain, Ord codomain) => BinaryRelation domain codomain -> [codomain]
-getCodomainElements (BinaryRelation _ relatedFrom) = MM.getKeys relatedFrom
+getCodomainList :: (Ord domain, Ord codomain) => BinaryRelation domain codomain -> [codomain]
+getCodomainList (BinaryRelation _ relatedFrom) = MM.getKeys relatedFrom
 
 getDomainCount :: (Ord domain, Ord codomain) => BinaryRelation domain codomain -> Int
 getDomainCount (BinaryRelation relatedTo _) = MM.getKeyCount relatedTo
@@ -170,7 +170,7 @@ getGraph :: (Ord domain, Ord codomain) => BinaryRelation domain codomain -> [(do
 getGraph br = [ (domain, codomain) | domain <- getDomainList br, codomain <- getRelatedToElements domain br]
 
 isInjective :: (Ord domain, Ord codomain) => BinaryRelation domain codomain -> Bool
-isInjective br = all (\codomain -> getRelatedFromCount codomain br <= 1) $ getCodomainElements br
+isInjective br = all (\codomain -> getRelatedFromCount codomain br <= 1) $ getCodomainList br
 
 revert :: (Ord domain, Ord codomain) => BinaryRelation domain codomain -> BinaryRelation codomain domain
 revert (BinaryRelation relatedTo relatedFrom) = BinaryRelation relatedFrom relatedTo
