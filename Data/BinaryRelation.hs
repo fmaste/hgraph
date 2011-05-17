@@ -2,6 +2,7 @@
 
 -- Generic module to manage binary relationships.
 module Data.BinaryRelation (
+	-- Atomic constructor functions.
 	BinaryRelation(),
 	empty,
 	addDomainElement,
@@ -10,9 +11,11 @@ module Data.BinaryRelation (
 	removeCodomainElement,
 	addRelation,
 	removeRelation,
+	-- Atomic query functions.
 	getDomain,
 	getCodomain,
 	getGraph,
+	-- Utils.
 	getDomainList,
 	getCodomainList,
 	getDomainCount,
@@ -52,7 +55,7 @@ type RelatedTo domain codomain = MM.MultiMap domain codomain
 -- A codomain element contains a Set of domain elements.
 type RelatedFrom domain codomain = MM.MultiMap codomain domain
 
--- CONSTRUCTION
+-- ATOMIC CONSTRUCTION FUNCTIONS
 -------------------------------------------------------------------------------
 
 -- The empty binary relation.
@@ -108,7 +111,7 @@ removeRelation domain codomain (BinaryRelation relatedTo relatedFrom) =
 		relatedFrom' = MM.removeValue codomain domain relatedFrom
 	in BinaryRelation relatedTo' relatedFrom'
 
--- QUERY
+-- ATOMIC QUERY FUNCTIONS
 -------------------------------------------------------------------------------
 
 getDomain :: (Ord domain, Ord codomain) => BinaryRelation domain codomain -> Set.Set domain
@@ -120,6 +123,9 @@ getCodomain (BinaryRelation _ relatedFrom) = MM.getKeysSet relatedFrom
 -- All the relationships. Elements without relationships are not shown.
 getGraph :: (Ord domain, Ord codomain) => BinaryRelation domain codomain -> [(domain, codomain)]
 getGraph br = [ (domain, codomain) | domain <- getDomainList br, codomain <- getRelatedToList domain br]
+
+-- UTIL FUNCTIONS
+-------------------------------------------------------------------------------
 
 getDomainList :: (Ord domain, Ord codomain) => BinaryRelation domain codomain -> [domain]
 getDomainList (BinaryRelation relatedTo _) = MM.getKeys relatedTo
