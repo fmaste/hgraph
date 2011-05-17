@@ -3,18 +3,19 @@
 -- Every key has a set of elements.
 -- TODO: Make it haddock compatible!
 module Data.MultiMap (
-	-- Atomic construction functions
+	-- Atomic construction functions.
 	MultiMap(),
 	empty,
 	addKey,
 	removeKey,
 	addValue,
 	removeValue,
-	-- Atomic query functions
+	-- Atomic query functions.
 	isEmpty,
 	getKeys,
 	getKeyCount,
 	getValues,
+	-- Util functions.
 	getValueCount,
 	containsKey,
 	containsValue,
@@ -93,6 +94,9 @@ getKeyCount (MultiMap m) = Map.size m
 -- If key does not exist an empty Set is returned.
 getValues :: (Ord k, Ord v) => k -> MultiMap k v -> Set.Set v
 getValues k (MultiMap m) = Map.findWithDefault Set.empty k m
+
+-- * UTILS FUNCTIONS
+-------------------------------------------------------------------------------
 
 -- | The number of different values that exist for the key.
 getValueCount :: (Ord k, Ord v) => k -> MultiMap k v -> Int
