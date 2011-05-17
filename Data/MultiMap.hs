@@ -140,7 +140,7 @@ removeValuesAll k (MultiMap m) = MultiMap $ Map.adjust (const Set.empty) k m
 mapSet :: (Ord k, Ord v, Ord v') => (Set.Set v -> Set.Set v') -> MultiMap k v -> MultiMap k v'
 mapSet f (MultiMap mm) = MultiMap (Map.map f mm)
 
-foldSet ::  (Ord k, Ord v) => (Set.Set v -> ans -> ans) -> ans -> MultiMap k v -> ans
+foldSet :: (Ord k, Ord v) => (Set.Set v -> ans -> ans) -> ans -> MultiMap k v -> ans
 foldSet f ans (MultiMap mm) = Map.fold f ans mm
 
 -- * QUERY FUNCTIONS
