@@ -1,6 +1,7 @@
 -- Author: Federico Mastellone (fmaste@gmail.com)
 
 -- Every key has a set of elements.
+-- TODO: Make it haddock compatible!
 module Data.MultiMap (
 	-- Atomic construction functions
 	MultiMap(),
@@ -105,7 +106,7 @@ containsKey k (MultiMap m) = Map.member k m
 containsValue :: (Ord k, Ord v) => k -> v -> MultiMap k v -> Bool
 containsValue k v mm = Set.member v $ getValues k mm
 
--- * CONSTRUCTION FUNCTIONS
+-- * UTILS FUNCTIONS
 -------------------------------------------------------------------------------
 
 -- | A set with all the different keys.
