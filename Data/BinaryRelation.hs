@@ -14,6 +14,8 @@ module Data.BinaryRelation (
 	-- Atomic query functions.
 	getDomain,
 	getCodomain,
+	getRelatedTo,
+	getRelatedFrom,
 	getGraph,
 	-- Utils.
 	getDomainList,
@@ -22,8 +24,6 @@ module Data.BinaryRelation (
 	getCodomainCount,
 	containsDomainElement,
 	containsCodomainElement,
-	getRelatedTo,
-	getRelatedFrom,
 	getRelatedToList,
 	getRelatedFromList,
 	getRelatedToCount,
@@ -120,6 +120,12 @@ getDomain (BinaryRelation relatedTo _) = MM.getKeysSet relatedTo
 getCodomain :: (Ord domain, Ord codomain) => BinaryRelation domain codomain -> Set.Set codomain
 getCodomain (BinaryRelation _ relatedFrom) = MM.getKeysSet relatedFrom
 
+getRelatedTo :: (Ord domain, Ord codomain) => domain -> BinaryRelation domain codomain -> Set.Set codomain
+getRelatedTo element (BinaryRelation relatedTo _) = MM.getValues element relatedTo
+
+getRelatedFrom :: (Ord domain, Ord codomain) => codomain -> BinaryRelation domain codomain -> Set.Set domain
+getRelatedFrom element (BinaryRelation _ relatedFrom) = MM.getValues element relatedFrom
+
 -- All the relationships. Elements without relationships are not shown.
 getGraph :: (Ord domain, Ord codomain) => BinaryRelation domain codomain -> [(domain, codomain)]
 getGraph br = [ (domain, codomain) | domain <- getDomainList br, codomain <- getRelatedToList domain br]
@@ -144,12 +150,6 @@ containsDomainElement element (BinaryRelation relatedTo _) = MM.containsKey elem
 
 containsCodomainElement :: (Ord domain, Ord codomain) => codomain -> BinaryRelation domain codomain -> Bool
 containsCodomainElement element (BinaryRelation _ relatedFrom) = MM.containsKey element relatedFrom
-
-getRelatedTo :: (Ord domain, Ord codomain) => domain -> BinaryRelation domain codomain -> Set.Set codomain
-getRelatedTo element (BinaryRelation relatedTo _) = MM.getValues element relatedTo
-
-getRelatedFrom :: (Ord domain, Ord codomain) => codomain -> BinaryRelation domain codomain -> Set.Set domain
-getRelatedFrom element (BinaryRelation _ relatedFrom) = MM.getValues element relatedFrom
 
 getRelatedToList :: (Ord domain, Ord codomain) => domain -> BinaryRelation domain codomain -> [codomain]
 getRelatedToList element (BinaryRelation relatedTo _) = MM.getValuesList element relatedTo
