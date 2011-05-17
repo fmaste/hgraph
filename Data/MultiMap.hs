@@ -23,7 +23,9 @@ module Data.MultiMap (
 	containsValue,
 	getValuesAndRemoveKey,
 	removeValueFromKeys,
-	removeValuesAll) where
+	removeValuesAll,
+	-- SOMETHING
+	mapSet) where
 
 -- IMPORTS
 -------------------------------------------------------------------------------
