@@ -134,6 +134,9 @@ removeValueFromKeys ks v (MultiMap m) = MultiMap (Map.unionWith f m m') where
 removeValuesAll :: (Ord k, Ord v) => k -> MultiMap k v ->  MultiMap k v
 removeValuesAll k (MultiMap m) = MultiMap $ Map.adjust (const Set.empty) k m
 
+mapSet :: (Ord k, Ord v, Ord v') => (Set.Set v -> Set.Set v') -> MultiMap k v -> MultiMap k v'
+mapSet f (MultiMap mm) = MultiMap (Map.map f mm)
+
 -- * QUERY FUNCTIONS
 -------------------------------------------------------------------------------
 
