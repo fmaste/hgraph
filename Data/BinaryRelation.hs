@@ -32,6 +32,7 @@ module Data.BinaryRelation (
 	isRelatedFrom,
 	containsRelation,
 	-- Relation theory functions.
+	isInjective,
 	revert) where
 
 -- IMPORTS
