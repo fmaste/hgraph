@@ -17,7 +17,7 @@ module Data.BinaryRelation (
 	getRelatedTo,
 	getRelatedFrom,
 	getGraph,
-	-- Utils.
+	-- Util query functions.
 	getDomainList,
 	getCodomainList,
 	getDomainCount,
@@ -31,6 +31,7 @@ module Data.BinaryRelation (
 	isRelatedTo,
 	isRelatedFrom,
 	containsRelation,
+	-- Relation theory functions.
 	revert) where
 
 -- IMPORTS
@@ -131,7 +132,7 @@ getGraph :: (Ord domain, Ord codomain) => BinaryRelation domain codomain -> Set.
 -- TODO: Make it more performant, it is traversing the sets too many times.
 getGraph br = Set.fromList [ (domain, codomain) | domain <- getDomainList br, codomain <- getRelatedToList domain br]
 
--- UTIL FUNCTIONS
+-- UTIL QUERY FUNCTIONS
 -------------------------------------------------------------------------------
 
 getDomainList :: (Ord domain, Ord codomain) => BinaryRelation domain codomain -> [domain]
