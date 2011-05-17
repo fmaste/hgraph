@@ -26,7 +26,8 @@ module Data.MultiMap (
 	removeValuesAll,
 	-- SOMETHING
 	mapSet,
-	foldSet) where
+	foldSet,
+	foldSetWithKey) where
 
 -- IMPORTS
 -------------------------------------------------------------------------------
@@ -142,6 +143,9 @@ mapSet f (MultiMap mm) = MultiMap (Map.map f mm)
 
 foldSet :: (Ord k, Ord v) => (Set.Set v -> ans -> ans) -> ans -> MultiMap k v -> ans
 foldSet f ans (MultiMap mm) = Map.fold f ans mm
+
+foldSetWithKey :: (Ord k, Ord v) => (k -> Set.Set v -> ans -> ans) -> ans -> MultiMap k v -> ans
+foldSetWithKey f ans (MultiMap mm) = Map.foldWithKey f ans mm
 
 -- * QUERY FUNCTIONS
 -------------------------------------------------------------------------------
