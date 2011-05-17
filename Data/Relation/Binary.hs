@@ -2,7 +2,7 @@
 
 -- Generic module to manage binary relationships.
 -- TODO: Make it haddock compatibele!
-module Data.BinaryRelation (
+module Data.Relation.Binary (
 	-- Atomic constructor functions.
 	BinaryRelation(),
 	empty,

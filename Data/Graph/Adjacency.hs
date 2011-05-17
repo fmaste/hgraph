@@ -44,7 +44,7 @@ module Data.Graph.Adjacency (
 import Data.List (foldl, foldl', foldr)
 import qualified Data.Set as Set
 import qualified Data.Map as Map
-import qualified Data.BinaryRelation as BR
+import qualified Data.Relation.Binary as BR
 
 -- * DATA DEFINITION
 -------------------------------------------------------------------------------
