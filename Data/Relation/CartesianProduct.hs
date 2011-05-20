@@ -17,7 +17,9 @@ module Data.Relation.CartesianProduct (
 	containsBElement,
 	getPoints,
 	getPointCount,
-	containsPoint ) where 
+	containsPoint,
+	-- Util functions.
+	fromSets) where 
 
 -- IMPORTS
 -------------------------------------------------------------------------------
@@ -86,4 +88,10 @@ getPointCount (CartesianProduct as bs) = (Set.size as) * (Set.size bs)
 
 containsPoint :: (Ord a, Ord b) => (a, b) -> CartesianProduct a b -> Bool
 containsPoint (a,b) (CartesianProduct as bs) = (Set.member a as) && (Set.member b bs)
+
+-- UTIL FUNCTIONS
+-------------------------------------------------------------------------------
+
+fromSets :: (Ord a, Ord b) => Set.Set a -> Set.Set b -> CartesianProduct a b
+fromSets as bs = CartesianProduct as bs
 
