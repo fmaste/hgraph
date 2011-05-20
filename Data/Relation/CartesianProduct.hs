@@ -74,6 +74,8 @@ containsAElement a (CartesianProduct as _) = Set.member a as
 containsBElement :: (Ord a, Ord b) => b -> CartesianProduct a b -> Bool
 containsBElement b (CartesianProduct _ bs) = Set.member b bs
 
+-- Been n the size of A and m the size of b.
+-- Then, O( m + m*[n*log n] + (m-1)*[n+n]).
 getPoints :: (Ord a, Ord b) => CartesianProduct a b -> Set.Set (a, b)
 getPoints cp = Set.unions $ map f (Set.elems $ getB cp) where
 	f b = Set.map (\a -> (a,b)) $ getA cp
