@@ -16,6 +16,7 @@ module Data.Relation.CartesianProduct (
 	containsAElement,
 	containsBElement,
 	getPoints,
+	getPointCount,
 	containsPoint ) where 
 
 -- IMPORTS
@@ -79,6 +80,9 @@ containsBElement b (CartesianProduct _ bs) = Set.member b bs
 getPoints :: (Ord a, Ord b) => CartesianProduct a b -> Set.Set (a, b)
 getPoints cp = Set.unions $ map f (Set.elems $ getB cp) where
 	f b = Set.map (\a -> (a,b)) $ getA cp
+
+getPointCount :: (Ord a, Ord b) => CartesianProduct a b -> Int
+getPointCount (CartesianProduct as bs) = (Set.size as) * (Set.size bs)
 
 containsPoint :: (Ord a, Ord b) => (a, b) -> CartesianProduct a b -> Bool
 containsPoint (a,b) (CartesianProduct as bs) = (Set.member a as) && (Set.member b bs)
