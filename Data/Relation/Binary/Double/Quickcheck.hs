@@ -17,7 +17,7 @@ module Data.Relation.Binary.Double.Quickcheck (
 
 import qualified Data.List as List
 import qualified Data.Set as Set
-import qualified Data.Relation.Binary as BR
+import qualified Data.Relation.Binary.Double as BR
 import qualified Test.QuickCheck as QC
 
 -- * UTILS
