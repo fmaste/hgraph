@@ -1,6 +1,6 @@
 -- Author: Federico Mastellone (fmaste@gmail.com)
 
-module Data.Relation.Binary.Quickcheck (
+module Data.Relation.Binary.Double.Quickcheck (
 	prop_addToDomainCheckDomain,
 	prop_addToCodomainCheckCodomain,
 	prop_addToDomainCheckDomainCount,
