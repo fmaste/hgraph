@@ -48,8 +48,8 @@ class Relation r where
 	type Domain r
 	type Codomain r
 
--- ATOMIC CONSTRUCTION FUNCTIONS
--------------------------------------------------------------------------------
+	-- ATOMIC CONSTRUCTION FUNCTIONS
+	-----------------------------------------------------------------------
 
 	-- The empty relation.
 	empty :: r
@@ -79,8 +79,8 @@ class Relation r where
 	-- If this relation is not present the original BinaryRelation is returned.
 	removeRelation :: Domain r -> Codomain r -> r -> r
 
--- ATOMIC QUERY FUNCTIONS
--------------------------------------------------------------------------------
+	-- ATOMIC QUERY FUNCTIONS
+	-----------------------------------------------------------------------
 
 	getDomain :: r -> Set.Set (Domain r)
 
@@ -95,8 +95,8 @@ class Relation r where
 	-- here because the graph is part of the signature of a relation.
 	getGraph :: r -> Set.Set (Domain r, Codomain r)
 
--- UTIL QUERY FUNCTIONS
--------------------------------------------------------------------------------
+	-- UTIL QUERY FUNCTIONS
+	-----------------------------------------------------------------------
 
 	getDomainList :: r -> [Domain r]
 	getDomainList r = Set.elems $ getDomain r
@@ -134,8 +134,8 @@ class Relation r where
 
 	containsRelation :: Domain r -> Codomain r -> r -> Bool
 
--- RELATION THEORY
--------------------------------------------------------------------------------
+	-- RELATION THEORY
+	-----------------------------------------------------------------------
 
 	isInjective :: r -> Bool
 
