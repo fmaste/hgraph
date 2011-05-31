@@ -2,6 +2,10 @@
 
 -- Set class.
 -- TODO: Make it haddock compatibele!
+
+-- MODULE
+-------------------------------------------------------------------------------
+
 {-# LANGUAGE TypeFamilies #-}
 module Data.Collection.Set (
 	Set,
