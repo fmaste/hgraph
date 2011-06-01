@@ -10,11 +10,11 @@
 module Data.Collection.Set.Default (
 	Set,
 	empty,
-	insert,
-	delete,
-	size,
-	member,
-	elems ) where
+	addElement,
+	removeElement,
+	getElementCount,
+	containsElement,
+	getElementsList ) where
 
 -- IMPORTS
 -------------------------------------------------------------------------------
@@ -33,30 +33,30 @@ type Set = DS.Set
 empty :: Ord a => Set a
 empty = DS.empty
 
-insert :: Ord a => a -> Set a -> Set a
-insert = DS.insert
+addElement :: Ord a => a -> Set a -> Set a
+addElement = DS.insert
 
-delete :: Ord a => a -> Set a -> Set a
-delete = DS.delete
+removeElement :: Ord a => a -> Set a -> Set a
+removeElement = DS.delete
 
-size :: Ord a => Set a -> Integer
-size = toInteger . DS.size
+getElementCount :: Ord a => Set a -> Integer
+getElementCount = toInteger . DS.size
 
-member :: Ord a => a -> Set a -> Bool
-member = DS.member
+containsElement :: Ord a => a -> Set a -> Bool
+containsElement = DS.member
 
-elems :: Ord a => Set a -> [a]
-elems = DS.elems
+getElementsList :: Ord a => Set a -> [a]
+getElementsList = DS.elems
 
 -- INSTANCE
 -------------------------------------------------------------------------------
 
 instance Ord a => DC.Collection (Set a) where
 	type DC.Element (Set a) = a
-	empty = DS.empty
-	insert = DS.insert
-	delete = DS.delete
-	size = toInteger . DS.size
-	member = DS.member
-	elems = DS.elems
+	empty = empty
+	addElement = addElement
+	removeElement = removeElement
+	getElementCount = getElementCount
+	containsElement = containsElement
+	getElementsList = getElementsList
 

@@ -25,21 +25,21 @@ class Collection c where
 
 	-- Adds an Element to the Collection.
 	-- If the Element already exists the original Collection is returned.
-	insert :: Element c -> c -> c
+	addElement :: Element c -> c -> c
 
 	-- Removes an Element from the Collection.
 	-- If the Element does not exists the original Collection is returned.
-	delete :: Element c -> c -> c
+	removeElement :: Element c -> c -> c
 
 	-- ATOMIC QUERY FUNCTIONS
 	-----------------------------------------------------------------------
 
 	-- The number of Elements that the Collection contains.
-	size :: c -> Integer
+	getElementCount :: c -> Integer
 
 	-- True if the Collection contains this Element, otherwise, false.
-	member :: Element c -> c -> Bool
+	containsElement :: Element c -> c -> Bool
 
 	-- A list with the Elements that are members of the Collection.
-	elems :: c -> [Element c]
+	getElementsList :: c -> [Element c]
 
