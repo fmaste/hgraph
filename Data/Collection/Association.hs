@@ -50,5 +50,5 @@ class Association a where
 	containsAssociation :: Key a -> Value a -> a -> Bool
 
 	-- A list with the (key, value) associations that are members of the Association.
-	getElementsList :: a -> [(key a, Value a)]
+	getAssociationsList :: a -> [(key a, Value a)]
 
