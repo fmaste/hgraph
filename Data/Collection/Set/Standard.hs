@@ -7,7 +7,7 @@
 -------------------------------------------------------------------------------
 
 {-# LANGUAGE TypeFamilies, TypeSynonymInstances #-}
-module Data.Collection.Set.Default (
+module Data.Collection.Set.Standard (
 	Set,
 	empty,
 	addElement,
