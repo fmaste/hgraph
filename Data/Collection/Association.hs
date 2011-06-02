@@ -34,10 +34,6 @@ class DC.Collection a => Association a where
 	-- If the key does not exists the original Association is returned.
 	removeKey :: Key a -> a -> a
 
-	-- Removes a (key, value) association from the Association.
-	-- If the association does not exists the original Association is returned.
-	-- TODO: removeAssociation :: Key a -> Value a -> a -> a
-
 	-- ATOMIC QUERY FUNCTIONS
 	-----------------------------------------------------------------------
 
