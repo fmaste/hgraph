@@ -34,7 +34,7 @@ class Association a where
 
 	-- Removes a (key, value) association from the Association.
 	-- If the association does not exists the original Association is returned.
-	removeAssociation :: Key a -> Value a -> a -> a
+	-- TODO: removeAssociation :: Key a -> Value a -> a -> a
 
 	-- ATOMIC QUERY FUNCTIONS
 	-----------------------------------------------------------------------
