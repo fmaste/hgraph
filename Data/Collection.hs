@@ -35,7 +35,7 @@ class Collection c where
 	-----------------------------------------------------------------------
 
 	-- The number of Elements that the Collection contains.
-	getElementCount :: c -> Integer
+	getElementsCount :: c -> Integer
 
 	-- True if the Collection contains this Element, otherwise, false.
 	containsElement :: Element c -> c -> Bool

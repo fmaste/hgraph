@@ -12,7 +12,7 @@ module Data.Collection.Set.Standard (
 	empty,
 	addElement,
 	removeElement,
-	getElementCount,
+	getElementsCount,
 	containsElement,
 	getElementsList ) where
 
@@ -39,8 +39,8 @@ addElement = DS.insert
 removeElement :: Ord a => a -> Set a -> Set a
 removeElement = DS.delete
 
-getElementCount :: Set a -> Integer
-getElementCount = toInteger . DS.size
+getElementsCount :: Set a -> Integer
+getElementsCount = toInteger . DS.size
 
 containsElement :: Ord a => a -> Set a -> Bool
 containsElement = DS.member
@@ -56,7 +56,7 @@ instance Ord a => DC.Collection (Set a) where
 	empty = empty
 	addElement = addElement
 	removeElement = removeElement
-	getElementCount = getElementCount
+	getElementsCount = getElementsCount
 	containsElement = containsElement
 	getElementsList = getElementsList
 
