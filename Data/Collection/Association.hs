@@ -41,5 +41,5 @@ class DC.Collection a => Association a where
 	containsKey :: Key a -> a -> Bool
 
 	-- Get the associated value of the provided key.
-	getAssociatedValue :: Key a -> a -> Maybe (Value a)
+	getValue :: Key a -> a -> Maybe (Value a)
 
