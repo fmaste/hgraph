@@ -2,71 +2,47 @@
 
 -- Relation class.
 -- TODO: Make it haddock compatibele!
-{-# LANGUAGE TypeFamilies #-}
+
+-- MODULE
+-------------------------------------------------------------------------------
+
+{-# LANGUAGE TypeFamilies, FlexibleContexts #-}
 module Data.Collection.Relation (
-	-- Atomic constructor functions.
-	Relation(),
-	empty,
-	addDomainElement,
-	addCodomainElement,
-	removeDomainElement,
-	removeCodomainElement,
-	addRelation,
-	removeRelation,
-	-- Atomic query functions.
-        getDomain,
-	getCodomain,
-	getRelatedTo,
-	getRelatedFrom,
-	getGraph,
-	-- Util query functions.
-	getDomainList,
-	getCodomainList,
-	getDomainCount,
-	getCodomainCount,
-	containsDomainElement,
-	containsCodomainElement,
-	getRelatedToList,
-	getRelatedFromList,
-	getRelatedToCount,
-	getRelatedFromCount,
-	isRelatedTo,
-	isRelatedFrom,
-	containsRelation,
-	-- Relation theory functions.
-	isInjective,
-	revert) where
+	Relation(..) ) where
 
 -- IMPORTS
 -------------------------------------------------------------------------------
 
 import Data.List (foldl, foldl', foldr)
-import qualified Data.Set as Set
+import qualified Data.Collection as DC
+import qualified Data.Collection.Set as DCS
 
-class Relation r where
-	-- The domain and codomain type families.
+-- CLASS
+-------------------------------------------------------------------------------
+
+class (DC.Collection r, DCS.Set (DomainSet r), DCS.Set (CodomainSet r)) => Relation r where
+	-- The Relation type families.
 	type Domain r
 	type Codomain r
+	type DomainSet r
+	type CodomainSet r
 
 	-- ATOMIC CONSTRUCTION FUNCTIONS
 	-----------------------------------------------------------------------
 
-	-- The empty relation.
-	empty :: r
-
-	-- Adds an element to the domain.
+	-- Adds an element to the domain of the Relation.
 	-- If this element already exists the original Relation is returned.
 	addDomainElement :: Domain r -> r -> r
 
-	-- Adds an element to the codomain.
+	-- Adds an element to the codomain of the Relation.
 	-- If this element already exists the original Relation is returned.
 	addCodomainElement :: Codomain r -> r -> r
 
-	-- Removes an element from the domain.
+	-- Removes an element from the domain of the Relation.
 	-- If this element does not exists the original Relation is returned.
 	removeDomainElement ::Domain r -> r -> r
 
-	-- Removes an element from the codomain.
+	-- Removes an element from the codomain of the Relation.
 	-- If this element does not exists the original Relation is returned.
 	removeCodomainElement :: Codomain r -> r -> r
 
@@ -76,25 +52,29 @@ class Relation r where
 	addRelation :: Domain r -> Codomain r -> r -> r
 
 	-- Removes a relation from a domain element to a codomain one.
-	-- If this relation is not present the original BinaryRelation is returned.
+	-- If this relation is not present the original Relation is returned.
 	removeRelation :: Domain r -> Codomain r -> r -> r
 
 	-- ATOMIC QUERY FUNCTIONS
 	-----------------------------------------------------------------------
 
-	getDomain :: r -> Set.Set (Domain r)
+	getDomain :: r -> DomainSet r
 
-	getCodomain :: r -> Set.Set (Codomain r)
+	getCodomain :: r -> CodomainSet r
 
-	getRelatedTo :: Domain r -> r -> Set.Set (Codomain r)
+	getRelatedTo :: Domain r -> r -> CodomainSet r
 
-	getRelatedFrom :: Codomain r -> r -> Set.Set (Domain r)
+	getRelatedFrom :: Codomain r -> r -> DomainSet r
 
 	-- All the relationships. Elements without relationships are not shown.
 	-- This function can be constructed using other funtions, but it is
 	-- here because the graph is part of the signature of a relation.
-	getGraph :: r -> Set.Set (Domain r, Codomain r)
+	-- Collections getElementsList is the same!! 
+	-- getGraph :: r -> [(Domain r, Codomain r)]
 
+
+
+{-- TODO: Later on an extra class, Like RelationTheory, RelationPlus, etc.
 	-- UTIL QUERY FUNCTIONS
 	-----------------------------------------------------------------------
 
@@ -140,4 +120,5 @@ class Relation r where
 	isInjective :: r -> Bool
 
 	revert :: r -> r
+--}
 
