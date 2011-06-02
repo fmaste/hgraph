@@ -14,7 +14,7 @@ module Data.Collection (
 -------------------------------------------------------------------------------
 
 class Collection c where
-	-- The collection element type family.
+	-- The Collection element type family.
 	type Element c
 
 	-- ATOMIC CONSTRUCTION FUNCTIONS
