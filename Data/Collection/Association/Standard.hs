@@ -13,6 +13,7 @@ module Data.Collection.Association.Standard (
 	addElement,
 	removeElement,
 	getElementsCount,
+	getElementsList,
 	addValue,
 	removeKey,
 	containsKey,
@@ -46,6 +47,9 @@ removeElement (k, v) m = DM.update f k m where
 getElementsCount :: Map k v -> Integer
 getElementsCount = toInteger . DM.size
 
+getElementsList :: Map k v -> [(k, v)]
+getElementsList = DM.toList
+
 addValue :: Ord k => k -> v -> Map k v -> Map k v
 addValue = DM.insert
 
@@ -57,9 +61,6 @@ containsKey = DM.member
 
 getValue :: Ord k => k -> Map k v -> Maybe v
 getValue = DM.lookup
-
-getElementsList :: Map k v -> [(k, v)]
-getElementsList = DM.toList
 
 -- INSTANCE
 -------------------------------------------------------------------------------
