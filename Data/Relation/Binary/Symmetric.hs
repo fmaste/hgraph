@@ -72,7 +72,7 @@ addCodomainElement element br = addDomainElement element bt
 -- If this element does not exists the original BinaryRelation is returned.
 removeDomainElement :: Ord domain => domain -> BinaryRelation domain -> BinaryRelation domain
 removeDomainElement domain (BinaryRelation relatedTo) = BinaryRelation relatedTo' where
-	relatedTo' = MM.removeValue domain relatedTo
+	relatedTo' = MM.removeKey domain relatedTo
 
 -- Removes an element from the codomain.
 -- If this element does not exists the original BinaryRelation is returned.
