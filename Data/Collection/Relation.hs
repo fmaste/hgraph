@@ -72,9 +72,10 @@ class (DC.Collection r, DCS.Set (DomainSet r), DCS.Set (CodomainSet r)) => Relat
 	-- Collections getElementsList is the same!! 
 	-- getGraph :: r -> [(Domain r, Codomain r)]
 
+-- TODO
+-------------------------------------------------------------------------------
 
-
-{-- TODO: Later on an extra class, Like RelationTheory, RelationPlus, etc.
+{-- Later on an extra class, Like RelationTheory, RelationPlus, etc.
 	-- UTIL QUERY FUNCTIONS
 	-----------------------------------------------------------------------
 
