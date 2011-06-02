@@ -24,13 +24,13 @@ class Association a where
 	-- The empty Association.
 	empty :: a
 
-	-- Remove a key with its associated value from the Association.
-	-- If the key does not exists the original Association is returned.
-	removeKey :: Key a -> a -> a
-
 	-- Adds a (key, value) association to the Association.
 	-- If the association already exists the original Association is returned.
 	addAssociation :: Key a -> Value a -> a -> a
+
+	-- Remove a key with its associated value from the Association.
+	-- If the key does not exists the original Association is returned.
+	removeKey :: Key a -> a -> a
 
 	-- Removes a (key, value) association from the Association.
 	-- If the association does not exists the original Association is returned.
