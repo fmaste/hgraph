@@ -39,6 +39,9 @@ class Association a where
 	-- ATOMIC QUERY FUNCTIONS
 	-----------------------------------------------------------------------
 
+	-- Get the asociated value of the provided key.
+	getAssociatedValue :: Key a -> a -> Maybe (Value a)
+
 	-- The number of (key, alue) associaitons that the Association contains.
 	getAssociationsCount :: a -> Integer
 
