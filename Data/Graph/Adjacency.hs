@@ -44,7 +44,7 @@ module Data.Graph.Adjacency (
 import Data.List (foldl, foldl', foldr)
 import qualified Data.Set as Set
 import qualified Data.Map as Map
-import qualified Data.BinaryRelation as BR
+import qualified Data.Relation.Binary.Double as BR
 
 -- * DATA DEFINITION
 -------------------------------------------------------------------------------
@@ -125,7 +125,7 @@ removeNodePredAdjacencies node adj@(Adjacency br) = Adjacency br' where
 
 -- | A list with all the different nodes.
 getNodes :: Ord node => Adjacency node -> [node]
-getNodes (Adjacency br) = BR.getDomainElements br
+getNodes (Adjacency br) = BR.getDomainList br
 
 -- | The number of different nodes present.
 getNodeCount :: Ord node => Adjacency node -> Int
@@ -133,11 +133,11 @@ getNodeCount (Adjacency br) = BR.getDomainCount br
 
 -- | Get all the different nodes that are successors.
 getNodeSuccNodes :: Ord node => node -> Adjacency node -> [node]
-getNodeSuccNodes node (Adjacency br) = BR.getRelatedToElements node br
+getNodeSuccNodes node (Adjacency br) = BR.getRelatedToList node br
 
 -- | Get all the different nodes that are predecessors.
 getNodePredNodes :: Ord node => node -> Adjacency node -> [node]
-getNodePredNodes node (Adjacency br) = BR.getRelatedFromElements node br
+getNodePredNodes node (Adjacency br) = BR.getRelatedFromList node br
 
 -- | A set with the node successors.
 getNodeSuccNodesSet :: Ord node => node -> Adjacency node -> Set.Set node
@@ -178,7 +178,7 @@ getAdjacencies adj =
 -- | The number of different adjacencies.
 getAdjacencyCount :: Ord node => Adjacency node -> Int
 getAdjacencyCount (Adjacency br) = 
-	foldl (\ans key -> ans + (BR.getRelatedToCount key br)) 0 $ BR.getDomainElements br
+	foldl (\ans key -> ans + (BR.getRelatedToCount key br)) 0 $ BR.getDomainList br
 
 -- | Node exists?
 containsNode :: Ord node => node -> Adjacency node -> Bool

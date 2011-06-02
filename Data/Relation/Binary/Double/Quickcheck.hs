@@ -1,6 +1,6 @@
 -- Author: Federico Mastellone (fmaste@gmail.com)
 
-module Data.BinaryRelation.Quickcheck (
+module Data.Relation.Binary.Double.Quickcheck (
 	prop_addToDomainCheckDomain,
 	prop_addToCodomainCheckCodomain,
 	prop_addToDomainCheckDomainCount,
@@ -17,7 +17,7 @@ module Data.BinaryRelation.Quickcheck (
 
 import qualified Data.List as List
 import qualified Data.Set as Set
-import qualified Data.BinaryRelation as BR
+import qualified Data.Relation.Binary.Double as BR
 import qualified Test.QuickCheck as QC
 
 -- * UTILS
@@ -98,12 +98,12 @@ prop_addToCodomainCheckDomainCount elements = BR.getDomainCount createdBR == 0 w
 
 -- | Add all the elements to the domain and check if there are relations.
 prop_addToDomainCheckRelations :: [Int] -> Bool
-prop_addToDomainCheckRelations elements = BR.getGraph createdBR == [] where
+prop_addToDomainCheckRelations elements = BR.getGraph createdBR == Set.empty where
 	createdBR = addElementsToDomain elements (BR.empty :: BR.BinaryRelation Int Int)
 
 -- | Add all the elements to the codomain and check if there are relations.
 prop_addToCodomainCheckRelations :: [Int] -> Bool
-prop_addToCodomainCheckRelations elements = BR.getGraph createdBR == [] where
+prop_addToCodomainCheckRelations elements = BR.getGraph createdBR == Set.empty where
 	createdBR = addElementsToCodomain elements (BR.empty :: BR.BinaryRelation Int Int)
 
 -- REMOVE ELEMENTS

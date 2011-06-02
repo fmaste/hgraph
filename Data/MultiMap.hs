@@ -1,31 +1,38 @@
 -- Author: Federico Mastellone (fmaste@gmail.com)
 
 -- Every key has a set of elements.
+-- TODO: Make it haddock compatible!
 module Data.MultiMap (
-	-- Atomic construction functions
+	-- Atomic construction functions.
 	MultiMap(),
 	empty,
 	addKey,
 	removeKey,
 	addValue,
 	removeValue,
-	-- Atomic query functions
-	isEmpty,
+	-- Atomic query functions.
 	getKeys,
-	getKeyCount,
 	getValues,
+	-- Util functions.
+	isEmpty,
+	getKeysSet,
+	getKeyCount,
+	getValuesList,
 	getValueCount,
 	containsKey,
 	containsValue,
-	-- Extra functions
-	getKeysSet,
-	getValuesList,
 	getValuesAndRemoveKey,
-	removeValuesAll) where
+	removeValueFromKeys,
+	removeValuesAll,
+	-- SOMETHING
+	mapSet,
+	foldSet,
+	foldSetWithKey) where
 
 -- IMPORTS
 -------------------------------------------------------------------------------
 
+import Data.List (foldl, foldl', foldr)
 import qualified Data.Map as Map
 import qualified Data.Set as Set
 
@@ -75,21 +82,32 @@ removeValue k v (MultiMap m) = MultiMap $ Map.adjust (Set.delete v) k m
 -- * ATOMIC QUERY FUNCTIONS
 -------------------------------------------------------------------------------
 
-isEmpty :: (Ord k, Ord v) => MultiMap k v -> Bool
-isEmpty (MultiMap m) = Map.null m
-
 -- | A list with all the different keys.
 getKeys :: (Ord k, Ord v) => MultiMap k v -> [k]
 getKeys (MultiMap m) = Map.keys m
-
--- | The number of different keys present.
-getKeyCount :: (Ord k, Ord v) => MultiMap k v -> Int
-getKeyCount (MultiMap m) = Map.size m
 
 -- | A set with the different values that exist for the key.
 -- If key does not exist an empty Set is returned.
 getValues :: (Ord k, Ord v) => k -> MultiMap k v -> Set.Set v
 getValues k (MultiMap m) = Map.findWithDefault Set.empty k m
+
+-- * UTILS FUNCTIONS
+-------------------------------------------------------------------------------
+
+isEmpty :: (Ord k, Ord v) => MultiMap k v -> Bool
+isEmpty (MultiMap m) = Map.null m
+
+-- | A set with all the different keys.
+getKeysSet :: (Ord k, Ord v) => MultiMap k v -> Set.Set k
+getKeysSet (MultiMap m) = Map.keysSet m
+
+-- | The number of different keys present.
+getKeyCount :: (Ord k, Ord v) => MultiMap k v -> Int
+getKeyCount (MultiMap m) = Map.size m
+
+-- | All the different values that exist for the key.
+getValuesList :: (Ord k, Ord v) => k -> MultiMap k v -> [v]
+getValuesList k mm = Set.elems $ getValues k mm
 
 -- | The number of different values that exist for the key.
 getValueCount :: (Ord k, Ord v) => k -> MultiMap k v -> Int
@@ -103,33 +121,31 @@ containsKey k (MultiMap m) = Map.member k m
 containsValue :: (Ord k, Ord v) => k -> v -> MultiMap k v -> Bool
 containsValue k v mm = Set.member v $ getValues k mm
 
--- * CONSTRUCTION FUNCTIONS
--------------------------------------------------------------------------------
-
--- | A set with all the different keys.
-getKeysSet :: (Ord k, Ord v) => MultiMap k v -> Set.Set k
-getKeysSet (MultiMap m) = Map.keysSet m
-
--- | All the different values that exist for the key.
-getValuesList :: (Ord k, Ord v) => k -> MultiMap k v -> [v]
-getValuesList k mm = Set.elems $ getValues k mm
-
-
 getValuesAndRemoveKey :: (Ord k, Ord v) => k -> MultiMap k v -> (MultiMap k v, [v])
 getValuesAndRemoveKey k (MultiMap m) = f $ Map.updateLookupWithKey (\_ _ -> Nothing) k m where
 	f (Nothing, m) = (MultiMap m, [])
 	f (Just v, m) = (MultiMap m, Set.elems v)
 
--- TODO:
---removeValueFromKeys :: (Ord k, Ord v) => [k] -> v -> MultiMap k v -> MultiMap k v
---removeValueFromKeys [k] v (MultiMap m) = Multimap m' where
---	m' = 
+removeValueFromKeys :: (Ord k, Ord v) => [k] -> v -> MultiMap k v -> MultiMap k v
+removeValueFromKeys ks v (MultiMap m) = MultiMap (Map.unionWith f m m') where
+	f set _ = Set.delete v set
+	m' = Map.fromList $ map g ks where
+		g k = (k, Set.empty)
 
 -- | Removes all the values from the key, the key is retained with no values.
 -- If key does not exist the original MultiMap is returned.
 -- If there are no values the original MultiMap is returned.
 removeValuesAll :: (Ord k, Ord v) => k -> MultiMap k v ->  MultiMap k v
 removeValuesAll k (MultiMap m) = MultiMap $ Map.adjust (const Set.empty) k m
+
+mapSet :: (Ord k, Ord v, Ord v') => (Set.Set v -> Set.Set v') -> MultiMap k v -> MultiMap k v'
+mapSet f (MultiMap mm) = MultiMap (Map.map f mm)
+
+foldSet :: (Ord k, Ord v) => (Set.Set v -> ans -> ans) -> ans -> MultiMap k v -> ans
+foldSet f ans (MultiMap mm) = Map.fold f ans mm
+
+foldSetWithKey :: (Ord k, Ord v) => (k -> Set.Set v -> ans -> ans) -> ans -> MultiMap k v -> ans
+foldSetWithKey f ans (MultiMap mm) = Map.foldWithKey f ans mm
 
 -- * QUERY FUNCTIONS
 -------------------------------------------------------------------------------

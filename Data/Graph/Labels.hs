@@ -30,7 +30,7 @@ module Data.Graph.Labels (
 -------------------------------------------------------------------------------
 
 import qualified Data.Set as Set
-import qualified Data.BinaryRelation as BR
+import qualified Data.Relation.Binary.Double as BR
 
 -- DATA DEFINITION
 -------------------------------------------------------------------------------
@@ -91,10 +91,10 @@ removeLabelFromElement element label (Labels br) = Labels br' where
 -------------------------------------------------------------------------------
 
 getLabels :: (Ord element, Ord label) => Labels element label -> [label]
-getLabels (Labels br) = BR.getCodomainElements br
+getLabels (Labels br) = BR.getCodomainList br
 
 getElements :: (Ord element, Ord label) => Labels element label -> [element]
-getElements (Labels br) = BR.getDomainElements br
+getElements (Labels br) = BR.getDomainList br
 
 getLabelsCount :: (Ord element, Ord label) => Labels element label -> Int
 getLabelsCount (Labels br) = BR.getCodomainCount br
@@ -103,10 +103,10 @@ getElementsCount :: (Ord element, Ord label) => Labels element label -> Int
 getElementsCount (Labels br) = BR.getDomainCount br
 
 getLabelElements :: (Ord element, Ord label) => label -> Labels element label -> [element]
-getLabelElements label (Labels br) = BR.getRelatedFromElements label br
+getLabelElements label (Labels br) = BR.getRelatedFromFrom label br
 
 getElementLabels :: (Ord element, Ord label) => element -> Labels element label -> [label]
-getElementLabels element (Labels br) = BR.getRelatedToElements element br
+getElementLabels element (Labels br) = BR.getRelatedToList element br
 
 getLabelElementsSet :: (Ord element, Ord label) => label -> Labels element label -> Set.Set element
 getLabelElementsSet label (Labels br) = BR.getRelatedFrom label br
