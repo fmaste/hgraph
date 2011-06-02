@@ -14,13 +14,16 @@ module Data.Collection.Set.Standard (
 	removeElement,
 	getElementsCount,
 	containsElement,
-	getElementsList ) where
+	getElementsList,
+	getUnion,
+	getIntersection) where
 
 -- IMPORTS
 -------------------------------------------------------------------------------
 
 import qualified Data.Set as DS
 import qualified Data.Collection as DC
+import qualified Data.Collection.Set as DCS
 
 -- DATA DEFINITION
 -------------------------------------------------------------------------------
@@ -48,6 +51,12 @@ containsElement = DS.member
 getElementsList :: Set a -> [a]
 getElementsList = DS.elems
 
+getUnion :: Ord a => Set a -> Set a -> Set a
+getUnion = DS.union
+
+getIntersection :: Ord a => Set a -> Set a -> Set a
+getIntersection = DS.intersection
+
 -- INSTANCE
 -------------------------------------------------------------------------------
 
@@ -59,4 +68,8 @@ instance Ord a => DC.Collection (Set a) where
 	getElementsCount = getElementsCount
 	containsElement = containsElement
 	getElementsList = getElementsList
+
+instance Ord a => DCS.Set (Set a) where
+	getUnion = getUnion
+	getIntersection = getIntersection
 
