@@ -3,7 +3,7 @@
 module Main where
 
 import qualified Test.QuickCheck as QC
-import Data.Relation.Binary.Double.Quickcheck as BRQC
+import Data.Collection.Relation.Binary.Double.Quickcheck as BRQC
 import Text.Printf
 
 main  = mapM_ (\(s,a) -> printf "%-30s: " s >> a) tests	

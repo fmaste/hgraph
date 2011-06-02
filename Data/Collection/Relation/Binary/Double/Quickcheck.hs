@@ -1,6 +1,6 @@
 -- Author: Federico Mastellone (fmaste@gmail.com)
 
-module Data.Relation.Binary.Double.Quickcheck (
+module Data.Collection.Relation.Binary.Double.Quickcheck (
 	prop_addToDomainCheckDomain,
 	prop_addToCodomainCheckCodomain,
 	prop_addToDomainCheckDomainCount,
@@ -17,7 +17,7 @@ module Data.Relation.Binary.Double.Quickcheck (
 
 import qualified Data.List as List
 import qualified Data.Set as Set
-import qualified Data.Relation.Binary.Double as BR
+import qualified Data.Collection.Relation.Binary.Double as BR
 import qualified Test.QuickCheck as QC
 
 -- * UTILS

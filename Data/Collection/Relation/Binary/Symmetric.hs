@@ -3,7 +3,7 @@
 -- Generic module to manage binary relationships.
 -- TODO: Make it haddock compatibele!
 {-# LANGUAGE TypeFamilies #-}
-module Data.Relation.Binary.Symmetric (
+module Data.Collection.Relation.Binary.Symmetric (
 	-- Atomic constructor functions.
 	BinaryRelation(),
 	empty,

@@ -3,7 +3,7 @@
 -- Relation class.
 -- TODO: Make it haddock compatibele!
 {-# LANGUAGE TypeFamilies #-}
-module Data.Relation (
+module Data.Collection.Relation (
 	-- Atomic constructor functions.
 	Relation(),
 	empty,

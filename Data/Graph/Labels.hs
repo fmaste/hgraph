@@ -30,7 +30,7 @@ module Data.Graph.Labels (
 -------------------------------------------------------------------------------
 
 import qualified Data.Set as Set
-import qualified Data.Relation.Binary.Double as BR
+import qualified Data.Collection.Relation.Binary.Double as BR
 
 -- DATA DEFINITION
 -------------------------------------------------------------------------------

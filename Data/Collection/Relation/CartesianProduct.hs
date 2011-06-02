@@ -2,7 +2,7 @@
 
 -- Generic AxB cartesian product module.
 -- http://mathworld.wolfram.com/CartesianProduct.html
-module Data.Relation.CartesianProduct (
+module Data.Collection.Relation.CartesianProduct (
 	-- Atomic constructor functions.
 	CartesianProduct(),
 	empty,
