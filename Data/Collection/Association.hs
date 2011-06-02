@@ -24,10 +24,6 @@ class Association a where
 	-- The empty Association.
 	empty :: a
 
-	-- Add a key without any associated value to the Association.
-	-- If the key already exists the original Association is returned.
-	addKey :: Key a -> a -> a
-
 	-- Remove a key with its associated value from the Association.
 	-- If the key does not exists the original Association is returned.
 	removeKey :: Key a -> a -> a
