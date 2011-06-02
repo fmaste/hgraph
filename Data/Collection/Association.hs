@@ -49,5 +49,5 @@ class Association a where
 	getAssociationsCount :: a -> Integer
 
 	-- A list with the (key, value) associations that are members of the Association.
-	getAssociationsList :: a -> [(key a, Value a)]
+	getAssociationsList :: a -> [(Key a, Value a)]
 
