@@ -13,9 +13,7 @@ module Data.Collection.Association.Standard (
 	addValue,
 	removeKey,
 	containsKey,
-	getAssociatedValue,
-	getAssociationsCount,
-	getAssociationsList ) where
+	getAssociatedValue ) where
 
 -- IMPORTS
 -------------------------------------------------------------------------------
@@ -47,11 +45,11 @@ containsKey = DM.member
 getAssociatedValue :: Ord k => k -> Map k v -> Maybe v
 getAssociatedValue = DM.lookup
 
-getAssociationsCount :: Map k v -> Integer
-getAssociationsCount = toInteger . DM.size
+getElementsCount :: Map k v -> Integer
+getElementsCount = toInteger . DM.size
 
-getAssociationsList :: Map k v -> [(k, v)]
-getAssociationsList = DM.toList
+getElementsList :: Map k v -> [(k, v)]
+getElementsList = DM.toList
 
 -- INSTANCE
 -------------------------------------------------------------------------------
@@ -63,9 +61,9 @@ instance (Ord k, Ord v) => DC.Collection (Map k v) where
 	addElement (k, v) m = addValue k v m
 	removeElement (k, v) m = DM.update f k m where
 		f x = if x == v then Just x else Nothing
-	getElementsCount = getAssociationsCount
+	getElementsCount = getElementsCount
 	containsElement (k, v) m = if getAssociatedValue k m == Just v then True else False
-	getElementsList = getAssociationsList
+	getElementsList = getElementsList
 
 instance (Ord k, Ord v) => DCA.Association (Map k v) where
 	type DCA.Key (Map k v) = k
@@ -74,6 +72,4 @@ instance (Ord k, Ord v) => DCA.Association (Map k v) where
 	removeKey = removeKey
 	containsKey = containsKey
 	getAssociatedValue = getAssociatedValue
-	getAssociationsCount = getAssociationsCount
-	getAssociationsList = getAssociationsList
 
