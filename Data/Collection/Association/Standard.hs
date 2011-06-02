@@ -67,10 +67,9 @@ instance (Ord k, Ord v) => DC.Collection (Map k v) where
 	containsElement (k, v) m = if getAssociatedValue k m == Just v then True else False
 	getElementsList = getAssociationsList
 
-instance Ord k => DCA.Association (Map k v) where
+instance (Ord k, Ord v) => DCA.Association (Map k v) where
 	type DCA.Key (Map k v) = k
 	type DCA.Value (Map k v) = v
-	empty = empty
 	addAssociation = addAssociation
 	removeKey = removeKey
 	containsKey = containsKey

@@ -10,19 +10,21 @@
 module Data.Collection.Association (
 	Association(..)  ) where
 
+-- IMPORTS
+-------------------------------------------------------------------------------
+
+import qualified Data.Collection as DC
+
 -- CLASS
 -------------------------------------------------------------------------------
 
-class Association a where
+class DC.Collection a => Association a where
 	-- The Assocation type families.
 	type Key a
 	type Value a
 
 	-- ATOMIC CONSTRUCTION FUNCTIONS
 	-----------------------------------------------------------------------
-
-	-- The empty Association.
-	empty :: a
 
 	-- Adds a (key, value) association to the Association.
 	-- If the association already exists the original Association is returned.
