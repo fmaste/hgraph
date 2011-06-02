@@ -34,11 +34,11 @@ class Collection c where
 	-- ATOMIC QUERY FUNCTIONS
 	-----------------------------------------------------------------------
 
-	-- The number of Elements that the Collection contains.
-	getElementsCount :: c -> Integer
-
 	-- True if the Collection contains this Element, otherwise, false.
 	containsElement :: Element c -> c -> Bool
+
+	-- The number of Elements that the Collection contains.
+	getElementsCount :: c -> Integer
 
 	-- A list with the Elements that are members of the Collection.
 	getElementsList :: c -> [Element c]

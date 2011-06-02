@@ -12,8 +12,8 @@ module Data.Collection.Set.Int (
 	empty,
 	addElement,
 	removeElement,
-	getElementsCount,
 	containsElement,
+	getElementsCount,
 	getElementsList,
 	getUnion,
 	getIntersection) where
@@ -42,11 +42,11 @@ addElement = DI.insert
 removeElement :: Int -> IntSet -> IntSet
 removeElement = DI.delete
 
-getElementsCount :: IntSet -> Integer
-getElementsCount = toInteger . DI.size
-
 containsElement :: Int -> IntSet -> Bool
 containsElement = DI.member
+
+getElementsCount :: IntSet -> Integer
+getElementsCount = toInteger . DI.size
 
 getElementsList :: IntSet -> [Int]
 getElementsList = DI.elems
@@ -65,8 +65,8 @@ instance DC.Collection IntSet where
 	empty = empty
 	addElement = addElement
 	removeElement = removeElement
-	getElementsCount = getElementsCount
 	containsElement = containsElement
+	getElementsCount = getElementsCount
 	getElementsList = getElementsList
 
 instance DCS.Set IntSet where

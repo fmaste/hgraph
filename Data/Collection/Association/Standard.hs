@@ -12,8 +12,8 @@ module Data.Collection.Association.Standard (
 	empty,
 	addElement,
 	removeElement,
-	getElementsCount,
 	containsElement,
+	getElementsCount,
 	getElementsList,
 	addValue,
 	removeKey,
@@ -45,11 +45,11 @@ removeElement :: (Ord k, Ord v) => (k, v) -> Map k v -> Map k v
 removeElement (k, v) m = DM.update f k m where
 	f x = if x == v then Just x else Nothing
 
-getElementsCount :: Map k v -> Integer
-getElementsCount = toInteger . DM.size
-
 containsElement :: (Ord k, Ord v) => (k, v) -> Map k v -> Bool
 containsElement (k, v) m = if getValue k m == Just v then True else False
+
+getElementsCount :: Map k v -> Integer
+getElementsCount = toInteger . DM.size
 
 getElementsList :: Map k v -> [(k, v)]
 getElementsList = DM.toList
@@ -75,8 +75,8 @@ instance (Ord k, Ord v) => DC.Collection (Map k v) where
 	empty = empty
 	addElement = addElement
 	removeElement = removeElement
-	getElementsCount = getElementsCount
 	containsElement = containsElement
+	getElementsCount = getElementsCount
 	getElementsList = getElementsList
 
 instance (Ord k, Ord v) => DCA.Association (Map k v) where

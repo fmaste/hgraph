@@ -12,8 +12,8 @@ module Data.Collection.Set.Standard (
 	empty,
 	addElement,
 	removeElement,
-	getElementsCount,
 	containsElement,
+	getElementsCount,
 	getElementsList,
 	getUnion,
 	getIntersection) where
@@ -42,11 +42,11 @@ addElement = DS.insert
 removeElement :: Ord a => a -> Set a -> Set a
 removeElement = DS.delete
 
-getElementsCount :: Set a -> Integer
-getElementsCount = toInteger . DS.size
-
 containsElement :: Ord a => a -> Set a -> Bool
 containsElement = DS.member
+
+getElementsCount :: Set a -> Integer
+getElementsCount = toInteger . DS.size
 
 getElementsList :: Set a -> [a]
 getElementsList = DS.elems
@@ -65,8 +65,8 @@ instance Ord a => DC.Collection (Set a) where
 	empty = empty
 	addElement = addElement
 	removeElement = removeElement
-	getElementsCount = getElementsCount
 	containsElement = containsElement
+	getElementsCount = getElementsCount
 	getElementsList = getElementsList
 
 instance Ord a => DCS.Set (Set a) where
