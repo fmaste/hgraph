@@ -45,8 +45,8 @@ class Association a where
 	-- The number of (key, alue) associaitons that the Association contains.
 	getAssociationsCount :: a -> Integer
 
-	-- True if the Association contains this (key, value) association, otherwise, false.
-	containsAssociation :: Key a -> Value a -> a -> Bool
+	-- True if the Association contains this Key, otherwise, false.
+	containsKey :: Key a -> a -> Bool
 
 	-- A list with the (key, value) associations that are members of the Association.
 	getAssociationsList :: a -> [(key a, Value a)]
