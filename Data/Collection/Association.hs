@@ -39,14 +39,14 @@ class Association a where
 	-- ATOMIC QUERY FUNCTIONS
 	-----------------------------------------------------------------------
 
+	-- True if the Association contains this Key, otherwise, false.
+	containsKey :: Key a -> a -> Bool
+
 	-- Get the asociated value of the provided key.
 	getAssociatedValue :: Key a -> a -> Maybe (Value a)
 
 	-- The number of (key, alue) associaitons that the Association contains.
 	getAssociationsCount :: a -> Integer
-
-	-- True if the Association contains this Key, otherwise, false.
-	containsKey :: Key a -> a -> Bool
 
 	-- A list with the (key, value) associations that are members of the Association.
 	getAssociationsList :: a -> [(key a, Value a)]
