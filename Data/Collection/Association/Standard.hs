@@ -10,7 +10,7 @@
 module Data.Collection.Association.Standard (
 	Map,
 	empty,
-	addAssociation,
+	addValue,
 	removeKey,
 	containsKey,
 	getAssociatedValue,
@@ -35,8 +35,8 @@ type Map = DM.Map
 empty :: Map k v
 empty = DM.empty
 
-addAssociation :: Ord k => k -> v -> Map k v -> Map k v
-addAssociation = DM.insert
+addValue :: Ord k => k -> v -> Map k v -> Map k v
+addValue = DM.insert
 
 removeKey :: Ord k => k -> Map k v -> Map k v
 removeKey = DM.delete
@@ -60,7 +60,7 @@ getAssociationsList = DM.toList
 instance (Ord k, Ord v) => DC.Collection (Map k v) where
 	type DC.Element (Map k v) = (k, v)
 	empty = empty
-	addElement (k, v) m = addAssociation k v m
+	addElement (k, v) m = addValue k v m
 	removeElement (k, v) m = DM.update f k m where
 		f x = if x == v then Just x else Nothing
 	getElementsCount = getAssociationsCount
@@ -70,7 +70,7 @@ instance (Ord k, Ord v) => DC.Collection (Map k v) where
 instance (Ord k, Ord v) => DCA.Association (Map k v) where
 	type DCA.Key (Map k v) = k
 	type DCA.Value (Map k v) = v
-	addAssociation = addAssociation
+	addValue = addValue
 	removeKey = removeKey
 	containsKey = containsKey
 	getAssociatedValue = getAssociatedValue
