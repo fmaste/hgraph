@@ -10,6 +10,7 @@
 module Data.Collection.Association.Standard (
 	Map,
 	empty,
+	addElement,
 	addValue,
 	removeKey,
 	containsKey,
@@ -32,6 +33,9 @@ type Map = DM.Map
 
 empty :: Map k v
 empty = DM.empty
+
+addElement :: Ord k => (k, v) -> Map k v -> Map k v
+addElement (k, v) = addValue k v
 
 addValue :: Ord k => k -> v -> Map k v -> Map k v
 addValue = DM.insert
@@ -58,7 +62,7 @@ getElementsList = DM.toList
 instance (Ord k, Ord v) => DC.Collection (Map k v) where
 	type DC.Element (Map k v) = (k, v)
 	empty = empty
-	addElement (k, v) m = addValue k v m
+	addElement = addElement
 	removeElement (k, v) m = DM.update f k m where
 		f x = if x == v then Just x else Nothing
 	getElementsCount = getElementsCount
