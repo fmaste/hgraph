@@ -39,13 +39,13 @@ addElement = DS.insert
 removeElement :: Ord a => a -> Set a -> Set a
 removeElement = DS.delete
 
-getElementCount :: Ord a => Set a -> Integer
+getElementCount :: Set a -> Integer
 getElementCount = toInteger . DS.size
 
 containsElement :: Ord a => a -> Set a -> Bool
 containsElement = DS.member
 
-getElementsList :: Ord a => Set a -> [a]
+getElementsList :: Set a -> [a]
 getElementsList = DS.elems
 
 -- INSTANCE
