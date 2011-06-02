@@ -103,7 +103,7 @@ getElementsCount :: (Ord element, Ord label) => Labels element label -> Int
 getElementsCount (Labels br) = BR.getDomainCount br
 
 getLabelElements :: (Ord element, Ord label) => label -> Labels element label -> [element]
-getLabelElements label (Labels br) = BR.getRelatedFromFrom label br
+getLabelElements label (Labels br) = BR.getRelatedFromList label br
 
 getElementLabels :: (Ord element, Ord label) => element -> Labels element label -> [label]
 getElementLabels element (Labels br) = BR.getRelatedToList element br
