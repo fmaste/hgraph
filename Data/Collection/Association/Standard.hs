@@ -56,7 +56,7 @@ getAssociationsList = DM.toList
 -- INSTANCE
 -------------------------------------------------------------------------------
 
--- A collection of (k, v) tuples where if k exists, it contains only one v.
+-- A collection of (k, v) tuples where if k exists, it must contain only one v.
 instance (Ord k, Ord v) => DC.Collection (Map k v) where
 	type DC.Element (Map k v) = (k, v)
 	empty = empty
