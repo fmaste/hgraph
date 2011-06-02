@@ -45,7 +45,7 @@ class Association a where
 	-- Get the associated value of the provided key.
 	getAssociatedValue :: Key a -> a -> Maybe (Value a)
 
-	-- The number of (key, alue) associations that the Association contains.
+	-- The number of (key, value) associations that the Association contains.
 	getAssociationsCount :: a -> Integer
 
 	-- A list with the (key, value) associations that are members of the Association.
