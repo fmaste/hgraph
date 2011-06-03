@@ -37,6 +37,9 @@ class (DC.Collection a, DC.Collection (Keys a)) => Map a where
 	-- ATOMIC QUERY FUNCTIONS
 	-----------------------------------------------------------------------
 
+	-- All the keys.
+	getKeys :: a -> Keys a
+
 	-- True if the Association contains this Key, otherwise, false.
 	containsKey :: DC.Element (Keys a) -> a -> Bool
 

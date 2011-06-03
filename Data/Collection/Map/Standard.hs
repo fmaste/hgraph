@@ -61,6 +61,9 @@ putValue = DM.insert
 removeKey :: Ord k => k -> Map k v -> Map k v
 removeKey = DM.delete
 
+getKeys :: Map k v -> DCSS.Set k 
+getKeys = DM.keysSet
+
 containsKey :: Ord k => k -> Map k v -> Bool
 containsKey = DM.member
 
@@ -85,6 +88,7 @@ instance (Ord k, Ord v) => DCM.Map (Map k v) where
 	type DCM.Value (Map k v) = v
 	putValue = putValue
 	removeKey = removeKey
+	getKeys = getKeys
 	containsKey = containsKey
 	getValue = getValue
 
