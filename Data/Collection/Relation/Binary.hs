@@ -7,7 +7,7 @@
 -------------------------------------------------------------------------------
 
 {-# LANGUAGE TypeFamilies, FlexibleContexts #-}
-module Data.Collection.Relation (
+module Data.Collection.Relation.Binary (
 	Relation(..) ) where
 
 -- IMPORTS
