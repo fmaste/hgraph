@@ -17,6 +17,7 @@ module Data.Collection.Map.Standard (
 	getElementsList,
 	putValue,
 	removeKey,
+	getKeys,
 	containsKey,
 	getValue ) where
 
