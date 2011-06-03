@@ -39,7 +39,7 @@ empty :: Map k v
 empty = DM.empty
 
 addElement :: Ord k => (k, v) -> Map k v -> Map k v
-addElement (k, v) = addValue k v
+addElement (k, v) = putValue k v
 
 removeElement :: (Ord k, Ord v) => (k, v) -> Map k v -> Map k v
 removeElement (k, v) m = DM.update f k m where
