@@ -26,7 +26,7 @@ class DC.Collection a => Map a where
 	-- ATOMIC CONSTRUCTION FUNCTIONS
 	-----------------------------------------------------------------------
 
-	-- Adds a (key, value) association to the Association.
+	-- Associates a value with the provided key.
 	-- If the association already exists the original Association is returned.
 	putValue :: Key a -> Value a -> a -> a
 
