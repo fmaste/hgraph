@@ -6,6 +6,7 @@
 -- MODULE
 -------------------------------------------------------------------------------
 
+{-# LANGUAGE TypeFamilies #-}
 module Data.Collection.Relation.Binary.Double (
 	-- Atomic constructor functions.
 	BinaryRelation(),
