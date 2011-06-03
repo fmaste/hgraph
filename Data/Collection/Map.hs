@@ -6,7 +6,7 @@
 -- MODULE
 -------------------------------------------------------------------------------
 
-{-# LANGUAGE TypeFamilies #-}
+{-# LANGUAGE TypeFamilies, FlexibleContexts #-}
 module Data.Collection.Map (
 	Map(..)  ) where
 
@@ -18,9 +18,9 @@ import qualified Data.Collection as DC
 -- CLASS
 -------------------------------------------------------------------------------
 
-class DC.Collection a => Map a where
+class (DC.Collection a, DC.Collection (Keys a)) => Map a where
 	-- The Assocation type families.
-	type Key a
+	type Keys a
 	type Value a
 
 	-- ATOMIC CONSTRUCTION FUNCTIONS
@@ -28,18 +28,18 @@ class DC.Collection a => Map a where
 
 	-- Associates a value with the provided key.
 	-- If the association already exists the original Association is returned.
-	putValue :: Key a -> Value a -> a -> a
+	putValue :: DC.Element (Keys a) -> Value a -> a -> a
 
 	-- Remove a key with its associated value from the Association.
 	-- If the key does not exists the original Association is returned.
-	removeKey :: Key a -> a -> a
+	removeKey :: DC.Element (Keys a) -> a -> a
 
 	-- ATOMIC QUERY FUNCTIONS
 	-----------------------------------------------------------------------
 
 	-- True if the Association contains this Key, otherwise, false.
-	containsKey :: Key a -> a -> Bool
+	containsKey :: DC.Element (Keys a) -> a -> Bool
 
 	-- Get the associated value of the provided key.
-	getValue :: Key a -> a -> Maybe (Value a)
+	getValue :: DC.Element (Keys a) -> a -> Maybe (Value a)
 

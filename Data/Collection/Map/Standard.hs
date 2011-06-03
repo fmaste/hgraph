@@ -25,6 +25,7 @@ module Data.Collection.Map.Standard (
 
 import qualified Data.Map as DM
 import qualified Data.Collection as DC
+import qualified Data.Collection.Set.Standard as DCSS
 import qualified Data.Collection.Map as DCM
 
 -- DATA DEFINITION
@@ -80,7 +81,7 @@ instance (Ord k, Ord v) => DC.Collection (Map k v) where
 	getElementsList = getElementsList
 
 instance (Ord k, Ord v) => DCM.Map (Map k v) where
-	type DCM.Key (Map k v) = k
+	type DCM.Keys (Map k v) = DCSS.Set k
 	type DCM.Value (Map k v) = v
 	putValue = putValue
 	removeKey = removeKey
