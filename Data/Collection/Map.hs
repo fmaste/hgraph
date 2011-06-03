@@ -7,8 +7,8 @@
 -------------------------------------------------------------------------------
 
 {-# LANGUAGE TypeFamilies #-}
-module Data.Collection.Association (
-	Association(..)  ) where
+module Data.Collection.Map (
+	Map(..)  ) where
 
 -- IMPORTS
 -------------------------------------------------------------------------------
@@ -18,7 +18,7 @@ import qualified Data.Collection as DC
 -- CLASS
 -------------------------------------------------------------------------------
 
-class DC.Collection a => Association a where
+class DC.Collection a => Map a where
 	-- The Assocation type families.
 	type Key a
 	type Value a

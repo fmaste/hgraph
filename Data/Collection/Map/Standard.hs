@@ -7,7 +7,7 @@
 -------------------------------------------------------------------------------
 
 {-# LANGUAGE TypeFamilies, TypeSynonymInstances #-}
-module Data.Collection.Association.Standard (
+module Data.Collection.Map.Standard (
 	Map,
 	empty,
 	addElement,
@@ -25,7 +25,7 @@ module Data.Collection.Association.Standard (
 
 import qualified Data.Map as DM
 import qualified Data.Collection as DC
-import qualified Data.Collection.Association as DCA
+import qualified Data.Collection.Map as DCM
 
 -- DATA DEFINITION
 -------------------------------------------------------------------------------
@@ -79,9 +79,9 @@ instance (Ord k, Ord v) => DC.Collection (Map k v) where
 	getElementsCount = getElementsCount
 	getElementsList = getElementsList
 
-instance (Ord k, Ord v) => DCA.Association (Map k v) where
-	type DCA.Key (Map k v) = k
-	type DCA.Value (Map k v) = v
+instance (Ord k, Ord v) => DCM.Map (Map k v) where
+	type DCM.Key (Map k v) = k
+	type DCM.Value (Map k v) = v
 	addValue = addValue
 	removeKey = removeKey
 	containsKey = containsKey
