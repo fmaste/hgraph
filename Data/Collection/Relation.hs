@@ -13,7 +13,6 @@ module Data.Collection.Relation (
 -- IMPORTS
 -------------------------------------------------------------------------------
 
-import Data.List (foldl, foldl', foldr)
 import qualified Data.Collection as DC
 import qualified Data.Collection.Set as DCS
 
