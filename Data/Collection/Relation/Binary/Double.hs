@@ -137,6 +137,11 @@ getRelatedTo element (BinaryRelation relatedTo _) = MM.getValues element related
 getRelatedFrom :: (Ord domain, Ord codomain) => codomain -> BinaryRelation domain codomain -> Set.Set domain
 getRelatedFrom element (BinaryRelation _ relatedFrom) = MM.getValues element relatedFrom
 
+-- INSTANCE
+-------------------------------------------------------------------------------
+
+
+
 -- UTIL QUERY FUNCTIONS
 -------------------------------------------------------------------------------
 
