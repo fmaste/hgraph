@@ -22,8 +22,8 @@ module Data.Collection.Relation.Binary.Double (
 	getCodomain,
 	getRelatedTo,
 	getRelatedFrom,
-	getGraph,
 	-- Util query functions.
+	getGraph,
 	getDomainList,
 	getCodomainList,
 	getDomainCount,
@@ -134,15 +134,15 @@ getRelatedTo element (BinaryRelation relatedTo _) = MM.getValues element related
 getRelatedFrom :: (Ord domain, Ord codomain) => codomain -> BinaryRelation domain codomain -> Set.Set domain
 getRelatedFrom element (BinaryRelation _ relatedFrom) = MM.getValues element relatedFrom
 
+-- UTIL QUERY FUNCTIONS
+-------------------------------------------------------------------------------
+
 -- All the relationships. Elements without relationships are not shown.
 -- This function can be constructed using other funtions, but it is
 -- here because the graph is part of the signature of a binary relation.
 getGraph :: (Ord domain, Ord codomain) => BinaryRelation domain codomain -> Set.Set (domain, codomain)
 -- TODO: Make it more performant, it is traversing the sets too many times.
 getGraph br = Set.fromList [ (domain, codomain) | domain <- getDomainList br, codomain <- getRelatedToList domain br]
-
--- UTIL QUERY FUNCTIONS
--------------------------------------------------------------------------------
 
 getDomainList :: (Ord domain, Ord codomain) => BinaryRelation domain codomain -> [domain]
 getDomainList (BinaryRelation relatedTo _) = MM.getKeys relatedTo
