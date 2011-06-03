@@ -15,7 +15,7 @@ module Data.Collection.Map.Standard (
 	containsElement,
 	getElementsCount,
 	getElementsList,
-	addValue,
+	putValue,
 	removeKey,
 	containsKey,
 	getValue ) where
@@ -54,8 +54,8 @@ getElementsCount = toInteger . DM.size
 getElementsList :: Map k v -> [(k, v)]
 getElementsList = DM.toList
 
-addValue :: Ord k => k -> v -> Map k v -> Map k v
-addValue = DM.insert
+putValue :: Ord k => k -> v -> Map k v -> Map k v
+putValue = DM.insert
 
 removeKey :: Ord k => k -> Map k v -> Map k v
 removeKey = DM.delete
@@ -82,7 +82,7 @@ instance (Ord k, Ord v) => DC.Collection (Map k v) where
 instance (Ord k, Ord v) => DCM.Map (Map k v) where
 	type DCM.Key (Map k v) = k
 	type DCM.Value (Map k v) = v
-	addValue = addValue
+	putValue = putValue
 	removeKey = removeKey
 	containsKey = containsKey
 	getValue = getValue

@@ -28,7 +28,7 @@ class DC.Collection a => Map a where
 
 	-- Adds a (key, value) association to the Association.
 	-- If the association already exists the original Association is returned.
-	addValue :: Key a -> Value a -> a -> a
+	putValue :: Key a -> Value a -> a -> a
 
 	-- Remove a key with its associated value from the Association.
 	-- If the key does not exists the original Association is returned.
