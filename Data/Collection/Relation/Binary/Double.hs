@@ -63,6 +63,9 @@ type RelatedTo domain codomain = MM.MultiMap domain codomain
 -- A codomain element contains a Set of domain elements.
 type RelatedFrom domain codomain = MM.MultiMap codomain domain
 
+-- EXPORTED
+-------------------------------------------------------------------------------
+
 -- ATOMIC CONSTRUCTION FUNCTIONS
 -------------------------------------------------------------------------------
 
