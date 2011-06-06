@@ -46,7 +46,7 @@ module Data.Collection.Relation.Binary.Double (
 
 import Data.List (foldl, foldl', foldr)
 import qualified Data.Set as Set
-import qualified Data.MultiMap as MM
+import qualified Data.Collection.Map.Multi.Set.Standard as MM
 
 -- DATA DEFINITION
 -------------------------------------------------------------------------------

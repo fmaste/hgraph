@@ -7,7 +7,7 @@
 -------------------------------------------------------------------------------
 
 {-# LANGUAGE TypeFamilies #-}
-module Data.MultiMap (
+module Data.Collection.Map.Multi.Set.Standard (
 	-- Atomic construction functions.
 	MapSet(),
 	empty,
