@@ -8,7 +8,8 @@
 
 {-# LANGUAGE TypeFamilies #-}
 module Data.Collection (
-	Collection(..)  ) where
+	Collection(..),
+	CollectionBatch(..) ) where
 
 -- CLASS
 -------------------------------------------------------------------------------
@@ -39,4 +40,10 @@ class Collection c where
 
 	-- A list with the Elements that are members of the Collection.
 	getElementsList :: c -> [Element c]
+
+class Collection c => CollectionBatch c where
+	-- TODO: Provide default implementations	
+	addElements :: [Element c] -> c -> c
+	removeElements :: [Element c] -> c -> c
+	containsElements :: [Element c] -> c -> Bool
 
