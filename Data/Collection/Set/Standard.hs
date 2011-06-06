@@ -62,7 +62,6 @@ getIntersection = DS.intersection
 
 instance Ord a => DC.Collection (Set a) where
 	type DC.Element (Set a) = a
-	empty = empty
 	addElement = addElement
 	removeElement = removeElement
 	containsElement = containsElement

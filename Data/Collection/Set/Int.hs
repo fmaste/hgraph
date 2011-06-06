@@ -62,7 +62,6 @@ getIntersection = DI.intersection
 
 instance DC.Collection IntSet where
 	type DC.Element IntSet = Int
-	empty = empty
 	addElement = addElement
 	removeElement = removeElement
 	containsElement = containsElement

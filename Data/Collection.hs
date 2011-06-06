@@ -20,9 +20,6 @@ class Collection c where
 	-- ATOMIC CONSTRUCTION FUNCTIONS
 	-----------------------------------------------------------------------
 
-	-- The empty Collection.
-	empty :: c
-
 	-- Adds an Element to the Collection.
 	-- If the Element already exists the original Collection is returned.
 	addElement :: Element c -> c -> c

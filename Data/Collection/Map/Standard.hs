@@ -77,7 +77,6 @@ getValue = DM.lookup
 -- A collection of (k, v) tuples where if k exists, it must contain only one v.
 instance (Ord k, Ord v) => DC.Collection (Map k v) where
 	type DC.Element (Map k v) = (k, v)
-	empty = empty
 	addElement = addElement
 	removeElement = removeElement
 	containsElement = containsElement

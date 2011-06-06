@@ -167,7 +167,6 @@ foldSetWithKey f ans (MapSet mm) = Map.foldWithKey f ans mm
 
 instance (Ord k, Ord v) => DC.Collection (MapSet k v) where
 	type DC.Element (MapSet k v) = (k, v)
-	empty = empty
 	addElement (k, v) = addValue k v
 	removeElement (k, v) = removeValue k v
 	containsElement (k, v) m = Set.containsElement v $ getValues k m
