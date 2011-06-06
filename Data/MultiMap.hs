@@ -42,6 +42,7 @@ import qualified Data.Map as Map
 import qualified Data.Collection.Set.Standard as Set
 import qualified Data.Collection as DC
 import qualified Data.Collection.Map as DCM
+import qualified Data.Collection.Map.Multi as DCMM
 
 -- * DATA DEFINITION
 -------------------------------------------------------------------------------
@@ -180,4 +181,10 @@ instance (Ord k, Ord v) => DCM.Map (MultiMap k v) where
 	getKeys = getKeysSet
 	containsKey = containsKey
 	getValue k mm = Just $ getValues k mm -- TODO: No maybe value because the default is always Set.empty!
+
+instance (Ord k, Ord v) => DCMM.MultiMap (MultiMap k v) where
+	addKey = addKey
+	addToKey = addValue
+	removeFromKey = removeValue
+	containedInKey = containsValue
 
