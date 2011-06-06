@@ -43,6 +43,7 @@ import qualified Data.Collection.Set.Standard as Set
 import qualified Data.Collection as DC
 import qualified Data.Collection.Map as DCM
 import qualified Data.Collection.Map.Multi as DCMM
+import qualified Data.Collection.Map.Multi.Set as DCMMS
 
 -- * DATA DEFINITION
 -------------------------------------------------------------------------------
@@ -187,4 +188,6 @@ instance (Ord k, Ord v) => DCMM.MultiMap (MultiMap k v) where
 	addToKey = addValue
 	removeFromKey = removeValue
 	containedInKey = containsValue
+
+instance (Ord k, Ord v) => DCMMS.MapSet (MultiMap k v)
 
