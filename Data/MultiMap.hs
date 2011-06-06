@@ -3,6 +3,9 @@
 -- Every key has a set of elements.
 -- TODO: Make it haddock compatible!
 
+-- MODULE
+-------------------------------------------------------------------------------
+
 {-# LANGUAGE TypeFamilies #-}
 module Data.MultiMap (
 	-- Atomic construction functions.
