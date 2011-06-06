@@ -50,7 +50,7 @@ import qualified Data.MultiMap as MM
 -- We defined BinaryRelation with two structures, one with the domain -> codomain 
 -- relationships and the other is just a set of codomain elements. It stores 
 -- the minimun information but the codomain functions are slower.
-data BinaryRelation domain codomain = BinaryRelation (MM.MultiMap domain codomain) (Set.Set codomain)
+data BinaryRelation domain codomain = BinaryRelation (MM.MapSet domain codomain) (Set.Set codomain)
     deriving (Show, Read, Ord, Eq)
 
 -- ATOMIC CONSTRUCTION FUNCTIONS

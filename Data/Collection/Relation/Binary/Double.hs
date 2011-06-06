@@ -58,10 +58,10 @@ data BinaryRelation domain codomain = BinaryRelation (RelatedTo domain codomain)
     deriving (Show, Read, Ord, Eq)
 
 -- A domain element contains a Set of codomain elements.
-type RelatedTo domain codomain = MM.MultiMap domain codomain
+type RelatedTo domain codomain = MM.MapSet domain codomain
 
 -- A codomain element contains a Set of domain elements.
-type RelatedFrom domain codomain = MM.MultiMap codomain domain
+type RelatedFrom domain codomain = MM.MapSet codomain domain
 
 -- EXPORTED
 -------------------------------------------------------------------------------

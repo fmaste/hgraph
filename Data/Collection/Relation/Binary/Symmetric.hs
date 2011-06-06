@@ -47,8 +47,8 @@ import qualified Data.MultiMap as MM
 -- DATA DEFINITION
 -------------------------------------------------------------------------------
 
--- We defined BinaryRelation with a MultiMap structure.
-newtype BinaryRelation domain = BinaryRelation (MM.MultiMap domain domain)
+-- We defined BinaryRelation with a MapSet structure.
+newtype BinaryRelation domain = BinaryRelation (MM.MapSet domain domain)
     deriving (Show, Read, Ord, Eq)
 
 -- ATOMIC CONSTRUCTION FUNCTIONS
