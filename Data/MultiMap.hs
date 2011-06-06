@@ -2,6 +2,8 @@
 
 -- Every key has a set of elements.
 -- TODO: Make it haddock compatible!
+
+{-# LANGUAGE TypeFamilies #-}
 module Data.MultiMap (
 	-- Atomic construction functions.
 	MultiMap(),
@@ -35,6 +37,7 @@ module Data.MultiMap (
 import Data.List (foldl, foldl', foldr)
 import qualified Data.Map as Map
 import qualified Data.Set as Set
+import qualified Data.Collection as DC
 
 -- * DATA DEFINITION
 -------------------------------------------------------------------------------
@@ -151,3 +154,16 @@ foldSetWithKey f ans (MultiMap mm) = Map.foldWithKey f ans mm
 -------------------------------------------------------------------------------
 
 -- TODO
+
+-- INSTANCE
+-------------------------------------------------------------------------------
+
+instance (Ord k, Ord v) => DC.Collection (MultiMap k v) where
+	type DC.Element (MultiMap k v) = (k, v)
+	empty = empty
+	addElement (k, v) = addValue k v
+	removeElement (k, v) = removeValue k v
+	containsElement (k, v) m = Set.member v $ getValues k m
+	getElementsCount m = toInteger $ foldSet (\set ans -> ans + (Set.size set)) 0 m
+	getElementsList m = foldSetWithKey (\k set ans -> ans ++ [(k, v) | v <- (Set.elems set)]) [] m
+
