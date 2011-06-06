@@ -41,6 +41,7 @@ import Data.List (foldl, foldl', foldr)
 import qualified Data.Map as Map
 import qualified Data.Collection.Set.Standard as Set
 import qualified Data.Collection as DC
+import qualified Data.Collection.Map as DCM
 
 -- * DATA DEFINITION
 -------------------------------------------------------------------------------
@@ -171,4 +172,12 @@ instance (Ord k, Ord v) => DC.Collection (MultiMap k v) where
 	getElementsCount m = toInteger $ foldSet (\set ans -> ans + (Set.getElementsCount set)) 0 m
 	getElementsList m = foldSetWithKey (\k set ans -> ans ++ [(k, v) | v <- (Set.getElementsList set)]) [] m
 
+instance (Ord k, Ord v) => DCM.Map (MultiMap k v) where
+	type DCM.Keys (MultiMap k v) = Set.Set k
+	type DCM.Value (MultiMap k v) = Set.Set v
+	putValue k vSet (MultiMap m) = MultiMap (Map.insert k vSet m)
+	removeKey = removeKey
+	getKeys = getKeysSet
+	containsKey = containsKey
+	getValue k mm = Just $ getValues k mm -- TODO: No maybe value because the default is always Set.empty!
 
