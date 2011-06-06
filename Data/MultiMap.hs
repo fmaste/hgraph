@@ -39,7 +39,7 @@ module Data.MultiMap (
 
 import Data.List (foldl, foldl', foldr)
 import qualified Data.Map as Map
-import qualified Data.Set as Set
+import qualified Data.Collection.Set.Standard as Set
 import qualified Data.Collection as DC
 
 -- * DATA DEFINITION
@@ -77,13 +77,14 @@ removeKey k (MultiMap m) = MultiMap $ Map.delete k m
 -- If key does not exist it is added.
 -- If the value already exists the orignal MultiMap is returned.
 addValue :: (Ord k, Ord v) => k -> v -> MultiMap k v -> MultiMap k v
-addValue k v (MultiMap m) = MultiMap $ Map.insertWith (\new old -> Set.insert v old) k (Set.singleton v) m
+addValue k v (MultiMap m) = MultiMap $ Map.insertWith (\new old -> Set.addElement v old) k (singleton v) m
+	where singleton v = Set.addElement v $ Set.empty
 
 -- | Removes the value from the key.
 -- If key does not exist the original MultiMap is returned.
 -- If the value does not exists the original MultiMap is returned.
 removeValue :: (Ord k, Ord v) => k -> v ->  MultiMap k v ->  MultiMap k v
-removeValue k v (MultiMap m) = MultiMap $ Map.adjust (Set.delete v) k m
+removeValue k v (MultiMap m) = MultiMap $ Map.adjust (Set.removeElement v) k m
 
 -- * ATOMIC QUERY FUNCTIONS
 -------------------------------------------------------------------------------
@@ -113,11 +114,11 @@ getKeyCount (MultiMap m) = Map.size m
 
 -- | All the different values that exist for the key.
 getValuesList :: (Ord k, Ord v) => k -> MultiMap k v -> [v]
-getValuesList k mm = Set.elems $ getValues k mm
+getValuesList k mm = Set.getElementsList $ getValues k mm
 
 -- | The number of different values that exist for the key.
 getValueCount :: (Ord k, Ord v) => k -> MultiMap k v -> Int
-getValueCount k mm = Set.size $ getValues k mm
+getValueCount k mm = fromInteger $ Set.getElementsCount $ getValues k mm
 
 -- | Key exists?
 containsKey :: (Ord k, Ord v) => k -> MultiMap k v -> Bool
@@ -125,16 +126,16 @@ containsKey k (MultiMap m) = Map.member k m
 
 -- | Value exists for the key?
 containsValue :: (Ord k, Ord v) => k -> v -> MultiMap k v -> Bool
-containsValue k v mm = Set.member v $ getValues k mm
+containsValue k v mm = Set.containsElement v $ getValues k mm
 
 getValuesAndRemoveKey :: (Ord k, Ord v) => k -> MultiMap k v -> (MultiMap k v, [v])
 getValuesAndRemoveKey k (MultiMap m) = f $ Map.updateLookupWithKey (\_ _ -> Nothing) k m where
 	f (Nothing, m) = (MultiMap m, [])
-	f (Just v, m) = (MultiMap m, Set.elems v)
+	f (Just v, m) = (MultiMap m, Set.getElementsList v)
 
 removeValueFromKeys :: (Ord k, Ord v) => [k] -> v -> MultiMap k v -> MultiMap k v
 removeValueFromKeys ks v (MultiMap m) = MultiMap (Map.unionWith f m m') where
-	f set _ = Set.delete v set
+	f set _ = Set.removeElement v set
 	m' = Map.fromList $ map g ks where
 		g k = (k, Set.empty)
 
@@ -166,7 +167,8 @@ instance (Ord k, Ord v) => DC.Collection (MultiMap k v) where
 	empty = empty
 	addElement (k, v) = addValue k v
 	removeElement (k, v) = removeValue k v
-	containsElement (k, v) m = Set.member v $ getValues k m
-	getElementsCount m = toInteger $ foldSet (\set ans -> ans + (Set.size set)) 0 m
-	getElementsList m = foldSetWithKey (\k set ans -> ans ++ [(k, v) | v <- (Set.elems set)]) [] m
+	containsElement (k, v) m = Set.containsElement v $ getValues k m
+	getElementsCount m = toInteger $ foldSet (\set ans -> ans + (Set.getElementsCount set)) 0 m
+	getElementsList m = foldSetWithKey (\k set ans -> ans ++ [(k, v) | v <- (Set.getElementsList set)]) [] m
+
 
