@@ -15,9 +15,10 @@ module Data.Collection.Map (
 
 import qualified Data.Collection as DC
 
--- CLASS
+-- CLASSES
 -------------------------------------------------------------------------------
 
+-- The main Map class.
 class (DC.Collection a, DC.Collection (Keys a)) => Map a where
 	-- The Assocation type families.
 	type Keys a
