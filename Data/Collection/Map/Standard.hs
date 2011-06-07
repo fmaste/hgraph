@@ -74,7 +74,7 @@ containsKey :: Ord k => k -> Map k v -> Bool
 containsKey = DM.member
 
 getKeysCount :: Map k v -> Integer
-getKeysCount m = toInteger $ DCSS.getElementsCount $ getKeys m
+getKeysCount m = toInteger $ DM.size m
 
 getValue :: Ord k => k -> Map k v -> Maybe v
 getValue = DM.lookup
