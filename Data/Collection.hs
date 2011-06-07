@@ -51,9 +51,8 @@ class Collection c => CollectionList c where
 	fromList :: [Element c] -> c
 
 
--- Functions to operate on more than one element.
+-- Performant functions to operate on more than one element.
 class Collection c => CollectionBatch c where
-	-- TODO: Provide default implementations	
 	addElements :: [Element c] -> c -> c
 	removeElements :: [Element c] -> c -> c
 	containsElements :: [Element c] -> c -> Bool
