@@ -1,7 +1,7 @@
 -- Author: Federico Mastellone (fmaste@gmail.com)
 
 -- Collection classes.
--- TODO: Make it haddock compatibele!
+-- TODO: Make it haddock compatible!
 
 -- MODULE
 -------------------------------------------------------------------------------
