@@ -14,7 +14,6 @@ module Data.Collection.Set.Int (
 	removeElement,
 	containsElement,
 	getElementsCount,
-	getElementsList,
 	toList,
 	getUnion,
 	getIntersection) where
@@ -49,11 +48,8 @@ containsElement = DI.member
 getElementsCount :: IntSet -> Integer
 getElementsCount = toInteger . DI.size
 
-getElementsList :: IntSet -> [Int]
-getElementsList = DI.elems
-
 toList :: IntSet -> [Int]
-toList = getElementsList
+toList = DI.elems
 
 getUnion :: IntSet -> IntSet -> IntSet
 getUnion = DI.union
@@ -70,7 +66,6 @@ instance DC.Collection IntSet where
 	removeElement = removeElement
 	containsElement = containsElement
 	getElementsCount = getElementsCount
-	getElementsList = getElementsList
 
 instance DC.CollectionList IntSet where
 	toList = toList

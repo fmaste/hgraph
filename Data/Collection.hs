@@ -39,9 +39,6 @@ class Collection c where
 	-- The number of Elements that the Collection contains.
 	getElementsCount :: c -> Integer
 
-	-- A list with the Elements that are members of the Collection.
-	getElementsList :: c -> [Element c]
-
 class Collection c => CollectionList c where
 	-- fromList :: [Element c] -> c
 	toList :: c -> [Element c]

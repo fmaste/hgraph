@@ -117,7 +117,7 @@ getKeyCount (MapSet m) = Map.size m
 
 -- | All the different values that exist for the key.
 getValuesList :: (Ord k, Ord v) => k -> MapSet k v -> [v]
-getValuesList k mm = Set.getElementsList $ getValues k mm
+getValuesList k mm = Set.toList $ getValues k mm
 
 -- | The number of different values that exist for the key.
 getValueCount :: (Ord k, Ord v) => k -> MapSet k v -> Int
@@ -134,7 +134,7 @@ containsValue k v mm = Set.containsElement v $ getValues k mm
 getValuesAndRemoveKey :: (Ord k, Ord v) => k -> MapSet k v -> (MapSet k v, [v])
 getValuesAndRemoveKey k (MapSet m) = f $ Map.updateLookupWithKey (\_ _ -> Nothing) k m where
 	f (Nothing, m) = (MapSet m, [])
-	f (Just v, m) = (MapSet m, Set.getElementsList v)
+	f (Just v, m) = (MapSet m, Set.toList v)
 
 removeValueFromKeys :: (Ord k, Ord v) => [k] -> v -> MapSet k v -> MapSet k v
 removeValueFromKeys ks v (MapSet m) = MapSet (Map.unionWith f m m') where
@@ -171,10 +171,9 @@ instance (Ord k, Ord v) => DC.Collection (MapSet k v) where
 	removeElement (k, v) = removeValue k v
 	containsElement (k, v) m = Set.containsElement v $ getValues k m
 	getElementsCount m = toInteger $ foldSet (\set ans -> ans + (Set.getElementsCount set)) 0 m
-	getElementsList m = foldSetWithKey (\k set ans -> ans ++ [(k, v) | v <- (Set.getElementsList set)]) [] m
 
 instance (Ord k, Ord v) => DC.CollectionList (MapSet k v) where
-	toList = DC.getElementsList
+	toList m = foldSetWithKey (\k set ans -> ans ++ [(k, v) | v <- (Set.toList set)]) [] m
 
 instance (Ord k, Ord v) => DCM.Map (MapSet k v) where
 	type DCM.Keys (MapSet k v) = Set.Set k
