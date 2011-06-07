@@ -12,7 +12,7 @@ module Data.Collection (
 	CollectionList(..),
 	CollectionBatch(..) ) where
 
--- CLASS
+-- CLASSES
 -------------------------------------------------------------------------------
 
 class Collection c where
