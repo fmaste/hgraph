@@ -42,7 +42,11 @@ class Collection c where
 
 -- List conversion functions.
 class Collection c => CollectionList c where
+
+	-- Export to a list representation.
 	toList :: c -> [Element c]
+
+	-- Import from a list representation.
 	fromList :: [Element c] -> c
 
 -- Functions to operate on more than one element.
