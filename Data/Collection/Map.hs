@@ -50,3 +50,10 @@ class (DC.Collection a, DC.Collection (Keys a)) => Map a where
 	-- Get the associated value of the provided key.
 	getValue :: DC.Element (Keys a) -> a -> Maybe (Value a)
 
+
+-- Performant way of making combined queries.
+class Map a => MapCombine a where
+
+	-- Get the associated value of the provided key before removing it.
+	getValueAndRemoveKey :: DC.Element (Keys a) -> a -> (Maybe (Value a), a)
+
