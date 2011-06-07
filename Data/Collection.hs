@@ -15,6 +15,7 @@ module Data.Collection (
 -- CLASSES
 -------------------------------------------------------------------------------
 
+-- The main Collection class.
 class Collection c where
 	-- The Collection element type family.
 	type Element c
@@ -39,10 +40,12 @@ class Collection c where
 	-- The number of Elements that the Collection contains.
 	getElementsCount :: c -> Integer
 
+-- List conversion functions.
 class Collection c => CollectionList c where
 	toList :: c -> [Element c]
 	fromList :: [Element c] -> c
 
+-- Functions to operate on more than one element.
 class Collection c => CollectionBatch c where
 	-- TODO: Provide default implementations	
 	addElements :: [Element c] -> c -> c
