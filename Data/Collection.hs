@@ -1,6 +1,6 @@
 -- Author: Federico Mastellone (fmaste@gmail.com)
 
--- Collection class.
+-- Collection classes.
 -- TODO: Make it haddock compatibele!
 
 -- MODULE
