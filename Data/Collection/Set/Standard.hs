@@ -15,6 +15,7 @@ module Data.Collection.Set.Standard (
 	containsElement,
 	getElementsCount,
 	toList,
+	fromList,
 	getUnion,
 	getIntersection) where
 
@@ -51,6 +52,9 @@ getElementsCount = toInteger . DS.size
 toList :: Set a -> [a]
 toList = DS.elems
 
+fromList :: Ord a => [a] -> Set a
+fromList = DS.fromList
+
 getUnion :: Ord a => Set a -> Set a -> Set a
 getUnion = DS.union
 
@@ -69,6 +73,7 @@ instance Ord a => DC.Collection (Set a) where
 
 instance Ord a => DC.CollectionList (Set a) where
 	toList = toList
+	fromList = fromList
 
 instance Ord a => DCS.Set (Set a) where
 	getUnion = getUnion

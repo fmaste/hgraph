@@ -40,8 +40,8 @@ class Collection c where
 	getElementsCount :: c -> Integer
 
 class Collection c => CollectionList c where
-	-- fromList :: [Element c] -> c
 	toList :: c -> [Element c]
+	fromList :: [Element c] -> c
 
 class Collection c => CollectionBatch c where
 	-- TODO: Provide default implementations	
