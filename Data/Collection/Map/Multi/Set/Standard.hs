@@ -173,6 +173,9 @@ instance (Ord k, Ord v) => DC.Collection (MapSet k v) where
 	getElementsCount m = toInteger $ foldSet (\set ans -> ans + (Set.getElementsCount set)) 0 m
 	getElementsList m = foldSetWithKey (\k set ans -> ans ++ [(k, v) | v <- (Set.getElementsList set)]) [] m
 
+instance (Ord k, Ord v) => DC.CollectionList (MapSet k v) where
+	toList = DC.getElementsList
+
 instance (Ord k, Ord v) => DCM.Map (MapSet k v) where
 	type DCM.Keys (MapSet k v) = Set.Set k
 	type DCM.Value (MapSet k v) = Set.Set v

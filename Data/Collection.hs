@@ -9,6 +9,7 @@
 {-# LANGUAGE TypeFamilies #-}
 module Data.Collection (
 	Collection(..),
+	CollectionList(..),
 	CollectionBatch(..) ) where
 
 -- CLASS
@@ -40,6 +41,10 @@ class Collection c where
 
 	-- A list with the Elements that are members of the Collection.
 	getElementsList :: c -> [Element c]
+
+class Collection c => CollectionList c where
+	-- fromList :: [Element c] -> c
+	toList :: c -> [Element c]
 
 class Collection c => CollectionBatch c where
 	-- TODO: Provide default implementations	
