@@ -44,6 +44,9 @@ class (DC.Collection a, DC.Collection (Keys a)) => Map a where
 	-- True if the Association contains this Key, otherwise, false.
 	containsKey :: DC.Element (Keys a) -> a -> Bool
 
+	-- The number of keys that the Map has.
+	getKeysCount :: a -> Integer
+
 	-- Get the associated value of the provided key.
 	getValue :: DC.Element (Keys a) -> a -> Maybe (Value a)
 

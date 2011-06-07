@@ -20,6 +20,7 @@ module Data.Collection.Map.Standard (
 	removeKey,
 	getKeys,
 	containsKey,
+	getKeysCount,
 	getValue ) where
 
 -- IMPORTS
@@ -72,6 +73,9 @@ getKeys = DM.keysSet
 containsKey :: Ord k => k -> Map k v -> Bool
 containsKey = DM.member
 
+getKeysCount :: Map k v -> Integer
+getKeysCount m = toInteger $ DCSS.getElementsCount $ getKeys m
+
 getValue :: Ord k => k -> Map k v -> Maybe v
 getValue = DM.lookup
 
@@ -97,5 +101,6 @@ instance (Ord k, Ord v) => DCM.Map (Map k v) where
 	removeKey = removeKey
 	getKeys = getKeys
 	containsKey = containsKey
+	getKeysCount = getKeysCount
 	getValue = getValue
 
