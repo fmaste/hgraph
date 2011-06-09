@@ -79,7 +79,7 @@ getKeysCount m = toInteger $ DM.size m
 getValue :: Ord k => k -> Map k v -> Maybe v
 getValue = DM.lookup
 
--- INSTANCE
+-- INSTANCES
 -------------------------------------------------------------------------------
 
 -- A collection of (k, v) tuples where if k exists, it must contain only one v.
