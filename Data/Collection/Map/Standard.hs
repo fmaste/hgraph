@@ -21,7 +21,8 @@ module Data.Collection.Map.Standard (
 	getKeys,
 	containsKey,
 	getKeysCount,
-	getValue ) where
+	getValue,
+	getValueAndRemoveKey ) where
 
 -- IMPORTS
 -------------------------------------------------------------------------------
@@ -79,6 +80,9 @@ getKeysCount m = toInteger $ DM.size m
 getValue :: Ord k => k -> Map k v -> Maybe v
 getValue = DM.lookup
 
+getValueAndRemoveKey :: (Ord k, Ord v) => k -> Map k v -> (Maybe v, Map k v)
+getValueAndRemoveKey k m = DM.updateLookupWithKey (\_ _ -> Nothing) k m where
+
 -- INSTANCES
 -------------------------------------------------------------------------------
 
@@ -103,4 +107,7 @@ instance (Ord k, Ord v) => DCM.Map (Map k v) where
 	containsKey = containsKey
 	getKeysCount = getKeysCount
 	getValue = getValue
+
+instance (Ord k, Ord v) => DCM.Combination (Map k v) where
+	getValueAndRemoveKey = getValueAndRemoveKey
 
