@@ -88,7 +88,7 @@ getValueMaybe = DM.lookup
 getValueWithDefault :: Ord k => v -> k -> Map k v -> v
 getValueWithDefault = DM.findWithDefault
 
-getValueAndRemoveKey :: (Ord k, Ord v) => k -> Map k v -> (Maybe v, Map k v)
+getValueAndRemoveKey :: Ord k => k -> Map k v -> (Maybe v, Map k v)
 getValueAndRemoveKey k m = DM.updateLookupWithKey (\_ _ -> Nothing) k m where
 
 -- INSTANCES
