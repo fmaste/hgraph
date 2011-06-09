@@ -193,5 +193,8 @@ instance (Ord k, Ord v) => DCMM.MultiMap (MapSet k v) where
 	containedInKey = containsValue
 	getValuesCount k mm = toInteger $ getValueCount k mm
 
+instance (Ord k, Ord v) => DCMM.Batch (MapSet k v) where
+	removeFromKeys = removeValueFromKeys
+
 instance (Ord k, Ord v) => DCMMS.MapSet (MapSet k v)
 
