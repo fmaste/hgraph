@@ -55,7 +55,7 @@ class Collection c => List c where
 
 -- Performant functions to operate on more than one element.
 -- No default implementations because they must be performant.
--- Use fold if your Collection it not an instance and you need this functions.
+-- Use fold if your Collection if not an instance and you need this functions.
 class Collection c => CollectionBatch c where
 	addElements :: [Element c] -> c -> c
 	removeElements :: [Element c] -> c -> c
