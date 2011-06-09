@@ -8,7 +8,8 @@
 
 {-# LANGUAGE TypeFamilies, FlexibleContexts #-}
 module Data.Collection.Map (
-	Map(..)  ) where
+	Map(..),
+	Combination(..)  ) where
 
 -- IMPORTS
 -------------------------------------------------------------------------------
