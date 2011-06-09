@@ -22,6 +22,7 @@ module Data.Collection.Map.Standard (
 	containsKey,
 	getKeysCount,
 	getValue,
+	getValueMaybe,
 	getValueWithDefault,
 	getValueAndRemoveKey ) where
 
@@ -81,6 +82,9 @@ getKeysCount m = toInteger $ DM.size m
 getValue :: Ord k => k -> Map k v -> Maybe v
 getValue = DM.lookup
 
+getValueMaybe :: Ord k => k -> Map k v -> Maybe v
+getValueMaybe = DM.lookup
+
 getValueWithDefault :: Ord k => v -> k -> Map k v -> v
 getValueWithDefault = DM.findWithDefault
 
@@ -113,6 +117,7 @@ instance (Ord k, Ord v) => DCM.Map (Map k v) where
 	getValue = getValue
 
 instance (Ord k, Ord v) => DCM.Combination (Map k v) where
+	getValueMaybe = getValueMaybe
 	getValueWithDefault = getValueWithDefault
 	getValueAndRemoveKey = getValueAndRemoveKey
 
