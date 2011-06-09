@@ -191,6 +191,7 @@ instance (Ord k, Ord v) => DCMM.MultiMap (MapSet k v) where
 	addToKey = addValue
 	removeFromKey = removeValue
 	containedInKey = containsValue
+	getValuesCount k mm = toInteger $ getValueCount k mm
 
 instance (Ord k, Ord v) => DCMMS.MapSet (MapSet k v)
 

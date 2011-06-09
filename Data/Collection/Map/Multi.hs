@@ -43,3 +43,6 @@ class (DCM.Map a, DC.Collection (DCM.Value a)) => MultiMap a where
 	-- Collection value exists for the key?
 	containedInKey :: DC.Element (DCM.Keys a) -> DC.Element (DCM.Value a) -> a -> Bool
 
+	-- The number of collection values that the key has.
+	getValuesCount :: DC.Element (DCM.Keys a) -> a -> Integer
+
