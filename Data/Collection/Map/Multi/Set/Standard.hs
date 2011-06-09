@@ -184,7 +184,7 @@ instance (Ord k, Ord v) => DCM.Map (MapSet k v) where
 	getKeys = getKeysSet
 	containsKey = containsKey
 	getKeysCount (MapSet m) = toInteger $ Map.size m
-	getValue k mm = Just $ getValues k mm -- TODO: No maybe value because the default is always Set.empty!
+	getValue k mm = getValues k mm
 
 instance (Ord k, Ord v) => DCMM.MultiMap (MapSet k v) where
 	addKey = addKey
