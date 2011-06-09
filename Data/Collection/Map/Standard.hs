@@ -90,7 +90,7 @@ instance (Ord k, Ord v) => DC.Collection (Map k v) where
 	containsElement = containsElement
 	getElementsCount = getElementsCount
 
-instance (Ord k, Ord v) => DC.CollectionList (Map k v) where
+instance (Ord k, Ord v) => DC.List (Map k v) where
 	toList = toList
 	fromList = fromList
 

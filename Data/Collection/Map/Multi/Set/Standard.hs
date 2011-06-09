@@ -172,7 +172,7 @@ instance (Ord k, Ord v) => DC.Collection (MapSet k v) where
 	containsElement (k, v) m = Set.containsElement v $ getValues k m
 	getElementsCount m = toInteger $ foldSet (\set ans -> ans + (Set.getElementsCount set)) 0 m
 
-instance (Ord k, Ord v) => DC.CollectionList (MapSet k v) where
+instance (Ord k, Ord v) => DC.List (MapSet k v) where
 	toList m = foldSetWithKey (\k set ans -> ans ++ [(k, v) | v <- (Set.toList set)]) [] m
 	fromList list = foldl' (\ans (k, v) -> addValue k v ans) empty list
 

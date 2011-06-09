@@ -9,7 +9,7 @@
 {-# LANGUAGE TypeFamilies #-}
 module Data.Collection (
 	Collection(..),
-	CollectionList(..),
+	List(..),
 	CollectionBatch(..) ) where
 
 -- CLASSES
@@ -42,7 +42,7 @@ class Collection c where
 
 
 -- List conversion functions.
-class Collection c => CollectionList c where
+class Collection c => List c where
 
 	-- Export to a list representation.
 	toList :: c -> [Element c]

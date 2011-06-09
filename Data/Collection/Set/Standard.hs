@@ -71,7 +71,7 @@ instance Ord a => DC.Collection (Set a) where
 	containsElement = containsElement
 	getElementsCount = getElementsCount
 
-instance Ord a => DC.CollectionList (Set a) where
+instance Ord a => DC.List (Set a) where
 	toList = toList
 	fromList = fromList
 

@@ -71,7 +71,7 @@ instance DC.Collection IntSet where
 	containsElement = containsElement
 	getElementsCount = getElementsCount
 
-instance DC.CollectionList IntSet where
+instance DC.List IntSet where
 	toList = toList
 	fromList = fromList
 
