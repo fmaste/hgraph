@@ -16,7 +16,7 @@ module Data.Collection.Map.Multi (
 import qualified Data.Collection as DC
 import qualified Data.Collection.Map as DCM
 
--- CLASS
+-- CLASSES
 -------------------------------------------------------------------------------
 
 class (DCM.Map a, DC.Collection (DCM.Value a)) => MultiMap a where
