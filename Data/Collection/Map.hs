@@ -52,8 +52,8 @@ class (DC.Collection a, DC.Collection (Keys a)) => Map a where
 
 -------------------------------------------------------------------------------
 
--- Performant way of making combined queries.
-class Map a => MapCombine a where
+-- Performant way of making a combination of the above Map atomic functions.
+class Map a => Combination a where
 
 	-- Get the associated value of the provided key before removing it.
 	getValueAndRemoveKey :: DC.Element (Keys a) -> a -> (Maybe (Value a), a)
