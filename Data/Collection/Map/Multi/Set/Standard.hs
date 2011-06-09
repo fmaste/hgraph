@@ -39,11 +39,11 @@ module Data.Collection.Map.Multi.Set.Standard (
 
 import Data.List (foldl, foldl', foldr)
 import qualified Data.Map as Map
-import qualified Data.Collection.Set.Standard as Set
 import qualified Data.Collection as DC
 import qualified Data.Collection.Map as DCM
 import qualified Data.Collection.Map.Multi as DCMM
 import qualified Data.Collection.Map.Multi.Set as DCMMS
+import qualified Data.Collection.Set.Standard as Set
 
 -- * DATA DEFINITION
 -------------------------------------------------------------------------------
