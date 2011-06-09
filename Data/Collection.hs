@@ -40,6 +40,7 @@ class Collection c where
 	-- The number of Elements that the Collection contains.
 	getElementsCount :: c -> Integer
 
+-------------------------------------------------------------------------------
 
 -- List conversion functions.
 class Collection c => List c where
@@ -50,6 +51,7 @@ class Collection c => List c where
 	-- Import from a list representation.
 	fromList :: [Element c] -> c
 
+-------------------------------------------------------------------------------
 
 -- Performant functions to operate on more than one element.
 -- No default implementations because they must be performant.
