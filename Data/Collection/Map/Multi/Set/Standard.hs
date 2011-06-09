@@ -162,7 +162,7 @@ foldSetWithKey f ans (MapSet mm) = Map.foldWithKey f ans mm
 
 -- TODO
 
--- INSTANCE
+-- INSTANCES
 -------------------------------------------------------------------------------
 
 instance (Ord k, Ord v) => DC.Collection (MapSet k v) where
