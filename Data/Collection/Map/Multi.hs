@@ -10,6 +10,7 @@
 module Data.Collection.Map.Multi (
 	DC.Collection(..),
 	DCM.Map(..),
+	DCM.Combination(..),
 	MultiMap(..),
 	Batch(..)  ) where
 
