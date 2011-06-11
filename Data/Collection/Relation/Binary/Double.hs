@@ -158,10 +158,10 @@ getGraph :: (Ord domain, Ord codomain) => BinaryRelation domain codomain -> DCSS
 getGraph br = DCSS.fromList [ (domain, codomain) | domain <- getDomainList br, codomain <- getRelatedToList domain br]
 
 getDomainList :: (Ord domain, Ord codomain) => BinaryRelation domain codomain -> [domain]
-getDomainList (BinaryRelation relatedTo _) = MM.getKeys relatedTo
+getDomainList (BinaryRelation relatedTo _) = DCSS.toList $ DCMMS.getKeys relatedTo
 
 getCodomainList :: (Ord domain, Ord codomain) => BinaryRelation domain codomain -> [codomain]
-getCodomainList (BinaryRelation _ relatedFrom) = MM.getKeys relatedFrom
+getCodomainList (BinaryRelation _ relatedFrom) = DCSS.toList $ DCMMS.getKeys relatedFrom
 
 getDomainCount :: (Ord domain, Ord codomain) => BinaryRelation domain codomain -> Int
 getDomainCount (BinaryRelation relatedTo _) = fromInteger $ DCMMS.getKeysCount relatedTo
