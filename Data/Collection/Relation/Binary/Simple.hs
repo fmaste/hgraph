@@ -119,7 +119,7 @@ getCodomain :: (Ord domain, Ord codomain) => BinaryRelation domain codomain -> S
 getCodomain (BinaryRelation _ codomain) = codomain
 
 getRelatedTo :: (Ord domain, Ord codomain) => domain -> BinaryRelation domain codomain -> Set.Set codomain
-getRelatedTo element (BinaryRelation relatedTo _) = MM.getValues element relatedTo
+getRelatedTo element (BinaryRelation relatedTo _) = DCMMS.getValue element relatedTo
 
 getRelatedFrom :: (Ord domain, Ord codomain) => codomain -> BinaryRelation domain codomain -> Set.Set domain
 getRelatedFrom element (BinaryRelation relatedTo _) = MM.foldSetWithKey f Set.empty relatedTo where
@@ -136,31 +136,31 @@ getGraph br = Set.fromList [ (domain, codomain) | domain <- getDomainList br, co
 -------------------------------------------------------------------------------
 
 getDomainList :: (Ord domain, Ord codomain) => BinaryRelation domain codomain -> [domain]
-getDomainList (BinaryRelation relatedTo _) = MM.getKeys relatedTo
+getDomainList (BinaryRelation relatedTo _) = Set.toList $ DCMMS.getKeys relatedTo
 
 getCodomainList :: (Ord domain, Ord codomain) => BinaryRelation domain codomain -> [codomain]
 getCodomainList (BinaryRelation _ codomain) = Set.toList codomain
 
 getDomainCount :: (Ord domain, Ord codomain) => BinaryRelation domain codomain -> Int
-getDomainCount (BinaryRelation relatedTo _) = MM.getKeyCount relatedTo
+getDomainCount (BinaryRelation relatedTo _) = fromInteger $ DCMMS.getKeysCount relatedTo
 
 getCodomainCount :: (Ord domain, Ord codomain) => BinaryRelation domain codomain -> Int
 getCodomainCount (BinaryRelation _ codomain) = fromInteger $ Set.getElementsCount codomain
 
 containsDomainElement :: (Ord domain, Ord codomain) => domain -> BinaryRelation domain codomain -> Bool
-containsDomainElement element (BinaryRelation relatedTo _) = MM.containsKey element relatedTo
+containsDomainElement element (BinaryRelation relatedTo _) = DCMMS.containsKey element relatedTo
 
 containsCodomainElement :: (Ord domain, Ord codomain) => codomain -> BinaryRelation domain codomain -> Bool
 containsCodomainElement element (BinaryRelation _ codomain) = Set.containsElement element codomain
 
 getRelatedToList :: (Ord domain, Ord codomain) => domain -> BinaryRelation domain codomain -> [codomain]
-getRelatedToList element (BinaryRelation relatedTo _) = MM.getValuesList element relatedTo
+getRelatedToList element (BinaryRelation relatedTo _) = Set.toList $ DCMMS.getValue element relatedTo
 
 getRelatedFromList :: (Ord domain, Ord codomain) => codomain -> BinaryRelation domain codomain -> [domain]
 getRelatedFromList element br = Set.toList $ getRelatedFrom element br
 
 getRelatedToCount :: (Ord domain, Ord codomain) => domain -> BinaryRelation domain codomain -> Int
-getRelatedToCount element (BinaryRelation relatedTo _) = MM.getValueCount element relatedTo
+getRelatedToCount element (BinaryRelation relatedTo _) = fromInteger $ DCMMS.getValuesCount element relatedTo
 
 getRelatedFromCount :: (Ord domain, Ord codomain) => codomain -> BinaryRelation domain codomain -> Int
 getRelatedFromCount element br = fromInteger $ Set.getElementsCount $ getRelatedFrom element br
@@ -172,7 +172,7 @@ isRelatedFrom :: (Ord domain, Ord codomain) => codomain -> domain -> BinaryRelat
 isRelatedFrom codomain domain br = containsRelation domain codomain br
 
 containsRelation :: (Ord domain, Ord codomain) => domain -> codomain ->  BinaryRelation domain codomain -> Bool
-containsRelation domain codomain  (BinaryRelation relatedTo _) = MM.containsValue domain codomain relatedTo
+containsRelation domain codomain  (BinaryRelation relatedTo _) = DCMMS.containedInKey domain codomain relatedTo
 
 -- RELATION THEORY
 -------------------------------------------------------------------------------
@@ -184,7 +184,7 @@ revert :: (Ord domain, Ord codomain) => BinaryRelation domain codomain -> Binary
 revert br@(BinaryRelation relatedTo codomain) = BinaryRelation relatedTo' codomain' where
 	relatedTo' = foldl' f MM.empty $ getCodomainList br where
 		f mm elementC = foldl' g mm $ getRelatedFromList elementC br where
-			g mm elementD = MM.addValue elementC elementD mm
+			g mm elementD = DCMMS.addToKey elementC elementD mm
 	codomain' = getDomain br
 
 --TODO: Add more functions, like image, range, isFunction, biyective, etc, etc.
