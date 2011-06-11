@@ -8,6 +8,8 @@
 
 {-# LANGUAGE TypeFamilies, FlexibleContexts #-}
 module Data.Collection.Map.Multi (
+	DC.Collection(..),
+	DCM.Map(..),
 	MultiMap(..),
 	Batch(..)  ) where
 

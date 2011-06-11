@@ -8,6 +8,7 @@
 
 {-# LANGUAGE TypeFamilies, FlexibleContexts #-}
 module Data.Collection.Map (
+	DC.Collection(..),
 	Map(..),
 	Combination(..)  ) where
 

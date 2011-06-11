@@ -8,11 +8,15 @@
 
 {-# LANGUAGE TypeFamilies, FlexibleContexts #-}
 module Data.Collection.Map.Multi.Set (
-	MapSet(..)  ) where
+	DC.Collection(..),
+	DCM.Map(..),
+	DCMM.MultiMap(..),
+	MapSet(..) ) where
 
 -- IMPORTS
 -------------------------------------------------------------------------------
 
+import qualified Data.Collection as DC
 import qualified Data.Collection.Set as DCS
 import qualified Data.Collection.Map as DCM
 import qualified Data.Collection.Map.Multi as DCMM
