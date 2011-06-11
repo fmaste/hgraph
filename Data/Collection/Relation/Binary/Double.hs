@@ -91,8 +91,10 @@ addCodomainElement element (BinaryRelation relatedTo relatedFrom) = BinaryRelati
 removeDomainElement :: (Ord domain, Ord codomain) => domain -> BinaryRelation domain codomain -> BinaryRelation domain codomain
 removeDomainElement domain (BinaryRelation relatedTo relatedFrom) = 
 	let
-		(relatedTo', relatedToElements) = MM.getValuesAndRemoveKey domain relatedTo
-		relatedFrom' = DCMMS.removeFromKeys relatedToElements domain relatedFrom
+		(relatedTo', relatedToElements) = f $ DCMMS.getValueAndRemoveKey domain relatedTo where
+			f (Just relatedToElements, relatedTo) = (relatedTo, relatedToElements)
+			f (Nothing, relatedTo) = (relatedTo, DCSS.empty)
+		relatedFrom' = DCMMS.removeFromKeys (DCSS.toList relatedToElements) domain relatedFrom
 	in BinaryRelation relatedTo' relatedFrom'
 
 -- Removes an element from the codomain.
