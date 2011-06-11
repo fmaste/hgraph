@@ -45,9 +45,9 @@ module Data.Collection.Relation.Binary.Double (
 -------------------------------------------------------------------------------
 
 import Data.List (foldl, foldl', foldr)
-import qualified Data.Set as Set
 import qualified Data.Collection.Map.Multi.Set as DCMMS
 import qualified Data.Collection.Map.Multi.Set.Standard as MM
+import qualified Data.Collection.Set.Standard as DCSS
 
 -- DATA DEFINITION
 -------------------------------------------------------------------------------
@@ -126,16 +126,16 @@ removeRelation domain codomain (BinaryRelation relatedTo relatedFrom) =
 -- ATOMIC QUERY FUNCTIONS
 -------------------------------------------------------------------------------
 
-getDomain :: (Ord domain, Ord codomain) => BinaryRelation domain codomain -> Set.Set domain
+getDomain :: (Ord domain, Ord codomain) => BinaryRelation domain codomain -> DCSS.Set domain
 getDomain (BinaryRelation relatedTo _) = DCMMS.getKeys relatedTo
 
-getCodomain :: (Ord domain, Ord codomain) => BinaryRelation domain codomain -> Set.Set codomain
+getCodomain :: (Ord domain, Ord codomain) => BinaryRelation domain codomain -> DCSS.Set codomain
 getCodomain (BinaryRelation _ relatedFrom) = DCMMS.getKeys relatedFrom
 
-getRelatedTo :: (Ord domain, Ord codomain) => domain -> BinaryRelation domain codomain -> Set.Set codomain
+getRelatedTo :: (Ord domain, Ord codomain) => domain -> BinaryRelation domain codomain -> DCSS.Set codomain
 getRelatedTo element (BinaryRelation relatedTo _) = MM.getValues element relatedTo
 
-getRelatedFrom :: (Ord domain, Ord codomain) => codomain -> BinaryRelation domain codomain -> Set.Set domain
+getRelatedFrom :: (Ord domain, Ord codomain) => codomain -> BinaryRelation domain codomain -> DCSS.Set domain
 getRelatedFrom element (BinaryRelation _ relatedFrom) = MM.getValues element relatedFrom
 
 -- INSTANCE
@@ -149,9 +149,9 @@ getRelatedFrom element (BinaryRelation _ relatedFrom) = MM.getValues element rel
 -- All the relationships. Elements without relationships are not shown.
 -- This function can be constructed using other funtions, but it is
 -- here because the graph is part of the signature of a binary relation.
-getGraph :: (Ord domain, Ord codomain) => BinaryRelation domain codomain -> Set.Set (domain, codomain)
+getGraph :: (Ord domain, Ord codomain) => BinaryRelation domain codomain -> DCSS.Set (domain, codomain)
 -- TODO: Make it more performant, it is traversing the sets too many times.
-getGraph br = Set.fromList [ (domain, codomain) | domain <- getDomainList br, codomain <- getRelatedToList domain br]
+getGraph br = DCSS.fromList [ (domain, codomain) | domain <- getDomainList br, codomain <- getRelatedToList domain br]
 
 getDomainList :: (Ord domain, Ord codomain) => BinaryRelation domain codomain -> [domain]
 getDomainList (BinaryRelation relatedTo _) = MM.getKeys relatedTo
