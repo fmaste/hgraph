@@ -11,6 +11,7 @@ module Data.Collection.Map.Multi.Set (
 	DC.Collection(..),
 	DCM.Map(..),
 	DCMM.MultiMap(..),
+	DCMM.Batch(..),
 	MapSet(..) ) where
 
 -- IMPORTS
