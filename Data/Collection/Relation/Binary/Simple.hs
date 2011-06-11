@@ -2,6 +2,10 @@
 
 -- Generic module to manage binary relationships.
 -- TODO: Make it haddock compatibele!
+
+-- MODULE
+-------------------------------------------------------------------------------
+
 {-# LANGUAGE TypeFamilies #-}
 module Data.Collection.Relation.Binary.Simple (
 	-- Atomic constructor functions.
