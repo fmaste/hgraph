@@ -186,6 +186,11 @@ instance (Ord k, Ord v) => DCM.Map (MapSet k v) where
 	getKeysCount (MapSet m) = toInteger $ Map.size m
 	getValue k mm = getValues k mm
 
+instance (Ord k, Ord v) => DCM.Combination (MapSet k v) where
+	getValueMaybe k mm = Just $ getValues k mm
+	getValueWithDefault _ k mm = getValues k mm
+	getValueAndRemoveKey k mm = (Just $ getValues k mm, removeKey k mm)
+
 instance (Ord k, Ord v) => DCMM.MultiMap (MapSet k v) where
 	addKey = addKey
 	addToKey = addValue
