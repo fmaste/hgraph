@@ -46,7 +46,7 @@ module Data.Collection.Relation.Binary.Double (
 
 import Data.List (foldl, foldl', foldr)
 import qualified Data.Collection.Map.Multi.Set as DCMMS
-import qualified Data.Collection.Map.Multi.Set.Standard as MM
+import qualified Data.Collection.Map.Multi.Set.Standard as MapSet
 import qualified Data.Collection.Set.Standard as DCSS
 
 -- DATA DEFINITION
@@ -59,10 +59,10 @@ data BinaryRelation domain codomain = BinaryRelation (RelatedTo domain codomain)
     deriving (Show, Read, Ord, Eq)
 
 -- A domain element contains a Set of codomain elements.
-type RelatedTo domain codomain = MM.MapSet domain codomain
+type RelatedTo domain codomain = MapSet.MapSet domain codomain
 
 -- A codomain element contains a Set of domain elements.
-type RelatedFrom domain codomain = MM.MapSet codomain domain
+type RelatedFrom domain codomain = MapSet.MapSet codomain domain
 
 -- EXPORTED
 -------------------------------------------------------------------------------
@@ -72,7 +72,7 @@ type RelatedFrom domain codomain = MM.MapSet codomain domain
 
 -- The empty binary relation.
 empty :: (Ord domain, Ord codomain) => BinaryRelation domain codomain
-empty = BinaryRelation MM.empty MM.empty
+empty = BinaryRelation MapSet.empty MapSet.empty
 
 -- Adds an element to the domain.
 -- If this element already exists the original BinaryRelation is returned.
