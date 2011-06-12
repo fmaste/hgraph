@@ -46,7 +46,7 @@ module Data.Collection.Relation.Binary.Simple (
 
 import Data.List (foldl, foldl', foldr)
 import qualified Data.Collection.Map.Multi.Set as DCMMS
-import qualified Data.Collection.Map.Multi.Set.Standard as MM
+import qualified Data.Collection.Map.Multi.Set.Standard as MapSet
 import qualified Data.Collection.Set.Standard as Set
 
 -- DATA DEFINITION
@@ -55,7 +55,7 @@ import qualified Data.Collection.Set.Standard as Set
 -- We defined BinaryRelation with two structures, one with the domain -> codomain 
 -- relationships and the other is just a set of codomain elements. It stores 
 -- the minimun information but the codomain functions are slower.
-data BinaryRelation domain codomain = BinaryRelation (MM.MapSet domain codomain) (Set.Set codomain)
+data BinaryRelation domain codomain = BinaryRelation (MapSet.MapSet domain codomain) (Set.Set codomain)
     deriving (Show, Read, Ord, Eq)
 
 -- ATOMIC CONSTRUCTION FUNCTIONS
@@ -63,7 +63,7 @@ data BinaryRelation domain codomain = BinaryRelation (MM.MapSet domain codomain)
 
 -- The empty binary relation.
 empty :: (Ord domain, Ord codomain) => BinaryRelation domain codomain
-empty = BinaryRelation MM.empty Set.empty
+empty = BinaryRelation MapSet.empty Set.empty
 
 -- Adds an element to the domain.
 -- If this element already exists the original BinaryRelation is returned.
@@ -88,7 +88,7 @@ removeDomainElement element (BinaryRelation relatedTo codomain) = BinaryRelation
 removeCodomainElement :: (Ord domain, Ord codomain) => codomain -> BinaryRelation domain codomain -> BinaryRelation domain codomain
 removeCodomainElement element (BinaryRelation relatedTo codomain) = 
 	let
-		relatedTo' = MM.mapSet (Set.removeElement element) relatedTo
+		relatedTo' = MapSet.mapSet (Set.removeElement element) relatedTo
 		codomain' = Set.removeElement element codomain
 	in BinaryRelation relatedTo' codomain'
 
@@ -122,7 +122,7 @@ getRelatedTo :: (Ord domain, Ord codomain) => domain -> BinaryRelation domain co
 getRelatedTo element (BinaryRelation relatedTo _) = DCMMS.getValue element relatedTo
 
 getRelatedFrom :: (Ord domain, Ord codomain) => codomain -> BinaryRelation domain codomain -> Set.Set domain
-getRelatedFrom element (BinaryRelation relatedTo _) = MM.foldSetWithKey f Set.empty relatedTo where
+getRelatedFrom element (BinaryRelation relatedTo _) = MapSet.foldSetWithKey f Set.empty relatedTo where
 	f key set ans = if Set.containsElement element set then Set.addElement key ans else ans
 
 -- All the relationships. Elements without relationships are not shown.
@@ -182,7 +182,7 @@ isInjective br = all (\codomain -> getRelatedFromCount codomain br <= 1) $ getCo
 
 revert :: (Ord domain, Ord codomain) => BinaryRelation domain codomain -> BinaryRelation codomain domain
 revert br@(BinaryRelation relatedTo codomain) = BinaryRelation relatedTo' codomain' where
-	relatedTo' = foldl' f MM.empty $ getCodomainList br where
+	relatedTo' = foldl' f MapSet.empty $ getCodomainList br where
 		f mm elementC = foldl' g mm $ getRelatedFromList elementC br where
 			g mm elementD = DCMMS.addToKey elementC elementD mm
 	codomain' = getDomain br
