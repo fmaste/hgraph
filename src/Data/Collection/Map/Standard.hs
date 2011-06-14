@@ -16,6 +16,8 @@ module Data.Collection.Map.Standard (
 	getElementsCount,
 	toList,
 	fromList,
+	foldrElements,
+	foldlElements,
 	putValue,
 	removeKey,
 	getKeys,
@@ -64,6 +66,14 @@ toList = DM.toList
 fromList :: Ord k => [(k, v)] -> Map k v
 fromList = DM.fromList
 
+foldrElements :: ((k, v) -> a -> a) -> a -> Map k v -> a
+foldrElements f a m = DM.foldrWithKey g a m where
+	g k v a = f (k, v) a
+
+foldlElements :: (a -> (k, v) -> a) -> a -> Map k v -> a
+foldlElements f a m = DM.foldlWithKey g a m where
+	g a k v = f a (k, v)
+
 putValue :: Ord k => k -> v -> Map k v -> Map k v
 putValue = DM.insert
 
@@ -105,6 +115,12 @@ instance (Ord k, Ord v) => DC.Collection (Map k v) where
 instance (Ord k, Ord v) => DC.List (Map k v) where
 	toList = toList
 	fromList = fromList
+
+instance (Ord k, Ord v) => DC.Foldable (Map k v) where
+	foldr = foldrElements
+	foldl = foldlElements
+	-- Default implementations for foldr1
+	-- Default implementations for foldl1
 
 instance (Ord k, Ord v) => DCM.Map (Map k v) where
 	type DCM.Keys (Map k v) = DCSS.Set k
