@@ -61,3 +61,22 @@ class Collection c => Batch c where
 	removeElements :: [Element c] -> c -> c
 	containsElements :: [Element c] -> c -> Bool
 
+-------------------------------------------------------------------------------
+
+-- Foldable class for Collections.
+class Collection c => Foldable c where
+
+	-- Right-associative fold of a Collection.
+	foldr :: (Element c -> a -> a) -> a -> c -> a
+
+	-- Left-associative fold of a Collection.
+	foldl :: (a -> Element c -> a) -> a -> c -> a
+
+	-- A variant of foldr that has no base case.
+	-- May only be applied to non-empty Collections.
+	foldr1 :: (Element c -> Element c -> Element c) -> c -> Element c
+
+	-- A variant of foldl that has no base case.
+	-- May only be applied to non-empty Collections.
+	foldl1 :: (Element c -> Element c -> Element c) -> c -> Element c
+
