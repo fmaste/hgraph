@@ -12,6 +12,12 @@ module Data.Collection (
 	List(..),
 	Batch(..) ) where
 
+-- IMPORTS
+-------------------------------------------------------------------------------
+
+import Prelude hiding (foldr, foldl)
+import Data.Maybe (fromMaybe)
+
 -- CLASSES
 -------------------------------------------------------------------------------
 
@@ -75,8 +81,14 @@ class Collection c => Foldable c where
 	-- A variant of foldr that has no base case.
 	-- May only be applied to non-empty Collections.
 	foldr1 :: (Element c -> Element c -> Element c) -> c -> Element c
+	foldr1 f c = fromMaybe (error "foldr1: empty structure") (foldr mf Nothing c) where
+		mf x Nothing = Just x
+		mf x (Just y) = Just (f x y)
 
 	-- A variant of foldl that has no base case.
 	-- May only be applied to non-empty Collections.
 	foldl1 :: (Element c -> Element c -> Element c) -> c -> Element c
+	foldl1 f c = fromMaybe (error "foldl1: empty structure") (foldl mf Nothing c) where
+		mf Nothing y = Just y
+		mf (Just x) y = Just (f x y)
 
