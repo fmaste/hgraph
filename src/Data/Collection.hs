@@ -79,6 +79,16 @@ class Collection c => Foldable c where
 	-- Left-associative fold of a Collection.
 	foldl :: (a -> Element c -> a) -> a -> c -> a
 
+	-- Fold over the elements of a Collection, associating to the right, but strictly.
+	foldr' :: (Element c -> a -> a) -> a -> c -> a
+	foldr' f z0 xs = foldl f' id xs z0 where 
+		f' k x z = k $! f x z
+
+	-- Fold over the elements of a Collection, associating to the left, but strictly.
+	foldl' :: (a -> Element c -> a) -> a -> c -> a
+	foldl' f z0 xs = foldr f' id xs z0 where 
+		f' x k z = k $! f z x
+
 	-- A variant of foldr that has no base case.
 	-- May only be applied to non-empty Collections.
 	foldr1 :: (Element c -> Element c -> Element c) -> c -> Element c
