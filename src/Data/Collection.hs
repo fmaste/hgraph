@@ -10,7 +10,8 @@
 module Data.Collection (
 	Collection(..),
 	List(..),
-	Batch(..) ) where
+	Batch(..),
+	Foldable(..) ) where
 
 -- IMPORTS
 -------------------------------------------------------------------------------
