@@ -55,14 +55,14 @@ class (DC.Collection m, DC.Collection (Keys m)) => Map m where
 -------------------------------------------------------------------------------
 
 -- Performant way of making a combination of the above Map atomic functions.
-class Map a => Combination a where
+class Map m => Combination m where
 
 	-- Get, maybe, the associated value of the provided key.
-	getValueMaybe :: DC.Element (Keys a) -> a -> Maybe (Value a)
+	getValueMaybe :: DC.Element (Keys m) -> m -> Maybe (Value m)
 
 	-- If there is no value fot this key, the provided default is returned.
-	getValueWithDefault :: Value a -> DC.Element (Keys a) -> a -> Value a
+	getValueWithDefault :: Value m -> DC.Element (Keys m) -> m -> Value m
 
 	-- Get the associated value of the provided key before removing it.
-	getValueAndRemoveKey :: DC.Element (Keys a) -> a -> (Maybe (Value a), a)
+	getValueAndRemoveKey :: DC.Element (Keys m) -> m -> (Maybe (Value m), m)
 
