@@ -21,36 +21,36 @@ import qualified Data.Collection as DC
 -------------------------------------------------------------------------------
 
 -- The main Map class.
-class (DC.Collection a, DC.Collection (Keys a)) => Map a where
+class (DC.Collection m, DC.Collection (Keys m)) => Map m where
 	-- The Assocation type families.
-	type Keys a
-	type Value a
+	type Keys m
+	type Value m
 
 	-- ATOMIC CONSTRUCTION FUNCTIONS
 	-----------------------------------------------------------------------
 
 	-- Associates a value with the provided key.
-	putValue :: DC.Element (Keys a) -> Value a -> a -> a
+	putValue :: DC.Element (Keys m) -> Value m -> m -> m
 
 	-- Remove a key with its associated value from the Association.
 	-- If the key does not exists the original Association is returned.
-	removeKey :: DC.Element (Keys a) -> a -> a
+	removeKey :: DC.Element (Keys m) -> m -> m
 
 	-- ATOMIC QUERY FUNCTIONS
 	-----------------------------------------------------------------------
 
 	-- All the keys.
-	getKeys :: a -> Keys a
+	getKeys :: m -> Keys m
 
 	-- True if the Association contains this Key, otherwise, false.
-	containsKey :: DC.Element (Keys a) -> a -> Bool
+	containsKey :: DC.Element (Keys m) -> m -> Bool
 
 	-- The number of keys that the Map has.
-	getKeysCount :: a -> Integer
+	getKeysCount :: m -> Integer
 
 	-- Get the associated value of the provided key.
 	-- If the key does not exists error is called.
-	getValue :: DC.Element (Keys a) -> a -> Value a
+	getValue :: DC.Element (Keys m) -> m -> Value m
 
 -------------------------------------------------------------------------------
 
