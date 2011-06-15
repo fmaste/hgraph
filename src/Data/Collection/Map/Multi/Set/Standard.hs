@@ -176,6 +176,10 @@ instance (Ord k, Ord v) => DC.List (MapSet k v) where
 	toList m = foldSetWithKey (\k set ans -> ans ++ [(k, v) | v <- (Set.toList set)]) [] m
 	fromList list = foldl' (\ans (k, v) -> addValue k v ans) empty list
 
+instance (Ord k, Ord v) => DC.Foldable (MapSet k v) where
+	foldr = DC.foldr 
+	foldl = DC.foldl
+
 instance (Ord k, Ord v) => DCM.Map (MapSet k v) where
 	type DCM.Keys (MapSet k v) = Set.Set k
 	type DCM.Value (MapSet k v) = Set.Set v
