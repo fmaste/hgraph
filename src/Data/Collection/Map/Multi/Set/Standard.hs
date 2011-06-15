@@ -201,6 +201,11 @@ instance (Ord k, Ord v) => DCMM.MultiMap (MapSet k v) where
 	removeFromKey = removeValue
 	containedInKey = containsValue
 	getValuesCount k mm = toInteger $ getValueCount k mm
+{-
+instance (Ord k, Ord v) => DCMM.Foldable (MapSet k v) where
+	foldr f = DC.foldr
+	foldl = 
+-}
 
 instance (Ord k, Ord v) => DCMM.Batch (MapSet k v) where
 	removeFromKeys = removeValueFromKeys
