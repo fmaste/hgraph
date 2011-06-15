@@ -28,11 +28,20 @@ module Data.Collection.Map.Standard (
 	getValue,
 	getValueMaybe,
 	getValueWithDefault,
-	getValueAndRemoveKey ) where
+	getValueAndRemoveKey,
+	foldr,
+	foldl,
+	foldr',
+	foldl',
+	foldrWithKey,
+	foldlWithKey,
+	foldrWithKey',
+	foldlWithKey' ) where
 
 -- IMPORTS
 -------------------------------------------------------------------------------
 
+import Prelude hiding (foldr, foldl)
 import qualified Data.Map as DM
 import qualified Data.Collection as DC
 import qualified Data.Collection.Set.Standard as DCSS
@@ -109,6 +118,36 @@ getValueWithDefault = DM.findWithDefault
 getValueAndRemoveKey :: Ord k => k -> Map k v -> (Maybe v, Map k v)
 getValueAndRemoveKey k m = DM.updateLookupWithKey (\_ _ -> Nothing) k m where
 
+foldr :: (v -> a -> a) -> a -> Map k v -> a
+foldr f a m = DM.foldrWithKey g a m where
+	g k v a = f v a
+
+foldl :: (a -> v -> a) -> a -> Map k v -> a
+foldl f a m = DM.foldlWithKey g a m where
+	g a k v = f a v
+
+-- TODO: Move the default implementation so I can remove the Ord contexts.
+foldr' :: (Ord k, Ord v) => (v -> a -> a) -> a -> Map k v -> a
+foldr' = DCM.foldr' -- Use provided default implementation.
+
+-- TODO: Move the default implementation so I can remove the Ord contexts.
+foldl' :: (Ord k, Ord v) => (a -> v -> a) -> a -> Map k v -> a
+foldl' = DCM.foldl' -- Use provided default implementation.
+
+foldrWithKey :: (k -> v -> a -> a) -> a -> Map k v -> a
+foldrWithKey = DM.foldrWithKey
+
+foldlWithKey :: (a -> k -> v -> a) -> a -> Map k v -> a
+foldlWithKey = DM.foldlWithKey
+
+-- TODO: Move the default implementation so I can remove the Ord contexts.
+foldrWithKey' :: (Ord k, Ord v) => (k -> v -> a -> a) -> a -> Map k v -> a
+foldrWithKey' = DCM.foldrWithKey' -- Use provided default implementation.
+
+-- TODO: Move the default implementation so I can remove the Ord contexts.
+foldlWithKey' :: (Ord k, Ord v) => (a -> k -> v -> a) -> a -> Map k v -> a
+foldlWithKey' = DCM.foldlWithKey' -- Use provided default implementation.
+
 -- INSTANCES
 -------------------------------------------------------------------------------
 
@@ -144,4 +183,14 @@ instance (Ord k, Ord v) => DCM.Combination (Map k v) where
 	getValueMaybe = getValueMaybe
 	getValueWithDefault = getValueWithDefault
 	getValueAndRemoveKey = getValueAndRemoveKey
+
+instance (Ord k, Ord v) => DCM.Foldable (Map k v) where
+	foldr = foldr
+	foldl = foldl
+	-- Default implementations for foldr'
+	-- Default implementations for foldr'
+	foldrWithKey = foldrWithKey
+	foldlWithKey = foldlWithKey
+	-- Default implementations for foldrWithKey'
+	-- Default implementations for foldlWithKey'
 
