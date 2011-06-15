@@ -17,6 +17,8 @@ module Data.Collection.Map.Multi (
 -- IMPORTS
 -------------------------------------------------------------------------------
 
+import Prelude hiding (foldr, foldl)
+import Data.Maybe (fromMaybe)
 import qualified Data.Collection as DC
 import qualified Data.Collection.Map as DCM
 
@@ -59,4 +61,25 @@ class MultiMap a => Batch a where
 
 	-- Remove the value from the provided keys.
 	removeFromKeys :: [DC.Element (DCM.Keys a)] -> DC.Element (DCM.Value a) -> a -> a
+
+-------------------------------------------------------------------------------
+
+-- Foldable class for MultiMap.
+class MultiMap mm => Foldable mm where
+
+	-- Right-associative fold of a MultiMap.
+	foldr :: ((DC.Element (DCM.Keys mm), DC.Element (DCM.Value mm)) -> a -> a) -> a -> mm -> a
+
+	-- Left-associative fold of a MultiMap.
+	foldl :: (a -> (DC.Element (DCM.Keys mm), DC.Element (DCM.Value mm)) -> a) -> a -> mm -> a
+
+	-- Fold over the elements of a MultiMap, associating to the right, but strictly.
+	foldr' :: ((DC.Element (DCM.Keys mm), DC.Element (DCM.Value mm)) -> a -> a) -> a -> mm -> a
+	foldr' f z0 xs = foldl f' id xs z0 where
+		f' k x z = k $! f x z
+
+	-- Fold over the elements of a MultiMap, associating to the left, but strictly.
+	foldl' :: (a -> (DC.Element (DCM.Keys mm), DC.Element (DCM.Value mm)) -> a) -> a -> mm -> a
+	foldl' f z0 xs = foldr f' id xs z0 where
+		f' x k z = k $! f z x
 
