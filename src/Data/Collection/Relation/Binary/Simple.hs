@@ -44,7 +44,7 @@ module Data.Collection.Relation.Binary.Simple (
 -- IMPORTS
 -------------------------------------------------------------------------------
 
-import Data.List (foldl, foldl', foldr)
+import qualified Data.List as DL
 import qualified Data.Collection.Map.Multi.Set as DCMMS
 import qualified Data.Collection.Map.Multi.Set.Standard as MapSet
 import qualified Data.Collection.Set.Standard as Set
@@ -182,8 +182,8 @@ isInjective br = all (\codomain -> getRelatedFromCount codomain br <= 1) $ getCo
 
 revert :: (Ord domain, Ord codomain) => BinaryRelation domain codomain -> BinaryRelation codomain domain
 revert br@(BinaryRelation relatedTo codomain) = BinaryRelation relatedTo' codomain' where
-	relatedTo' = foldl' f MapSet.empty $ getCodomainList br where
-		f mm elementC = foldl' g mm $ getRelatedFromList elementC br where
+	relatedTo' = DL.foldl' f MapSet.empty $ getCodomainList br where
+		f mm elementC = DL.foldl' g mm $ getRelatedFromList elementC br where
 			g mm elementD = DCMMS.addToKey elementC elementD mm
 	codomain' = getDomain br
 
@@ -193,11 +193,11 @@ revert br@(BinaryRelation relatedTo codomain) = BinaryRelation relatedTo' codoma
 -------------------------------------------------------------------------------
 
 testWithFoldl' n =
-	foldl' 
+	DL.foldl' 
 		(\ans (d,c) -> addRelation d c ans) 
-		(foldl' 
+		(DL.foldl' 
 			(\ans e -> addCodomainElement e ans) 
-			(foldl' 
+			(DL.foldl' 
 				(\ans e -> addDomainElement e ans) 
 				empty 
 				[1..n]
@@ -208,16 +208,16 @@ testWithFoldl' n =
 
 testWithLetFoldl' n =
 	let
-		domainAdded = foldl' (\ans e -> addDomainElement e ans) empty [1..n]
-		domainAndCodomainAdded = foldl' (\ans e -> addCodomainElement e ans) domainAdded [1..n]
-	in foldl' (\ans (d,c) -> addRelation d c ans) domainAndCodomainAdded [ (d,c) | d <- [1..n], c <- [1..n]]
+		domainAdded = DL.foldl' (\ans e -> addDomainElement e ans) empty [1..n]
+		domainAndCodomainAdded = DL.foldl' (\ans e -> addCodomainElement e ans) domainAdded [1..n]
+	in DL.foldl' (\ans (d,c) -> addRelation d c ans) domainAndCodomainAdded [ (d,c) | d <- [1..n], c <- [1..n]]
 
 testWithFoldr n =
-        foldr 
+        DL.foldr 
                 (\(d,c) ans -> addRelation d c ans)
-                (foldr
+                (DL.foldr
                         (\e ans -> addCodomainElement e ans)
-                        (foldr
+                        (DL.foldr
                                 (\e ans -> addDomainElement e ans)
                                 empty
                                 [1..n]
@@ -228,7 +228,7 @@ testWithFoldr n =
 
 testWithLetFoldr n =
         let
-                domainAdded = foldr (\e ans -> addDomainElement e ans) empty [1..n]
-                domainAndCodomainAdded = foldr (\e ans-> addCodomainElement e ans) domainAdded [1..n]
-        in foldr (\(d,c) ans-> addRelation d c ans) domainAndCodomainAdded [ (d,c) | d <- [1..n], c <- [1..n]]
+                domainAdded = DL.foldr (\e ans -> addDomainElement e ans) empty [1..n]
+                domainAndCodomainAdded = DL.foldr (\e ans-> addCodomainElement e ans) domainAdded [1..n]
+        in DL.foldr (\(d,c) ans-> addRelation d c ans) domainAndCodomainAdded [ (d,c) | d <- [1..n], c <- [1..n]]
 
