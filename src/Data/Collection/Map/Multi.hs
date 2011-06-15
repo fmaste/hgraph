@@ -65,22 +65,38 @@ class MultiMap a => Batch a where
 
 -------------------------------------------------------------------------------
 
--- Foldable class for MultiMap.
-class MultiMap mm => Foldable mm where
+-- Foldable class for Map.
+class MultiMap m => Foldable m where
 
-	-- Right-associative fold of a MultiMap.
-	foldr :: ((DC.Element (DCM.Keys mm), DC.Element (DCM.Value mm)) -> a -> a) -> a -> mm -> a
+	-- Right-associative fold of a Map.
+	foldr :: (DC.Element (DCM.Value m) -> a -> a) -> a -> m -> a
 
-	-- Left-associative fold of a MultiMap.
-	foldl :: (a -> (DC.Element (DCM.Keys mm), DC.Element (DCM.Value mm)) -> a) -> a -> mm -> a
+	-- Left-associative fold of a Map.
+	foldl :: (a -> DC.Element (DCM.Value m) -> a) -> a -> m -> a
 
-	-- Fold over the elements of a MultiMap, associating to the right, but strictly.
-	foldr' :: ((DC.Element (DCM.Keys mm), DC.Element (DCM.Value mm)) -> a -> a) -> a -> mm -> a
-	foldr' f z0 xs = foldl f' id xs z0 where
-		f' k x z = k $! f x z
+	-- Fold over the elements of a Map, associating to the right, but strictly.
+	foldr' :: (DC.Element (DCM.Value m) -> a -> a) -> a -> m -> a
+	foldr' f z0 xs = foldl f' id xs z0 where 
+		f' g x z = g $! f x z
 
-	-- Fold over the elements of a MultiMap, associating to the left, but strictly.
-	foldl' :: (a -> (DC.Element (DCM.Keys mm), DC.Element (DCM.Value mm)) -> a) -> a -> mm -> a
-	foldl' f z0 xs = foldr f' id xs z0 where
-		f' x k z = k $! f z x
+	-- Fold over the elements of a Map, associating to the left, but strictly.
+	foldl' :: (a -> DC.Element (DCM.Value m) -> a) -> a -> m -> a
+	foldl' f z0 xs = foldr f' id xs z0 where 
+		f' x g z = g $! f z x
+
+	-- Right-associative fold with key of a Map.
+	foldrWithKey :: (DC.Element (DCM.Keys m) -> DC.Element (DCM.Value m) -> a -> a) -> a -> m -> a
+
+	-- Left-associative fold with key of a Map.
+	foldlWithKey :: (a -> DC.Element (DCM.Keys m) -> DC.Element (DCM.Value m) -> a) -> a -> m -> a
+
+	-- Fold over the elements of a Map with key, associating to the right, but strictly.
+	foldrWithKey' :: (DC.Element (DCM.Keys m) -> DC.Element (DCM.Value m) -> a -> a) -> a -> m -> a
+	foldrWithKey' f z0 xs = foldlWithKey f' id xs z0 where 
+		f' g k x z = g $! f k x z
+
+	-- Fold over the elements of a Map with key, associating to the left, but strictly.
+	foldlWithKey' :: (a -> DC.Element (DCM.Keys m) -> DC.Element (DCM.Value m) -> a) -> a -> m -> a
+	foldlWithKey' f z0 xs = foldrWithKey f' id xs z0 where 
+		f' k x g z = g $! f z k x
 
