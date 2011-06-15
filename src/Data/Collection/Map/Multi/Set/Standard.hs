@@ -217,5 +217,21 @@ instance (Ord k, Ord v) => DCMM.MultiMap (MapSet k v) where
 instance (Ord k, Ord v) => DCMM.Batch (MapSet k v) where
 	removeFromKeys = removeValueFromKeys
 
+instance (Ord k, Ord v) => DCMM.Foldable (MapSet k v) where
+	foldr f a (MapSet m) = Map.foldrWithKey g a m where
+		g k set a = DC.foldr f a set
+	foldl f a (MapSet m) = Map.foldlWithKey g a m where
+		g a k set = DC.foldl f a set
+	-- Default implementations for foldr'. TODO: Use DCM.Foldable to implement!
+	-- Default implementations for foldr'. TODO: Use DCM.Foldable to implement!
+	foldrWithKey f a (MapSet m) = Map.foldrWithKey g a m where
+		g k set a = DC.foldr f' a set where
+			f' v a = f k v a
+	foldlWithKey f a (MapSet m) = Map.foldlWithKey g a m where
+		g a k set = DC.foldl f' a set where
+			f' a v = f a k v
+	-- Default implementations for foldrWithKey'. TODO: Use DCM.Foldable to implement!
+	-- Default implementations for foldlWithKey'. TODO: Use DCM.Foldable to implement!
+
 instance (Ord k, Ord v) => DCMMS.MapSet (MapSet k v)
 
