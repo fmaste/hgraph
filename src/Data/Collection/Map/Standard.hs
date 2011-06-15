@@ -121,8 +121,6 @@ instance (Ord k, Ord v) => DC.Foldable (Map k v) where
 	foldl = foldlElements
 	-- Default implementations for foldr'
 	-- Default implementations for foldr'
-	-- Default implementations for foldr1
-	-- Default implementations for foldl1
 
 instance (Ord k, Ord v) => DCM.Map (Map k v) where
 	type DCM.Keys (Map k v) = DCSS.Set k
