@@ -119,6 +119,8 @@ instance (Ord k, Ord v) => DC.List (Map k v) where
 instance (Ord k, Ord v) => DC.Foldable (Map k v) where
 	foldr = foldrElements
 	foldl = foldlElements
+	-- Default implementations for foldr'
+	-- Default implementations for foldr'
 	-- Default implementations for foldr1
 	-- Default implementations for foldl1
 
