@@ -16,13 +16,19 @@ module Data.Collection.Set.Standard (
 	getElementsCount,
 	toList,
 	fromList,
+	foldr,
+	foldl,
+	foldr',
+	foldl',
 	getUnion,
 	getIntersection) where
 
 -- IMPORTS
 -------------------------------------------------------------------------------
 
+import Prelude hiding (foldr, foldl)
 import qualified Data.Set as DS
+import qualified Data.Foldable as DF
 import qualified Data.Collection as DC
 import qualified Data.Collection.Set as DCS
 
@@ -55,6 +61,18 @@ toList = DS.elems
 fromList :: Ord a => [a] -> Set a
 fromList = DS.fromList
 
+foldr :: (a -> b -> b) -> b -> Set a -> b
+foldr = DF.foldr
+
+foldl :: (b -> a -> b) -> b -> Set a -> b
+foldl = DF.foldl
+
+foldr' :: (a -> b -> b) -> b -> Set a -> b
+foldr' = DF.foldr'
+
+foldl' :: (b -> a -> b) -> b -> Set a -> b
+foldl' = DF.foldl'
+
 getUnion :: Ord a => Set a -> Set a -> Set a
 getUnion = DS.union
 
@@ -74,6 +92,12 @@ instance Ord a => DC.Collection (Set a) where
 instance Ord a => DC.List (Set a) where
 	toList = toList
 	fromList = fromList
+
+instance Ord a => DC.Foldable (Set a) where
+	foldr = foldr
+	foldl = foldl
+	foldr' = foldr'
+	foldl' = foldl'
 
 instance Ord a => DCS.Set (Set a) where
 	getUnion = getUnion

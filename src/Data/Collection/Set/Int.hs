@@ -75,6 +75,8 @@ instance DC.List IntSet where
 	toList = toList
 	fromList = fromList
 
+-- TODO: Implement DC.Foldable like in the Standard version.
+
 instance DCS.Set IntSet where
 	getUnion = getUnion
 	getIntersection = getIntersection
