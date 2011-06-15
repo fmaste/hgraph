@@ -195,17 +195,24 @@ instance (Ord k, Ord v) => DCM.Combination (MapSet k v) where
 	getValueWithDefault _ k mm = getValues k mm
 	getValueAndRemoveKey k mm = (Just $ getValues k mm, removeKey k mm)
 
+instance (Ord k, Ord v) => DCM.Foldable (MapSet k v) where
+	foldr f a (MapSet m) = Map.foldrWithKey g a m where
+		g k v a = f v a
+	foldl f a (MapSet m) = Map.foldlWithKey g a m where
+		g a k v = f a v
+	-- Default implementations for foldr'
+	-- Default implementations for foldr'
+	foldrWithKey f a (MapSet m) = Map.foldrWithKey f a m
+	foldlWithKey f a (MapSet m) = Map.foldlWithKey f a m
+	-- Default implementations for foldrWithKey'
+	-- Default implementations for foldlWithKey'
+
 instance (Ord k, Ord v) => DCMM.MultiMap (MapSet k v) where
 	addKey = addKey
 	addToKey = addValue
 	removeFromKey = removeValue
 	containedInKey = containsValue
 	getValuesCount k mm = toInteger $ getValueCount k mm
-{-
-instance (Ord k, Ord v) => DCMM.Foldable (MapSet k v) where
-	foldr f = DC.foldr
-	foldl = 
--}
 
 instance (Ord k, Ord v) => DCMM.Batch (MapSet k v) where
 	removeFromKeys = removeValueFromKeys
