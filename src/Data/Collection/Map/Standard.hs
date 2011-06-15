@@ -18,6 +18,8 @@ module Data.Collection.Map.Standard (
 	fromList,
 	foldrElements,
 	foldlElements,
+	foldrElements',
+	foldlElements',
 	putValue,
 	removeKey,
 	getKeys,
@@ -73,6 +75,12 @@ foldrElements f a m = DM.foldrWithKey g a m where
 foldlElements :: (a -> (k, v) -> a) -> a -> Map k v -> a
 foldlElements f a m = DM.foldlWithKey g a m where
 	g a k v = f a (k, v)
+
+foldrElements' :: (Ord k, Ord v) => ((k, v) -> a -> a) -> a -> Map k v -> a
+foldrElements' = DC.foldr' -- Use provided default implementation.
+
+foldlElements' :: (Ord k, Ord v) => (a -> (k, v) -> a) -> a -> Map k v -> a
+foldlElements' = DC.foldl' -- Use provided default implementation.
 
 putValue :: Ord k => k -> v -> Map k v -> Map k v
 putValue = DM.insert
