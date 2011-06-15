@@ -12,7 +12,8 @@ module Data.Collection.Map.Multi (
 	DCM.Map(..),
 	DCM.Combination(..),
 	MultiMap(..),
-	Batch(..)  ) where
+	Batch(..),
+	Foldable(..) ) where
 
 -- IMPORTS
 -------------------------------------------------------------------------------
