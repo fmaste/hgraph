@@ -88,13 +88,19 @@ class Collection c => Foldable c where
 
 	-- Fold over the elements of a Collection, associating to the right, but strictly.
 	foldr' :: (Element c -> a -> a) -> a -> c -> a
-	foldr' f z0 xs = foldl f' id xs z0 where 
-		f' g x z = g $! f x z
+	foldr' = defaultFoldr'
 
 	-- Fold over the elements of a Collection, associating to the left, but strictly.
 	foldl' :: (a -> Element c -> a) -> a -> c -> a
-	foldl' f z0 xs = foldr f' id xs z0 where 
-		f' x g z = g $! f z x
+	foldl' = defaultFoldl'
+
+defaultFoldr' :: (Collection c, Foldable c) => (Element c -> a -> a) -> a -> c -> a
+defaultFoldr' f z0 xs = foldl f' id xs z0 where 
+	f' g x z = g $! f x z
+
+defaultFoldl' :: (Collection c, Foldable c) => (a -> Element c -> a) -> a -> c -> a
+defaultFoldl' f z0 xs = foldr f' id xs z0 where 
+	f' x g z = g $! f z x
 
 -------------------------------------------------------------------------------
 
