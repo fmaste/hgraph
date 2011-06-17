@@ -12,8 +12,6 @@ module Data.Collection (
 	List(..),
 	Batch(..),
 	Foldable(..),
-	defaultFoldr',
-	defaultFoldl',
 	Foldable1(..) ) where
 
 -- IMPORTS
