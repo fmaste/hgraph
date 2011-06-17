@@ -76,13 +76,11 @@ class MultiMap m => Foldable m where
 
 	-- Fold over the elements of a Map, associating to the right, but strictly.
 	foldr' :: (DC.Element (DCM.Value m) -> a -> a) -> a -> m -> a
-	foldr' f z0 xs = foldl f' id xs z0 where 
-		f' g x z = g $! f x z
+	foldr' = defaultFoldr'
 
 	-- Fold over the elements of a Map, associating to the left, but strictly.
 	foldl' :: (a -> DC.Element (DCM.Value m) -> a) -> a -> m -> a
-	foldl' f z0 xs = foldr f' id xs z0 where 
-		f' x g z = g $! f z x
+	foldl' = defaultFoldl'
 
 	-- Right-associative fold with key of a Map.
 	foldrWithKey :: (DC.Element (DCM.Keys m) -> DC.Element (DCM.Value m) -> a -> a) -> a -> m -> a
@@ -92,11 +90,25 @@ class MultiMap m => Foldable m where
 
 	-- Fold over the elements of a Map with key, associating to the right, but strictly.
 	foldrWithKey' :: (DC.Element (DCM.Keys m) -> DC.Element (DCM.Value m) -> a -> a) -> a -> m -> a
-	foldrWithKey' f z0 xs = foldlWithKey f' id xs z0 where 
-		f' g k x z = g $! f k x z
+	foldrWithKey' = defaultFoldrWithKey'
 
 	-- Fold over the elements of a Map with key, associating to the left, but strictly.
 	foldlWithKey' :: (a -> DC.Element (DCM.Keys m) -> DC.Element (DCM.Value m) -> a) -> a -> m -> a
-	foldlWithKey' f z0 xs = foldrWithKey f' id xs z0 where 
-		f' k x g z = g $! f z k x
+	foldlWithKey' = defaultFoldlWithKey'
+
+defaultFoldr' :: (MultiMap m, Foldable m) => (DC.Element (DCM.Value m) -> a -> a) -> a -> m -> a
+defaultFoldr' f z0 xs = foldl f' id xs z0 where 
+	f' g x z = g $! f x z
+
+defaultFoldl' :: (MultiMap m, Foldable m) => (a -> DC.Element (DCM.Value m) -> a) -> a -> m -> a
+defaultFoldl' f z0 xs = foldr f' id xs z0 where 
+	f' x g z = g $! f z x
+
+defaultFoldrWithKey' :: (MultiMap m, Foldable m) => (DC.Element (DCM.Keys m) -> DC.Element (DCM.Value m) -> a -> a) -> a -> m -> a
+defaultFoldrWithKey' f z0 xs = foldlWithKey f' id xs z0 where 
+	f' g k x z = g $! f k x z
+
+defaultFoldlWithKey' :: (MultiMap m, Foldable m) => (a -> DC.Element (DCM.Keys m) -> DC.Element (DCM.Value m) -> a) -> a -> m -> a
+defaultFoldlWithKey' f z0 xs = foldrWithKey f' id xs z0 where 
+	f' k x g z = g $! f z k x
 
