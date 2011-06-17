@@ -11,11 +11,7 @@ module Data.Collection.Map (
 	DC.Collection(..),
 	Map(..),
 	Combination(..),
-	Foldable(..),
-	defaultFoldr',
-	defaultFoldl',
-	defaultFoldrWithKey',
-	defaultFoldlWithKey' ) where
+	Foldable(..) ) where
 
 -- IMPORTS
 -------------------------------------------------------------------------------
