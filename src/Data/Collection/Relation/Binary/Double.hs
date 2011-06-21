@@ -156,7 +156,7 @@ getRelatedFrom element (BinaryRelation _ relatedFrom) = DCMMS.getValue element r
 -- here because the graph is part of the signature of a binary relation.
 getGraph :: (Ord domain, Ord codomain) => BinaryRelation domain codomain -> Set.Set (domain, codomain)
 -- TODO: Make it more performant, it is traversing the sets too many times.
-getGraph br = Set.fromList [ (domain, codomain) | domain <- getDomainList br, codomain <- getRelatedToList domain br]
+getGraph br = DC.fromList [ (domain, codomain) | domain <- getDomainList br, codomain <- getRelatedToList domain br]
 
 getDomainList :: (Ord domain, Ord codomain) => BinaryRelation domain codomain -> [domain]
 getDomainList (BinaryRelation relatedTo _) = DC.toList $ DCMMS.getKeys relatedTo
