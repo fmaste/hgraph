@@ -32,7 +32,7 @@ class Collection c where
 	-----------------------------------------------------------------------
 
 	-- Adds an Element to the Collection.
-	-- If the Element already exists the original Collection is returned.
+	-- If the Element already exists the result is implementation dependant.
 	addElement :: Element c -> c -> c
 
 	-- Removes an Element from the Collection.
