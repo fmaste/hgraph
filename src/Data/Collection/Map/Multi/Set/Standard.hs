@@ -51,14 +51,6 @@ import qualified Data.Collection.Set.Standard as Set
 newtype MapSet k v = MapSet (Map.Map k (Set.Set v))
 	deriving (Show, Read, Ord, Eq)
 
--- TODO: Make a generic result type, so it is not dependent of the implementation.
--- Also provide getList and getSet functions but optimized for every implementation.
--- import qualified Control.Monad as Monad
--- import qualified Data.Foldable as Foldable
--- import qualified Data.Traversable as Traversable
---newtype ResultType a = Result [a]
---	deriving (Monad.Functor, Foldable.Foldable, Traversable.Traversable)
-
 -- * ATOMIC CONSTRUCTION FUNCTIONS
 -------------------------------------------------------------------------------
 
