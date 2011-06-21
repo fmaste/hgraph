@@ -38,7 +38,7 @@ module Data.Collection.Map.Multi.Set.Standard (
 -------------------------------------------------------------------------------
 
 import Data.List (foldl, foldl', foldr)
-import qualified Data.Map as Map
+import qualified Data.Map as Map -- TODO: Use Data.Collection.Map.Standard instead.
 import qualified Data.Collection as DC
 import qualified Data.Collection.Map as DCM
 import qualified Data.Collection.Map.Multi as DCMM
