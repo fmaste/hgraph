@@ -29,6 +29,7 @@ module Data.Collection.Map.Standard (
 	getValueMaybe,
 	getValueWithDefault,
 	getValueAndRemoveKey,
+	map,
 	foldr,
 	foldl,
 	foldr',
@@ -41,7 +42,7 @@ module Data.Collection.Map.Standard (
 -- IMPORTS
 -------------------------------------------------------------------------------
 
-import Prelude hiding (foldr, foldl)
+import Prelude hiding (map, foldr, foldl)
 import qualified Data.Map as DM
 import qualified Data.Collection as DC
 import qualified Data.Collection.Set.Standard as DCSS
@@ -118,6 +119,9 @@ getValueWithDefault = DM.findWithDefault
 getValueAndRemoveKey :: Ord k => k -> Map k v -> (Maybe v, Map k v)
 getValueAndRemoveKey k m = DM.updateLookupWithKey (\_ _ -> Nothing) k m where
 
+map :: (a -> b) -> Map k a -> Map k b
+map = DM.map
+
 foldr :: (v -> a -> a) -> a -> Map k v -> a
 foldr f a m = DM.foldrWithKey g a m where
 	g k v a = f v a
@@ -183,6 +187,10 @@ instance (Ord k, Ord v) => DCM.Combination (Map k v) where
 	getValueMaybe = getValueMaybe
 	getValueWithDefault = getValueWithDefault
 	getValueAndRemoveKey = getValueAndRemoveKey
+
+instance (Ord k, Ord v) => DCM.Mappable (Map k v) where
+	type DCM.FunctorMap (Map k v) = Map k
+	map = map
 
 instance (Ord k, Ord v) => DCM.Foldable (Map k v) where
 	foldr = foldr

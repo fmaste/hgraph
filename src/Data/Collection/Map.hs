@@ -11,6 +11,7 @@ module Data.Collection.Map (
 	DC.Collection(..),
 	Map(..),
 	Combination(..),
+	Mappable(..),
 	Foldable(..) ) where
 
 -- IMPORTS
@@ -68,6 +69,14 @@ class Map m => Combination m where
 
 	-- Get the associated value of the provided key before removing it.
 	getValueAndRemoveKey :: DC.Element (Keys m) -> m -> (Maybe (Value m), m)
+
+-------------------------------------------------------------------------------
+
+-- Mappable class for Map.
+class (Map m, Map (FunctorMap m (Value m))) => Mappable m where
+	type FunctorMap m :: * -> *
+
+	map :: (Value (FunctorMap m a) -> Value (FunctorMap m b)) -> FunctorMap m a -> FunctorMap m b
 
 -------------------------------------------------------------------------------
 

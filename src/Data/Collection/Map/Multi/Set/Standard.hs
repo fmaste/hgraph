@@ -187,6 +187,10 @@ instance (Ord k, Ord v) => DCM.Combination (MapSet k v) where
 	getValueWithDefault _ k mm = getValues k mm
 	getValueAndRemoveKey k mm = (Just $ getValues k mm, removeKey k mm)
 
+instance (Ord k, Ord v) => DCM.Mappable (MapSet k v) where
+	type DCM.FunctorMap (MapSet k v) = MapSet k
+	map = mapSet
+
 instance (Ord k, Ord v) => DCM.Foldable (MapSet k v) where
 	foldr f a (MapSet m) = Map.foldrWithKey g a m where
 		g k v a = f v a
