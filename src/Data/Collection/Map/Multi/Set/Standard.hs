@@ -140,7 +140,7 @@ removeValueFromKeys ks v (MapSet m) = MapSet (Map.unionWith f m m') where
 removeValuesAll :: (Ord k, Ord v) => k -> MapSet k v ->  MapSet k v
 removeValuesAll k (MapSet m) = MapSet $ Map.adjust (const Set.empty) k m
 
-mapSet :: (Ord k, Ord v, Ord v') => (Set.Set v -> Set.Set v') -> MapSet k v -> MapSet k v'
+mapSet :: (Set.Set v -> Set.Set v') -> MapSet k v -> MapSet k v'
 mapSet f (MapSet mm) = MapSet (Map.map f mm)
 
 foldSet :: (Ord k, Ord v) => (Set.Set v -> ans -> ans) -> ans -> MapSet k v -> ans
