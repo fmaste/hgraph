@@ -6,7 +6,7 @@
 -- MODULE
 -------------------------------------------------------------------------------
 
-{-# LANGUAGE TypeFamilies, TypeSynonymInstances #-}
+{-# LANGUAGE TypeFamilies, TypeSynonymInstances, MultiParamTypeClasses, FlexibleInstances #-}
 module Data.Collection.Map.Standard (
 	Map,
 	empty,
@@ -188,8 +188,8 @@ instance (Ord k, Ord v) => DCM.Combination (Map k v) where
 	getValueWithDefault = getValueWithDefault
 	getValueAndRemoveKey = getValueAndRemoveKey
 
-instance (Ord k, Ord v) => DCM.Mappable (Map k v) where
-	type DCM.FunctorMap (Map k v) = Map k
+instance (Ord k, Ord v, Ord a, Ord b) => DCM.Functor (Map k v) a b where
+	type DCM.FunctorType (Map k v) = Map k
 	map = map
 
 instance (Ord k, Ord v) => DCM.Foldable (Map k v) where

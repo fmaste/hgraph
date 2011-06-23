@@ -6,18 +6,18 @@
 -- MODULE
 -------------------------------------------------------------------------------
 
-{-# LANGUAGE TypeFamilies, FlexibleContexts #-}
+{-# LANGUAGE TypeFamilies, MultiParamTypeClasses, FlexibleContexts #-}
 module Data.Collection.Map (
 	DC.Collection(..),
 	Map(..),
 	Combination(..),
-	Mappable(..),
+	Functor(..),
 	Foldable(..) ) where
 
 -- IMPORTS
 -------------------------------------------------------------------------------
 
-import Prelude hiding (foldr, foldl)
+import Prelude hiding (Functor, foldr, foldl)
 import Data.Maybe (fromMaybe)
 import qualified Data.Collection as DC
 
@@ -72,11 +72,11 @@ class Map m => Combination m where
 
 -------------------------------------------------------------------------------
 
--- Mappable class for Map.
-class (Map m, Map (FunctorMap m (Value m))) => Mappable m where
-	type FunctorMap m :: * -> *
+-- Functor class for Map.
+class (Map m, Map (FunctorType m a), Map (FunctorType m b)) => Functor m a b where
+	type FunctorType m :: * -> *
 
-	map :: (Value (FunctorMap m a) -> Value (FunctorMap m b)) -> FunctorMap m a -> FunctorMap m b
+	map :: (Value (FunctorType m a) -> Value (FunctorType m b)) -> FunctorType m a -> FunctorType m b
 
 -------------------------------------------------------------------------------
 
