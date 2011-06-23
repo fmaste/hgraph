@@ -89,7 +89,7 @@ removeDomainElement element (BinaryRelation relatedTo codomain) = BinaryRelation
 removeCodomainElement :: (Ord domain, Ord codomain) => codomain -> BinaryRelation domain codomain -> BinaryRelation domain codomain
 removeCodomainElement element (BinaryRelation relatedTo codomain) = 
 	let
-		relatedTo' = MapSet.mapSet (Set.removeElement element) relatedTo
+		relatedTo' = DCMMS.remove element relatedTo
 		codomain' = Set.removeElement element codomain
 	in BinaryRelation relatedTo' codomain'
 
