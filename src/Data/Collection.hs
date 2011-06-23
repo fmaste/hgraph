@@ -6,18 +6,19 @@
 -- MODULE
 -------------------------------------------------------------------------------
 
-{-# LANGUAGE TypeFamilies #-}
+{-# LANGUAGE TypeFamilies, MultiParamTypeClasses, FlexibleContexts #-}
 module Data.Collection (
 	Collection(..),
 	List(..),
 	Batch(..),
+	Functor(..),
 	Foldable(..),
 	Foldable1(..) ) where
 
 -- IMPORTS
 -------------------------------------------------------------------------------
 
-import Prelude hiding (foldr, foldl)
+import Prelude hiding (Functor, foldr, foldl)
 import Data.Maybe (fromMaybe)
 
 -- CLASSES
@@ -74,6 +75,14 @@ class Collection c => Batch c where
 
 	-- Same as containsElement multiple times but faster.
 	containsElements :: [Element c] -> c -> Bool
+
+-------------------------------------------------------------------------------
+
+-- Functor class for Collections.
+class (Collection c, Collection (FunctorType c a), Collection (FunctorType c b)) => Functor c a b where
+	type FunctorType c :: * -> *
+
+	map :: (Element (FunctorType c a) -> Element (FunctorType c b)) -> FunctorType c a -> FunctorType c b
 
 -------------------------------------------------------------------------------
 

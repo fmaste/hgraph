@@ -6,7 +6,7 @@
 -- MODULE
 -------------------------------------------------------------------------------
 
-{-# LANGUAGE TypeFamilies, TypeSynonymInstances #-}
+{-# LANGUAGE TypeFamilies, TypeSynonymInstances, MultiParamTypeClasses, FlexibleInstances #-}
 module Data.Collection.Set.Standard (
 	Set,
 	empty,
@@ -16,6 +16,7 @@ module Data.Collection.Set.Standard (
 	getElementsCount,
 	toList,
 	fromList,
+	map,
 	foldr,
 	foldl,
 	foldr',
@@ -26,7 +27,7 @@ module Data.Collection.Set.Standard (
 -- IMPORTS
 -------------------------------------------------------------------------------
 
-import Prelude hiding (foldr, foldl)
+import Prelude hiding (map, foldr, foldl)
 import qualified Data.Set as DS
 import qualified Data.Foldable as DF
 import qualified Data.Collection as DC
@@ -61,6 +62,9 @@ toList = DS.elems
 fromList :: Ord a => [a] -> Set a
 fromList = DS.fromList
 
+map :: (Ord a, Ord b) => (a -> b) -> Set a -> Set b
+map = DS.map
+
 foldr :: (a -> b -> b) -> b -> Set a -> b
 foldr = DF.foldr
 
@@ -92,6 +96,10 @@ instance Ord a => DC.Collection (Set a) where
 instance Ord a => DC.List (Set a) where
 	toList = toList
 	fromList = fromList
+
+instance (Ord v, Ord a, Ord b) => DC.Functor (Set v) a b where
+	type DC.FunctorType (Set v) = Set
+	map = map
 
 instance Ord a => DC.Foldable (Set a) where
 	foldr = foldr
