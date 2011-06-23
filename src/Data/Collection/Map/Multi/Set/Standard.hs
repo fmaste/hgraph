@@ -207,6 +207,7 @@ instance (Ord k, Ord v) => DCMM.MultiMap (MapSet k v) where
 	getValuesCount k mm = toInteger $ getValueCount k mm
 
 instance (Ord k, Ord v) => DCMM.Batch (MapSet k v) where
+	remove v (MapSet m) = MapSet (Map.map (DC.removeElement v) m)
 	removeFromKeys = removeValueFromKeys
 
 instance (Ord k, Ord v) => DCMM.Foldable (MapSet k v) where

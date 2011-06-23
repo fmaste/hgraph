@@ -60,6 +60,9 @@ class (DCM.Map a, DC.Collection (DCM.Value a)) => MultiMap a where
 -- Use fold if your MultiMap if not an instance and you need this functions.
 class MultiMap a => Batch a where
 
+	-- Remove the value from all the keys.
+	remove :: DC.Element (DCM.Value a) -> a -> a
+
 	-- Remove the value from the provided keys.
 	removeFromKeys :: [DC.Element (DCM.Keys a)] -> DC.Element (DCM.Value a) -> a -> a
 
