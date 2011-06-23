@@ -6,7 +6,7 @@
 -- MODULE
 -------------------------------------------------------------------------------
 
-{-# LANGUAGE TypeFamilies, MultiParamTypeClasses, FlexibleInstances #-}
+{-# LANGUAGE TypeFamilies #-}
 module Data.Collection.Map.Multi.Set.Standard (
 	-- Atomic construction functions.
 	MapSet(),
@@ -186,10 +186,6 @@ instance (Ord k, Ord v) => DCM.Combination (MapSet k v) where
 	getValueMaybe k mm = Just $ getValues k mm
 	getValueWithDefault _ k mm = getValues k mm
 	getValueAndRemoveKey k mm = (Just $ getValues k mm, removeKey k mm)
-
-instance (Ord k, Ord v, Ord a, Ord b) => DCM.Functor (MapSet k v) a b where
-	type DCM.FunctorType (MapSet k v) = MapSet k
-	map = mapSet
 
 instance (Ord k, Ord v) => DCM.Foldable (MapSet k v) where
 	foldr f a (MapSet m) = Map.foldrWithKey g a m where

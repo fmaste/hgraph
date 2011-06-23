@@ -6,7 +6,7 @@
 -- MODULE
 -------------------------------------------------------------------------------
 
-{-# LANGUAGE TypeFamilies, TypeSynonymInstances, MultiParamTypeClasses, FlexibleInstances #-}
+{-# LANGUAGE TypeFamilies, TypeSynonymInstances #-}
 module Data.Collection.Set.Standard (
 	Set,
 	empty,
@@ -96,10 +96,6 @@ instance Ord a => DC.Collection (Set a) where
 instance Ord a => DC.List (Set a) where
 	toList = toList
 	fromList = fromList
-
-instance (Ord v, Ord a, Ord b) => DC.Functor (Set v) a b where
-	type DC.FunctorType (Set v) = Set
-	map = map
 
 instance Ord a => DC.Foldable (Set a) where
 	foldr = foldr

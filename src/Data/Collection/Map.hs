@@ -6,18 +6,17 @@
 -- MODULE
 -------------------------------------------------------------------------------
 
-{-# LANGUAGE TypeFamilies, MultiParamTypeClasses, FlexibleContexts #-}
+{-# LANGUAGE TypeFamilies, FlexibleContexts #-}
 module Data.Collection.Map (
 	DC.Collection(..),
 	Map(..),
 	Combination(..),
-	Functor(..),
 	Foldable(..) ) where
 
 -- IMPORTS
 -------------------------------------------------------------------------------
 
-import Prelude hiding (Functor, foldr, foldl)
+import Prelude hiding (foldr, foldl)
 import Data.Maybe (fromMaybe)
 import qualified Data.Collection as DC
 
@@ -69,14 +68,6 @@ class Map m => Combination m where
 
 	-- Get the associated value of the provided key before removing it.
 	getValueAndRemoveKey :: DC.Element (Keys m) -> m -> (Maybe (Value m), m)
-
--------------------------------------------------------------------------------
-
--- Functor class for Map.
-class (Map m, Map (FunctorType m a), Map (FunctorType m b)) => Functor m a b where
-	type FunctorType m :: * -> *
-
-	map :: (Value (FunctorType m a) -> Value (FunctorType m b)) -> FunctorType m a -> FunctorType m b
 
 -------------------------------------------------------------------------------
 
