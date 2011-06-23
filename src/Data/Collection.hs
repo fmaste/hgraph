@@ -111,29 +111,6 @@ defaultFoldl' :: (Collection c, Foldable c) => (a -> Element c -> a) -> a -> c -
 defaultFoldl' f z0 xs = foldr f' id xs z0 where 
 	f' x g z = g $! f z x
 
-{-- 
-TODO: Wait for equality constraints in superclass contexts (DCF.Element c ~ Element c) to implement 
-http://www.haskell.org/ghc/docs/7.0.3/html/users_guide/type-families.html#id636192
--- Foldable class for Collections.
-class (Collection c, DCF.Foldable c, DCF.Element c ~ Element c) => Foldable c where
-	
-	-- Right-associative fold of a Collection.
-	foldr :: (Element c -> a -> a) -> a -> c -> a
-	foldr = DCF.foldr
-
-	-- Left-associative fold of a Collection.
-	foldl :: (a -> Element c -> a) -> a -> c -> a
-	foldr = DCF.foldr
-
-	-- Fold over the elements of a Collection, associating to the right, but strictly.
-	foldr' :: (Element c -> a -> a) -> a -> c -> a
-	foldr' = DCF.foldr'
-
-	-- Fold over the elements of a Collection, associating to the left, but strictly.
-	foldl' :: (a -> Element c -> a) -> a -> c -> a
-	foldl' = DCF.foldl'
---}
-
 -------------------------------------------------------------------------------
 
 -- Collections like Map and MapSet can't implement this functions, so they are separated from Foldable.

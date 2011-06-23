@@ -3,6 +3,9 @@
 -- Foldable Collection classes.
 -- TODO: Make it haddock compatible!
 
+-- TODO: Wait for equality constraints in superclass contexts (DCF.Element c ~ Element c) to implement 
+-- http://www.haskell.org/ghc/docs/7.0.3/html/users_guide/type-families.html#id636192
+
 -- MODULE
 -------------------------------------------------------------------------------
 
