@@ -94,9 +94,11 @@ foldlElements :: (a -> (k, v) -> a) -> a -> Map k v -> a
 foldlElements f a m = DM.foldlWithKey g a m where
 	g a k v = f a (k, v)
 
+-- TODO: Move the default implementation so I can remove the Ord contexts.
 foldrElements' :: (Ord k, Ord v) => ((k, v) -> a -> a) -> a -> Map k v -> a
 foldrElements' = DCF.foldr' -- Use provided default implementation.
 
+-- TODO: Move the default implementation so I can remove the Ord contexts.
 foldlElements' :: (Ord k, Ord v) => (a -> (k, v) -> a) -> a -> Map k v -> a
 foldlElements' = DCF.foldl' -- Use provided default implementation.
 
