@@ -30,6 +30,7 @@ class (DC.Collection m, DC.Collection (Keys m)) => Map m where
 	-----------------------------------------------------------------------
 
 	-- Associates a value with the provided key.
+	-- If the key already has an associated value it is replaced.
 	putValue :: DC.Element (Keys m) -> Value m -> m -> m
 
 	-- Remove a key with its associated value from the Association.
