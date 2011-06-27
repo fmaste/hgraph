@@ -15,7 +15,11 @@ module Data.Collection.Map.Multi.Set.Standard (
 	containsElement,
 	getElementsCount,
 	toList,
-	fromList ) where
+	fromList,
+	foldrElements,
+	foldlElements,
+	foldrElements',
+	foldlElements' ) where
 
 -- IMPORTS
 -------------------------------------------------------------------------------
@@ -61,6 +65,30 @@ toList m = foldSetWithKey (\k set ans -> ans ++ [(k, v) | v <- (DCL.toList set)]
 
 fromList :: (Ord k, Ord v) => [(k, v)] -> MapSet k v
 fromList list = foldl' (\ans (k, v) -> addValue k v ans) empty list
+
+-- Collection version of fold
+
+foldrElements :: (Ord k, Ord v) => ((k, v) -> a -> a) -> a -> MapSet k v -> a
+foldrElements f a (MapSet m) = Map.foldrWithKey g a m where
+	g k set a = DCF.foldr g' a set where
+		g' v a = f (k, v) a
+
+foldlElements :: (Ord k, Ord v) => (a -> (k, v) -> a) -> a -> MapSet k v -> a
+foldlElements f a (MapSet m) = Map.foldlWithKey g a m where
+	g a k set = DCF.foldl g' a set where
+		g' a v = f a (k, v)
+
+-- TODO: Move the default implementation so I can remove the Ord contexts.
+foldrElements' :: (Ord k, Ord v) => ((k, v) -> a -> a) -> a -> MapSet k v -> a
+-- TODO: Make the same as foldrElements above but with strict folds.
+foldrElements' f a m = DCF.foldr' f a m -- Use provided default implementation.
+
+-- TODO: Move the default implementation so I can remove the Ord contexts.
+foldlElements' :: (Ord k, Ord v) => (a -> (k, v) -> a) -> a -> MapSet k v -> a
+-- TODO: Make the same as foldlElements above but with strict folds.
+foldlElements' f a m = DCF.foldl' f a m -- Use provided default implementation.
+
+
 
 -- | Adds a key without any values.
 -- If the key already exists the original MapSet is returned.
@@ -173,8 +201,8 @@ instance (Ord k, Ord v) => DCL.List (MapSet k v) where
 	fromList = fromList
 
 instance (Ord k, Ord v) => DCF.Foldable (MapSet k v) where
-	foldr = DCF.foldr 
-	foldl = DCF.foldl
+	foldr = foldrElements 
+	foldl = foldlElements
 
 instance (Ord k, Ord v) => DCM.Map (MapSet k v) where
 	type DCM.Keys (MapSet k v) = Set.Set k
