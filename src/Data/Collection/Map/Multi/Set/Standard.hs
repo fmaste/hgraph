@@ -43,6 +43,7 @@ import qualified Data.Collection as DC
 import qualified Data.Collection.List as DCL
 import qualified Data.Collection.Foldable as DCF
 import qualified Data.Collection.Map as DCM
+import qualified Data.Collection.Map.Foldable as DCMF
 import qualified Data.Collection.Map.Multi as DCMM
 import qualified Data.Collection.Map.Multi.Set as DCMMS
 import qualified Data.Collection.Set.Standard as Set
@@ -189,7 +190,7 @@ instance (Ord k, Ord v) => DCM.Combination (MapSet k v) where
 	getValueWithDefault _ k mm = getValues k mm
 	getValueAndRemoveKey k mm = (Just $ getValues k mm, removeKey k mm)
 
-instance (Ord k, Ord v) => DCM.Foldable (MapSet k v) where
+instance (Ord k, Ord v) => DCMF.Foldable (MapSet k v) where
 	foldr f a (MapSet m) = Map.foldrWithKey g a m where
 		g k v a = f v a
 	foldl f a (MapSet m) = Map.foldlWithKey g a m where

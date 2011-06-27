@@ -52,6 +52,7 @@ import qualified Data.Collection.List as DCL
 import qualified Data.Collection.Foldable as DCF
 import qualified Data.Collection.Set.Standard as DCSS
 import qualified Data.Collection.Map as DCM
+import qualified Data.Collection.Map.Foldable as DCMF
 
 -- DATA DEFINITION
 -------------------------------------------------------------------------------
@@ -134,11 +135,11 @@ foldl f a m = DM.foldlWithKey g a m where
 
 -- TODO: Move the default implementation so I can remove the Ord contexts.
 foldr' :: (Ord k, Ord v) => (v -> a -> a) -> a -> Map k v -> a
-foldr' = DCM.foldr' -- Use provided default implementation.
+foldr' = DCMF.foldr' -- Use provided default implementation.
 
 -- TODO: Move the default implementation so I can remove the Ord contexts.
 foldl' :: (Ord k, Ord v) => (a -> v -> a) -> a -> Map k v -> a
-foldl' = DCM.foldl' -- Use provided default implementation.
+foldl' = DCMF.foldl' -- Use provided default implementation.
 
 foldrWithKey :: (k -> v -> a -> a) -> a -> Map k v -> a
 foldrWithKey = DM.foldrWithKey
@@ -148,11 +149,11 @@ foldlWithKey = DM.foldlWithKey
 
 -- TODO: Move the default implementation so I can remove the Ord contexts.
 foldrWithKey' :: (Ord k, Ord v) => (k -> v -> a -> a) -> a -> Map k v -> a
-foldrWithKey' = DCM.foldrWithKey' -- Use provided default implementation.
+foldrWithKey' = DCMF.foldrWithKey' -- Use provided default implementation.
 
 -- TODO: Move the default implementation so I can remove the Ord contexts.
 foldlWithKey' :: (Ord k, Ord v) => (a -> k -> v -> a) -> a -> Map k v -> a
-foldlWithKey' = DCM.foldlWithKey' -- Use provided default implementation.
+foldlWithKey' = DCMF.foldlWithKey' -- Use provided default implementation.
 
 map :: (a -> b) -> Map k a -> Map k b
 map = DM.map
@@ -193,7 +194,7 @@ instance (Ord k, Ord v) => DCM.Combination (Map k v) where
 	getValueWithDefault = getValueWithDefault
 	getValueAndRemoveKey = getValueAndRemoveKey
 
-instance (Ord k, Ord v) => DCM.Foldable (Map k v) where
+instance (Ord k, Ord v) => DCMF.Foldable (Map k v) where
 	foldr = foldr
 	foldl = foldl
 	-- Default implementations for foldr'

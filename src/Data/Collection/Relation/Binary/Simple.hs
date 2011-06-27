@@ -48,6 +48,7 @@ import qualified Data.List as DL
 import qualified Data.Collection as DC
 import qualified Data.Collection.List as DCL
 import qualified Data.Collection.Map as DCM
+import qualified Data.Collection.Map.Foldable as DCMF
 import qualified Data.Collection.Map.Multi.Set as DCMMS
 import qualified Data.Collection.Map.Multi.Set.Standard as MapSet
 import qualified Data.Collection.Relation.Binary as DCRB
@@ -126,7 +127,7 @@ getRelatedTo :: (Ord domain, Ord codomain) => domain -> BinaryRelation domain co
 getRelatedTo element (BinaryRelation relatedTo _) = DCMMS.getValue element relatedTo
 
 getRelatedFrom :: (Ord domain, Ord codomain) => codomain -> BinaryRelation domain codomain -> Set.Set domain
-getRelatedFrom element (BinaryRelation relatedTo _) = DCM.foldrWithKey f Set.empty relatedTo where
+getRelatedFrom element (BinaryRelation relatedTo _) = DCMF.foldrWithKey f Set.empty relatedTo where
 	f key set ans = if Set.containsElement element set then Set.addElement key ans else ans
 
 -- All the relationships. Elements without relationships are not shown.
