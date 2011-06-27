@@ -11,7 +11,8 @@ module Data.Collection.Map.Multi.Set.Standard (
 	MapSet(),
 	empty,
 	addElement,
-	removeElement ) where
+	removeElement,
+	containsElement ) where
 
 -- IMPORTS
 -------------------------------------------------------------------------------
@@ -45,6 +46,9 @@ addElement (k, v) = addValue k v
 
 removeElement :: (Ord k, Ord v) => (k, v) -> MapSet k v -> MapSet k v
 removeElement (k, v) = removeValue k v
+
+containsElement :: (Ord k, Ord v) => (k, v) -> MapSet k v -> Bool
+containsElement (k, v) m = Set.containsElement v $ getValues k m
 
 -- | Adds a key without any values.
 -- If the key already exists the original MapSet is returned.
@@ -149,7 +153,7 @@ instance (Ord k, Ord v) => DC.Collection (MapSet k v) where
 	type DC.Element (MapSet k v) = (k, v)
 	addElement = addElement
 	removeElement = removeElement
-	containsElement (k, v) m = Set.containsElement v $ getValues k m
+	containsElement = containsElement
 	getElementsCount m = toInteger $ foldSet (\set ans -> ans + (Set.getElementsCount set)) 0 m
 
 instance (Ord k, Ord v) => DCL.List (MapSet k v) where
