@@ -1,6 +1,6 @@
 -- Author: Federico Mastellone (fmaste@gmail.com)
 
--- Relation class.
+-- Binary relation class.
 -- TODO: Make it haddock compatibele!
 
 -- MODULE
@@ -8,7 +8,7 @@
 
 {-# LANGUAGE TypeFamilies, FlexibleContexts #-}
 module Data.Collection.Relation.Binary (
-	Relation(..) ) where
+	BinaryRelation(..) ) where
 
 -- IMPORTS
 -------------------------------------------------------------------------------
@@ -19,7 +19,7 @@ import qualified Data.Collection.Set as DCS
 -- CLASS
 -------------------------------------------------------------------------------
 
-class (DC.Collection r, DCS.Set (DomainSet r), DCS.Set (CodomainSet r)) => Relation r where
+class (DC.Collection r, DCS.Set (DomainSet r), DCS.Set (CodomainSet r)) => BinaryRelation r where
 	-- The Relation type families.
 	type DomainSet r
 	type CodomainSet r
