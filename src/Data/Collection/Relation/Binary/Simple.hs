@@ -45,9 +45,11 @@ module Data.Collection.Relation.Binary.Simple (
 -------------------------------------------------------------------------------
 
 import qualified Data.List as DL
+import qualified Data.Collection as DC
 import qualified Data.Collection.Map as DCM
 import qualified Data.Collection.Map.Multi.Set as DCMMS
 import qualified Data.Collection.Map.Multi.Set.Standard as MapSet
+import qualified Data.Collection.Relation.Binary as DCRB
 import qualified Data.Collection.Set.Standard as Set
 
 -- DATA DEFINITION
@@ -189,4 +191,28 @@ revert br@(BinaryRelation relatedTo codomain) = BinaryRelation relatedTo' codoma
 	codomain' = getDomain br
 
 --TODO: Add more functions, like image, range, isFunction, biyective, etc, etc.
+
+-- INSTANCES
+-------------------------------------------------------------------------------
+
+instance (Ord domain, Ord codomain) => DC.Collection (BinaryRelation domain codomain) where
+	type DC.Element (BinaryRelation domain codomain) = (domain, codomain)
+	addElement (d, c) br = addRelation d c br
+	removeElement (d, c) br = removeRelation d c br
+	containsElement (d, c) br = containsRelation d c br
+	getElementsCount br = DC.getElementsCount $ getGraph br
+
+instance (Ord domain, Ord codomain) => DCRB.BinaryRelation (BinaryRelation domain codomain) where
+	type DCRB.DomainSet (BinaryRelation domain codomain) = Set.Set domain
+	type DCRB.CodomainSet (BinaryRelation domain codomain) = Set.Set codomain
+	addDomainElement = addDomainElement
+	addCodomainElement = addCodomainElement
+	removeDomainElement = removeDomainElement
+	removeCodomainElement = removeCodomainElement
+	addRelation = addRelation
+	removeRelation = removeRelation
+	getDomain = getDomain
+	getCodomain = getCodomain
+	getRelatedTo = getRelatedTo
+	getRelatedFrom = getRelatedFrom
 
