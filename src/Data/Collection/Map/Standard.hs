@@ -84,6 +84,8 @@ toList = DM.toList
 fromList :: Ord k => [(k, v)] -> Map k v
 fromList = DM.fromList
 
+-- Collection version of fold
+
 foldrElements :: ((k, v) -> a -> a) -> a -> Map k v -> a
 foldrElements f a m = DM.foldrWithKey g a m where
 	g k v a = f (k, v) a
@@ -124,6 +126,8 @@ getValueWithDefault = DM.findWithDefault
 
 getValueAndRemoveKey :: Ord k => k -> Map k v -> (Maybe v, Map k v)
 getValueAndRemoveKey k m = DM.updateLookupWithKey (\_ _ -> Nothing) k m where
+
+-- Map version of fold
 
 foldr :: (v -> a -> a) -> a -> Map k v -> a
 foldr f a m = DM.foldrWithKey g a m where
