@@ -9,7 +9,6 @@
 {-# LANGUAGE TypeFamilies #-}
 module Data.Collection (
 	Collection(..),
-	Batch(..),
 	Foldable(..),
 	Foldable1(..) ) where
 
@@ -46,22 +45,6 @@ class Collection c where
 
 	-- The number of Elements that the Collection contains.
 	getElementsCount :: c -> Integer
-
--------------------------------------------------------------------------------
-
--- Performant functions to operate on more than one element.
--- No default implementations because they must be performant.
--- Use fold if your Collection if not an instance and you need this functions.
-class Collection c => Batch c where
-
-	-- Same as addElement multiple times but faster.
-	addElements :: [Element c] -> c -> c
-
-	-- Same as removeElement multiple times but faster.
-	removeElements :: [Element c] -> c -> c
-
-	-- Same as containsElement multiple times but faster.
-	containsElements :: [Element c] -> c -> Bool
 
 -------------------------------------------------------------------------------
 
