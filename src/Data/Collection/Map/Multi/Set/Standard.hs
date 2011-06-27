@@ -14,7 +14,8 @@ module Data.Collection.Map.Multi.Set.Standard (
 	removeElement,
 	containsElement,
 	getElementsCount,
-	toList ) where
+	toList,
+	fromList ) where
 
 -- IMPORTS
 -------------------------------------------------------------------------------
@@ -57,6 +58,9 @@ getElementsCount m = toInteger $ foldSet (\set ans -> ans + (Set.getElementsCoun
 
 toList :: (Ord k, Ord v) => MapSet k v -> [(k, v)]
 toList m = foldSetWithKey (\k set ans -> ans ++ [(k, v) | v <- (DCL.toList set)]) [] m
+
+fromList :: (Ord k, Ord v) => [(k, v)] -> MapSet k v
+fromList list = foldl' (\ans (k, v) -> addValue k v ans) empty list
 
 -- | Adds a key without any values.
 -- If the key already exists the original MapSet is returned.
@@ -166,7 +170,7 @@ instance (Ord k, Ord v) => DC.Collection (MapSet k v) where
 
 instance (Ord k, Ord v) => DCL.List (MapSet k v) where
 	toList = toList
-	fromList list = foldl' (\ans (k, v) -> addValue k v ans) empty list
+	fromList = fromList
 
 instance (Ord k, Ord v) => DCF.Foldable (MapSet k v) where
 	foldr = DCF.foldr 
