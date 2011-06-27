@@ -8,17 +8,14 @@
 
 {-# LANGUAGE TypeFamilies #-}
 module Data.Collection.Map.Multi.Set.Standard (
-	-- Atomic construction functions.
 	MapSet(),
 	empty,
 	addKey,
 	removeKey,
 	addValue,
 	removeValue,
-	-- Atomic query functions.
 	getKeys,
 	getValues,
-	-- Util functions.
 	isEmpty,
 	getKeysSet,
 	getKeyCount,
@@ -29,7 +26,6 @@ module Data.Collection.Map.Multi.Set.Standard (
 	getValuesAndRemoveKey,
 	removeValueFromKeys,
 	removeValuesAll,
-	-- SOMETHING
 	mapSet,
 	foldSet,
 	foldSetWithKey) where
