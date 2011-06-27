@@ -9,7 +9,8 @@
 {-# LANGUAGE TypeFamilies #-}
 module Data.Collection.Map.Multi.Set.Standard (
 	MapSet(),
-	empty ) where
+	empty,
+	addElement ) where
 
 -- IMPORTS
 -------------------------------------------------------------------------------
@@ -37,6 +38,9 @@ newtype MapSet k v = MapSet (Map.Map k (Set.Set v))
 -- | The empty MapSet.
 empty :: (Ord k, Ord v) => MapSet k v
 empty = MapSet $ Map.empty
+
+addElement :: (Ord k, Ord v) => (k, v) -> MapSet k v -> MapSet k v
+addElement (k, v) = addValue k v
 
 -- | Adds a key without any values.
 -- If the key already exists the original MapSet is returned.
@@ -139,7 +143,7 @@ foldSetWithKey f ans (MapSet mm) = Map.foldWithKey f ans mm
 
 instance (Ord k, Ord v) => DC.Collection (MapSet k v) where
 	type DC.Element (MapSet k v) = (k, v)
-	addElement (k, v) = addValue k v
+	addElement = addElement
 	removeElement (k, v) = removeValue k v
 	containsElement (k, v) m = Set.containsElement v $ getValues k m
 	getElementsCount m = toInteger $ foldSet (\set ans -> ans + (Set.getElementsCount set)) 0 m
