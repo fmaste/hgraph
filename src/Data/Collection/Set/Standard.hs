@@ -32,6 +32,7 @@ import qualified Data.Set as DS
 import qualified Data.Foldable as DF
 import qualified Data.Collection as DC
 import qualified Data.Collection.List as DCL
+import qualified Data.Collection.Foldable as DCF
 import qualified Data.Collection.Set as DCS
 
 -- DATA DEFINITION
@@ -98,7 +99,7 @@ instance Ord a => DCL.List (Set a) where
 	toList = toList
 	fromList = fromList
 
-instance Ord a => DC.Foldable (Set a) where
+instance Ord a => DCF.Foldable (Set a) where
 	foldr = foldr
 	foldl = foldl
 	foldr' = foldr'

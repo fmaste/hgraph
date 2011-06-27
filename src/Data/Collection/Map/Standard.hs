@@ -46,6 +46,7 @@ import Prelude hiding (map, foldr, foldl)
 import qualified Data.Map as DM
 import qualified Data.Collection as DC
 import qualified Data.Collection.List as DCL
+import qualified Data.Collection.Foldable as DCF
 import qualified Data.Collection.Set.Standard as DCSS
 import qualified Data.Collection.Map as DCM
 
@@ -88,10 +89,10 @@ foldlElements f a m = DM.foldlWithKey g a m where
 	g a k v = f a (k, v)
 
 foldrElements' :: (Ord k, Ord v) => ((k, v) -> a -> a) -> a -> Map k v -> a
-foldrElements' = DC.foldr' -- Use provided default implementation.
+foldrElements' = DCF.foldr' -- Use provided default implementation.
 
 foldlElements' :: (Ord k, Ord v) => (a -> (k, v) -> a) -> a -> Map k v -> a
-foldlElements' = DC.foldl' -- Use provided default implementation.
+foldlElements' = DCF.foldl' -- Use provided default implementation.
 
 putValue :: Ord k => k -> v -> Map k v -> Map k v
 putValue = DM.insert
@@ -168,7 +169,7 @@ instance (Ord k, Ord v) => DCL.List (Map k v) where
 	toList = toList
 	fromList = fromList
 
-instance (Ord k, Ord v) => DC.Foldable (Map k v) where
+instance (Ord k, Ord v) => DCF.Foldable (Map k v) where
 	foldr = foldrElements
 	foldl = foldlElements
 	-- Default implementations for foldr'

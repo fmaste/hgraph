@@ -41,6 +41,7 @@ import Data.List (foldl, foldl', foldr)
 import qualified Data.Map as Map -- TODO: Use Data.Collection.Map.Standard instead.
 import qualified Data.Collection as DC
 import qualified Data.Collection.List as DCL
+import qualified Data.Collection.Foldable as DCF
 import qualified Data.Collection.Map as DCM
 import qualified Data.Collection.Map.Multi as DCMM
 import qualified Data.Collection.Map.Multi.Set as DCMMS
@@ -169,9 +170,9 @@ instance (Ord k, Ord v) => DCL.List (MapSet k v) where
 	toList m = foldSetWithKey (\k set ans -> ans ++ [(k, v) | v <- (DCL.toList set)]) [] m
 	fromList list = foldl' (\ans (k, v) -> addValue k v ans) empty list
 
-instance (Ord k, Ord v) => DC.Foldable (MapSet k v) where
-	foldr = DC.foldr 
-	foldl = DC.foldl
+instance (Ord k, Ord v) => DCF.Foldable (MapSet k v) where
+	foldr = DCF.foldr 
+	foldl = DCF.foldl
 
 instance (Ord k, Ord v) => DCM.Map (MapSet k v) where
 	type DCM.Keys (MapSet k v) = Set.Set k
@@ -213,16 +214,16 @@ instance (Ord k, Ord v) => DCMM.Batch (MapSet k v) where
 
 instance (Ord k, Ord v) => DCMM.Foldable (MapSet k v) where
 	foldr f a (MapSet m) = Map.foldrWithKey g a m where
-		g k set a = DC.foldr f a set
+		g k set a = DCF.foldr f a set
 	foldl f a (MapSet m) = Map.foldlWithKey g a m where
-		g a k set = DC.foldl f a set
+		g a k set = DCF.foldl f a set
 	-- Default implementations for foldr'. TODO: Use DCM.Foldable to implement!
 	-- Default implementations for foldr'. TODO: Use DCM.Foldable to implement!
 	foldrWithKey f a (MapSet m) = Map.foldrWithKey g a m where
-		g k set a = DC.foldr f' a set where
+		g k set a = DCF.foldr f' a set where
 			f' v a = f k v a
 	foldlWithKey f a (MapSet m) = Map.foldlWithKey g a m where
-		g a k set = DC.foldl f' a set where
+		g a k set = DCF.foldl f' a set where
 			f' a v = f a k v
 	-- Default implementations for foldrWithKey'. TODO: Use DCM.Foldable to implement!
 	-- Default implementations for foldlWithKey'. TODO: Use DCM.Foldable to implement!
