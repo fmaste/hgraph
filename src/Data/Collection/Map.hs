@@ -40,13 +40,13 @@ class (DC.Collection m, DC.Collection (Keys m)) => Map m where
 	-- ATOMIC QUERY FUNCTIONS
 	-----------------------------------------------------------------------
 
-	-- All the keys.
+	-- All the keys that have an associated value.
 	getKeys :: m -> Keys m
 
 	-- True if the Association contains this Key, otherwise, false.
 	containsKey :: DC.Element (Keys m) -> m -> Bool
 
-	-- The number of keys that the Map has.
+	-- The number of keys that have an associated value.
 	getKeysCount :: m -> Integer
 
 	-- Get the associated value of the provided key.
