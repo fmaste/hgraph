@@ -9,7 +9,6 @@
 {-# LANGUAGE TypeFamilies #-}
 module Data.Collection (
 	Collection(..),
-	List(..),
 	Batch(..),
 	Foldable(..),
 	Foldable1(..) ) where
@@ -47,17 +46,6 @@ class Collection c where
 
 	-- The number of Elements that the Collection contains.
 	getElementsCount :: c -> Integer
-
--------------------------------------------------------------------------------
-
--- List conversion functions.
-class Collection c => List c where
-
-	-- Export to a list representation.
-	toList :: c -> [Element c]
-
-	-- Import from a list representation.
-	fromList :: [Element c] -> c
 
 -------------------------------------------------------------------------------
 

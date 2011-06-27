@@ -40,6 +40,7 @@ module Data.Collection.Map.Multi.Set.Standard (
 import Data.List (foldl, foldl', foldr)
 import qualified Data.Map as Map -- TODO: Use Data.Collection.Map.Standard instead.
 import qualified Data.Collection as DC
+import qualified Data.Collection.List as DCL
 import qualified Data.Collection.Map as DCM
 import qualified Data.Collection.Map.Multi as DCMM
 import qualified Data.Collection.Map.Multi.Set as DCMMS
@@ -109,7 +110,7 @@ getKeyCount (MapSet m) = Map.size m
 
 -- | All the different values that exist for the key.
 getValuesList :: (Ord k, Ord v) => k -> MapSet k v -> [v]
-getValuesList k mm = Set.toList $ getValues k mm
+getValuesList k mm = DCL.toList $ getValues k mm
 
 -- | The number of different values that exist for the key.
 getValueCount :: (Ord k, Ord v) => k -> MapSet k v -> Int
@@ -126,7 +127,7 @@ containsValue k v mm = Set.containsElement v $ getValues k mm
 getValuesAndRemoveKey :: (Ord k, Ord v) => k -> MapSet k v -> (MapSet k v, [v])
 getValuesAndRemoveKey k (MapSet m) = f $ Map.updateLookupWithKey (\_ _ -> Nothing) k m where
 	f (Nothing, m) = (MapSet m, [])
-	f (Just v, m) = (MapSet m, Set.toList v)
+	f (Just v, m) = (MapSet m, DCL.toList v)
 
 removeValueFromKeys :: (Ord k, Ord v) => [k] -> v -> MapSet k v -> MapSet k v
 removeValueFromKeys ks v (MapSet m) = MapSet (Map.unionWith f m m') where
@@ -164,8 +165,8 @@ instance (Ord k, Ord v) => DC.Collection (MapSet k v) where
 	containsElement (k, v) m = Set.containsElement v $ getValues k m
 	getElementsCount m = toInteger $ foldSet (\set ans -> ans + (Set.getElementsCount set)) 0 m
 
-instance (Ord k, Ord v) => DC.List (MapSet k v) where
-	toList m = foldSetWithKey (\k set ans -> ans ++ [(k, v) | v <- (Set.toList set)]) [] m
+instance (Ord k, Ord v) => DCL.List (MapSet k v) where
+	toList m = foldSetWithKey (\k set ans -> ans ++ [(k, v) | v <- (DCL.toList set)]) [] m
 	fromList list = foldl' (\ans (k, v) -> addValue k v ans) empty list
 
 instance (Ord k, Ord v) => DC.Foldable (MapSet k v) where

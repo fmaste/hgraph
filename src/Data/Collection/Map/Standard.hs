@@ -45,6 +45,7 @@ module Data.Collection.Map.Standard (
 import Prelude hiding (map, foldr, foldl)
 import qualified Data.Map as DM
 import qualified Data.Collection as DC
+import qualified Data.Collection.List as DCL
 import qualified Data.Collection.Set.Standard as DCSS
 import qualified Data.Collection.Map as DCM
 
@@ -163,7 +164,7 @@ instance (Ord k, Ord v) => DC.Collection (Map k v) where
 	containsElement = containsElement
 	getElementsCount = getElementsCount
 
-instance (Ord k, Ord v) => DC.List (Map k v) where
+instance (Ord k, Ord v) => DCL.List (Map k v) where
 	toList = toList
 	fromList = fromList
 

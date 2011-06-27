@@ -31,6 +31,7 @@ import Prelude hiding (map, foldr, foldl)
 import qualified Data.Set as DS
 import qualified Data.Foldable as DF
 import qualified Data.Collection as DC
+import qualified Data.Collection.List as DCL
 import qualified Data.Collection.Set as DCS
 
 -- DATA DEFINITION
@@ -93,7 +94,7 @@ instance Ord a => DC.Collection (Set a) where
 	containsElement = containsElement
 	getElementsCount = getElementsCount
 
-instance Ord a => DC.List (Set a) where
+instance Ord a => DCL.List (Set a) where
 	toList = toList
 	fromList = fromList
 

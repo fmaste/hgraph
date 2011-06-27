@@ -24,6 +24,7 @@ module Data.Collection.Set.Int (
 
 import qualified Data.IntSet as DI
 import qualified Data.Collection as DC
+import qualified Data.Collection.List as DCL
 import qualified Data.Collection.Set as DCS
 
 -- DATA DEFINITION
@@ -71,7 +72,7 @@ instance DC.Collection IntSet where
 	containsElement = containsElement
 	getElementsCount = getElementsCount
 
-instance DC.List IntSet where
+instance DCL.List IntSet where
 	toList = toList
 	fromList = fromList
 
