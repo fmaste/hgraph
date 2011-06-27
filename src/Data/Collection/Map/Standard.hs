@@ -8,8 +8,10 @@
 
 {-# LANGUAGE TypeFamilies, TypeSynonymInstances #-}
 module Data.Collection.Map.Standard (
+	-- Propietary.
 	Map,
 	empty,
+	-- Collection functions.
 	addElement,
 	removeElement,
 	containsElement,
@@ -37,6 +39,7 @@ module Data.Collection.Map.Standard (
 	foldlWithKey,
 	foldrWithKey',
 	foldlWithKey',
+	-- Extras.
 	map ) where
 
 -- IMPORTS
