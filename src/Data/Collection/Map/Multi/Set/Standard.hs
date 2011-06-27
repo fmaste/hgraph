@@ -9,26 +9,7 @@
 {-# LANGUAGE TypeFamilies #-}
 module Data.Collection.Map.Multi.Set.Standard (
 	MapSet(),
-	empty,
-	addKey,
-	removeKey,
-	addValue,
-	removeValue,
-	getKeys,
-	getValues,
-	isEmpty,
-	getKeysSet,
-	getKeyCount,
-	getValuesList,
-	getValueCount,
-	containsKey,
-	containsValue,
-	getValuesAndRemoveKey,
-	removeValueFromKeys,
-	removeValuesAll,
-	mapSet,
-	foldSet,
-	foldSetWithKey) where
+	empty ) where
 
 -- IMPORTS
 -------------------------------------------------------------------------------
