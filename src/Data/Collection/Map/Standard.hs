@@ -29,7 +29,6 @@ module Data.Collection.Map.Standard (
 	getValueMaybe,
 	getValueWithDefault,
 	getValueAndRemoveKey,
-	map,
 	foldr,
 	foldl,
 	foldr',
@@ -37,7 +36,8 @@ module Data.Collection.Map.Standard (
 	foldrWithKey,
 	foldlWithKey,
 	foldrWithKey',
-	foldlWithKey' ) where
+	foldlWithKey',
+	map ) where
 
 -- IMPORTS
 -------------------------------------------------------------------------------
@@ -121,9 +121,6 @@ getValueWithDefault = DM.findWithDefault
 getValueAndRemoveKey :: Ord k => k -> Map k v -> (Maybe v, Map k v)
 getValueAndRemoveKey k m = DM.updateLookupWithKey (\_ _ -> Nothing) k m where
 
-map :: (a -> b) -> Map k a -> Map k b
-map = DM.map
-
 foldr :: (v -> a -> a) -> a -> Map k v -> a
 foldr f a m = DM.foldrWithKey g a m where
 	g k v a = f v a
@@ -153,6 +150,9 @@ foldrWithKey' = DCM.foldrWithKey' -- Use provided default implementation.
 -- TODO: Move the default implementation so I can remove the Ord contexts.
 foldlWithKey' :: (Ord k, Ord v) => (a -> k -> v -> a) -> a -> Map k v -> a
 foldlWithKey' = DCM.foldlWithKey' -- Use provided default implementation.
+
+map :: (a -> b) -> Map k a -> Map k b
+map = DM.map
 
 -- INSTANCES
 -------------------------------------------------------------------------------
