@@ -117,11 +117,11 @@ containsKey = DM.member
 getKeysCount :: Map k v -> Integer
 getKeysCount m = toInteger $ DM.size m
 
-getValue :: Ord k => k -> Map k v -> v
-getValue k m = m DM.! k
+getValue :: Ord k => k -> Map k v -> Maybe v
+getValue = DM.lookup
 
 getValueMaybe :: Ord k => k -> Map k v -> Maybe v
-getValueMaybe = DM.lookup
+getValueMaybe = getValue
 
 getValueWithDefault :: Ord k => v -> k -> Map k v -> v
 getValueWithDefault = DM.findWithDefault

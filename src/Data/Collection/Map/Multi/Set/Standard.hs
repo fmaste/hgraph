@@ -142,17 +142,17 @@ getKeysCount (MapSet m) = toInteger $ Map.size m
 
 -- | A set with the different values that exist for the key.
 -- If key does not exist an empty Set is returned.
-getValue :: (Ord k, Ord v) => k -> MapSet k v -> Set.Set v
-getValue k (MapSet m) = Map.findWithDefault Set.empty k m
+getValue :: (Ord k, Ord v) => k -> MapSet k v -> Maybe (Set.Set v)
+getValue k (MapSet m) = Map.lookup k m
 
 getValueMaybe :: (Ord k, Ord v) => k -> MapSet k v -> Maybe (Set.Set v)
-getValueMaybe k mm = Just $ getValue k mm
+getValueMaybe = getValue
 
 getValueWithDefault :: (Ord k, Ord v) => Set.Set v -> k -> MapSet k v -> Set.Set v
-getValueWithDefault _ k mm = getValue k mm
+getValueWithDefault v k (MapSet mm) = Map.findWithDefault v k mm
 
 getValueAndRemoveKey :: (Ord k, Ord v) => k -> MapSet k v -> (Maybe (Set.Set v), MapSet k v)
-getValueAndRemoveKey k mm = (Just $ getValue k mm, removeKey k mm)
+getValueAndRemoveKey k mm = (getValue k mm, removeKey k mm)
 
 foldrSet :: (Set.Set v -> a -> a) -> a -> MapSet k v -> a
 foldrSet f a (MapSet m) = Map.foldrWithKey g a m where

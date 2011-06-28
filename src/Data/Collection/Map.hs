@@ -50,8 +50,8 @@ class (DC.Collection m, DC.Collection (Keys m)) => Map m where
 	getKeysCount :: m -> Integer
 
 	-- Get the associated value of the provided key.
-	-- If the key does not exists error is called.
-	getValue :: DC.Element (Keys m) -> m -> Value m
+	-- If the key does not exists Nothing is returned.
+	getValue :: DC.Element (Keys m) -> m -> Maybe (Value m)
 
 -------------------------------------------------------------------------------
 
