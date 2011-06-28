@@ -293,6 +293,8 @@ instance (Ord k, Ord v) => DCL.List (MapSet k v) where
 instance (Ord k, Ord v) => DCF.Foldable (MapSet k v) where
 	foldr = foldrElements 
 	foldl = foldlElements
+	-- Default implementations for foldr'
+	-- Default implementations for foldl'
 
 instance (Ord k, Ord v) => DCM.Map (MapSet k v) where
 	type DCM.Keys (MapSet k v) = Set.Set k
@@ -313,7 +315,7 @@ instance (Ord k, Ord v) => DCMF.Foldable (MapSet k v) where
 	foldr = foldrSet
 	foldl = foldlSet
 	-- Default implementations for foldr'
-	-- Default implementations for foldr'
+	-- Default implementations for foldl'
 	foldrWithKey = foldrSetWithKey
 	foldlWithKey = foldlSetWithKey
 	-- Default implementations for foldrWithKey'
