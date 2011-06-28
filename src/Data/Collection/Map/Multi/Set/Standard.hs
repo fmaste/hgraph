@@ -88,7 +88,7 @@ removeElement :: (Ord k, Ord v) => (k, v) -> MapSet k v -> MapSet k v
 removeElement (k, v) = removeFromKey k v
 
 containsElement :: (Ord k, Ord v) => (k, v) -> MapSet k v -> Bool
-containsElement (k, v) m = Set.containsElement v $ getValues k m
+containsElement (k, v) m = Set.containsElement v $ getValue k m
 
 getElementsCount :: (Ord k, Ord v) => MapSet k v -> Integer
 getElementsCount (MapSet mm) = toInteger $ Map.fold (\set ans -> ans + (Set.getElementsCount set)) 0 mm
@@ -140,17 +140,19 @@ containsKey k (MapSet m) = Map.member k m
 getKeysCount :: MapSet k v -> Integer
 getKeysCount (MapSet m) = toInteger $ Map.size m
 
+-- | A set with the different values that exist for the key.
+-- If key does not exist an empty Set is returned.
 getValue :: (Ord k, Ord v) => k -> MapSet k v -> Set.Set v
-getValue k mm = getValues k mm
+getValue k (MapSet m) = Map.findWithDefault Set.empty k m
 
 getValueMaybe :: (Ord k, Ord v) => k -> MapSet k v -> Maybe (Set.Set v)
-getValueMaybe k mm = Just $ getValues k mm
+getValueMaybe k mm = Just $ getValue k mm
 
 getValueWithDefault :: (Ord k, Ord v) => Set.Set v -> k -> MapSet k v -> Set.Set v
-getValueWithDefault _ k mm = getValues k mm
+getValueWithDefault _ k mm = getValue k mm
 
 getValueAndRemoveKey :: (Ord k, Ord v) => k -> MapSet k v -> (Maybe (Set.Set v), MapSet k v)
-getValueAndRemoveKey k mm = (Just $ getValues k mm, removeKey k mm)
+getValueAndRemoveKey k mm = (Just $ getValue k mm, removeKey k mm)
 
 foldrSet :: (Set.Set v -> a -> a) -> a -> MapSet k v -> a
 foldrSet f a (MapSet m) = Map.foldrWithKey g a m where
@@ -202,11 +204,11 @@ removeFromKey k v (MapSet m) = MapSet $ Map.adjust (Set.removeElement v) k m
 
 -- | Value exists for the key?
 containedInKey :: (Ord k, Ord v) => k -> v -> MapSet k v -> Bool
-containedInKey k v mm = Set.containsElement v $ getValues k mm
+containedInKey k v mm = Set.containsElement v $ getValue k mm
 
 -- | The number of different values that exist for the key.
 getValuesCount :: (Ord k, Ord v) => k -> MapSet k v -> Integer
-getValuesCount k mm = Set.getElementsCount $ getValues k mm
+getValuesCount k mm = Set.getElementsCount $ getValue k mm
 
 remove :: Ord v => v -> MapSet k v -> MapSet k v
 remove v (MapSet m) = MapSet (Map.map (DC.removeElement v) m)
@@ -255,11 +257,6 @@ foldlWithKey' = DCMM.foldlWithKey' -- Use provided default implementation.
 -- | A list with all the different keys.
 getKeys :: (Ord k, Ord v) => MapSet k v -> [k]
 getKeys (MapSet m) = Map.keys m
-
--- | A set with the different values that exist for the key.
--- If key does not exist an empty Set is returned.
-getValues :: (Ord k, Ord v) => k -> MapSet k v -> Set.Set v
-getValues k (MapSet m) = Map.findWithDefault Set.empty k m
 
 getValuesAndRemoveKey :: (Ord k, Ord v) => k -> MapSet k v -> (MapSet k v, [v])
 getValuesAndRemoveKey k (MapSet m) = f $ Map.updateLookupWithKey (\_ _ -> Nothing) k m where
