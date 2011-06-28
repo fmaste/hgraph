@@ -333,12 +333,12 @@ instance (Ord k, Ord v) => DCMM.Batch (MapSet k v) where
 instance (Ord k, Ord v) => DCMM.Foldable (MapSet k v) where
 	foldr = foldr
 	foldl = foldl
-	-- Default implementations for foldr'. TODO: Use DCM.Foldable to implement!
-	-- Default implementations for foldl'. TODO: Use DCM.Foldable to implement!
+	-- Default implementations for foldr'
+	-- Default implementations for foldl'
 	foldrWithKey = foldrWithKey
 	foldlWithKey = foldlWithKey
-	-- Default implementations for foldrWithKey'. TODO: Use DCM.Foldable to implement!
-	-- Default implementations for foldlWithKey'. TODO: Use DCM.Foldable to implement!
+	-- Default implementations for foldrWithKey'
+	-- Default implementations for foldlWithKey'
 
 instance (Ord k, Ord v) => DCMMS.MapSet (MapSet k v)
 
