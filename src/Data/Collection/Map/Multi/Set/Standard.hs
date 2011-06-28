@@ -74,7 +74,7 @@ import qualified Data.Collection.Set.Standard as Set
 newtype MapSet k v = MapSet (Map.Map k (Set.Set v))
 	deriving (Show, Read, Ord, Eq)
 
--- * ATOMIC CONSTRUCTION FUNCTIONS
+-- EXPORTED
 -------------------------------------------------------------------------------
 
 -- | The empty MapSet.
