@@ -281,10 +281,6 @@ getValues k (MapSet m) = Map.findWithDefault Set.empty k m
 getKeyCount :: (Ord k, Ord v) => MapSet k v -> Int
 getKeyCount (MapSet m) = Map.size m
 
--- | All the different values that exist for the key.
-getValuesList :: (Ord k, Ord v) => k -> MapSet k v -> [v]
-getValuesList k mm = DCL.toList $ getValues k mm
-
 getValuesAndRemoveKey :: (Ord k, Ord v) => k -> MapSet k v -> (MapSet k v, [v])
 getValuesAndRemoveKey k (MapSet m) = f $ Map.updateLookupWithKey (\_ _ -> Nothing) k m where
 	f (Nothing, m) = (MapSet m, [])
