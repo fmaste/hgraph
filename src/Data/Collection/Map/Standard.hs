@@ -28,7 +28,6 @@ module Data.Collection.Map.Standard (
 	containsKey,
 	getKeysCount,
 	getValue,
-	getValueMaybe,
 	getValueWithDefault,
 	getValueAndRemoveKey,
 	foldr,
@@ -73,7 +72,7 @@ removeElement (k, v) m = DM.update f k m where
 	f x = if x == v then Just x else Nothing
 
 containsElement :: (Ord k, Ord v) => (k, v) -> Map k v -> Bool
-containsElement (k, v) m = if getValueMaybe k m == Just v then True else False
+containsElement (k, v) m = if getValue k m == Just v then True else False
 
 getElementsCount :: Map k v -> Integer
 getElementsCount = toInteger . DM.size
@@ -119,9 +118,6 @@ getKeysCount m = toInteger $ DM.size m
 
 getValue :: Ord k => k -> Map k v -> Maybe v
 getValue = DM.lookup
-
-getValueMaybe :: Ord k => k -> Map k v -> Maybe v
-getValueMaybe = getValue
 
 getValueWithDefault :: Ord k => v -> k -> Map k v -> v
 getValueWithDefault = DM.findWithDefault
@@ -196,7 +192,6 @@ instance (Ord k, Ord v) => DCM.Map (Map k v) where
 	getValue = getValue
 
 instance (Ord k, Ord v) => DCM.Combination (Map k v) where
-	getValueMaybe = getValueMaybe
 	getValueWithDefault = getValueWithDefault
 	getValueAndRemoveKey = getValueAndRemoveKey
 

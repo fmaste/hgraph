@@ -58,9 +58,6 @@ class (DC.Collection m, DC.Collection (Keys m)) => Map m where
 -- Performant way of making a combination of the above Map atomic functions.
 class Map m => Combination m where
 
-	-- Get, maybe, the associated value of the provided key.
-	getValueMaybe :: DC.Element (Keys m) -> m -> Maybe (Value m)
-
 	-- If there is no value fot this key, the provided default is returned.
 	getValueWithDefault :: Value m -> DC.Element (Keys m) -> m -> Value m
 

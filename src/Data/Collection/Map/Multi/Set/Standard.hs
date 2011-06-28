@@ -26,7 +26,6 @@ module Data.Collection.Map.Multi.Set.Standard (
 	containsKey,
 	getKeysCount,
 	getValue,
-	getValueMaybe,
 	getValueWithDefault,
 	getValueAndRemoveKey,
 	foldrSet,
@@ -144,9 +143,6 @@ getKeysCount (MapSet m) = toInteger $ Map.size m
 -- If key does not exist an empty Set is returned.
 getValue :: (Ord k, Ord v) => k -> MapSet k v -> Maybe (Set.Set v)
 getValue k (MapSet m) = Map.lookup k m
-
-getValueMaybe :: (Ord k, Ord v) => k -> MapSet k v -> Maybe (Set.Set v)
-getValueMaybe = getValue
 
 getValueWithDefault :: (Ord k, Ord v) => Set.Set v -> k -> MapSet k v -> Set.Set v
 getValueWithDefault v k (MapSet mm) = Map.findWithDefault v k mm
@@ -301,7 +297,6 @@ instance (Ord k, Ord v) => DCM.Map (MapSet k v) where
 	getValue = getValue
 
 instance (Ord k, Ord v) => DCM.Combination (MapSet k v) where
-	getValueMaybe = getValueMaybe
 	getValueWithDefault = getValueWithDefault
 	getValueAndRemoveKey = getValueAndRemoveKey
 
