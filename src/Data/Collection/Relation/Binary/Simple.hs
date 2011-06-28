@@ -124,7 +124,7 @@ getCodomain :: (Ord domain, Ord codomain) => BinaryRelation domain codomain -> S
 getCodomain (BinaryRelation _ codomain) = codomain
 
 getRelatedTo :: (Ord domain, Ord codomain) => domain -> BinaryRelation domain codomain -> Set.Set codomain
-getRelatedTo element (BinaryRelation relatedTo _) = DCMMS.getValue element relatedTo
+getRelatedTo element (BinaryRelation relatedTo _) = DCMMS.getValueWithDefault Set.empty element relatedTo
 
 getRelatedFrom :: (Ord domain, Ord codomain) => codomain -> BinaryRelation domain codomain -> Set.Set domain
 getRelatedFrom element (BinaryRelation relatedTo _) = DCMF.foldrWithKey f Set.empty relatedTo where
@@ -159,7 +159,7 @@ containsCodomainElement :: (Ord domain, Ord codomain) => codomain -> BinaryRelat
 containsCodomainElement element (BinaryRelation _ codomain) = Set.containsElement element codomain
 
 getRelatedToList :: (Ord domain, Ord codomain) => domain -> BinaryRelation domain codomain -> [codomain]
-getRelatedToList element (BinaryRelation relatedTo _) = DCL.toList $ DCMMS.getValue element relatedTo
+getRelatedToList element (BinaryRelation relatedTo _) = DCL.toList $ DCMMS.getValueWithDefault Set.empty element relatedTo
 
 getRelatedFromList :: (Ord domain, Ord codomain) => codomain -> BinaryRelation domain codomain -> [domain]
 getRelatedFromList element br = DCL.toList $ getRelatedFrom element br
