@@ -178,10 +178,10 @@ containsCodomainElement :: (Ord domain, Ord codomain) => codomain -> BinaryRelat
 containsCodomainElement element (BinaryRelation _ relatedFrom) = DCMMS.containsKey element relatedFrom
 
 getRelatedToList :: (Ord domain, Ord codomain) => domain -> BinaryRelation domain codomain -> [codomain]
-getRelatedToList element (BinaryRelation relatedTo _) = DCL.toList $ DCMMS.getValue element relatedTo
+getRelatedToList element br = DCL.toList $ getRelatedTo element br
 
 getRelatedFromList :: (Ord domain, Ord codomain) => codomain -> BinaryRelation domain codomain -> [domain]
-getRelatedFromList element (BinaryRelation _ relatedFrom) = DCL.toList $ DCMMS.getValue element relatedFrom
+getRelatedFromList element br = DCL.toList $ getRelatedFrom element br
 
 getRelatedToCount :: (Ord domain, Ord codomain) => domain -> BinaryRelation domain codomain -> Int
 getRelatedToCount element (BinaryRelation relatedTo _) = fromInteger $ DCMMS.getValuesCount element relatedTo
