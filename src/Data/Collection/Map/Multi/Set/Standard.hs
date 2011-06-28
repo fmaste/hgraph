@@ -85,7 +85,7 @@ addElement :: (Ord k, Ord v) => (k, v) -> MapSet k v -> MapSet k v
 addElement (k, v) = addToKey k v
 
 removeElement :: (Ord k, Ord v) => (k, v) -> MapSet k v -> MapSet k v
-removeElement (k, v) = removeValue k v
+removeElement (k, v) = removeFromKey k v
 
 containsElement :: (Ord k, Ord v) => (k, v) -> MapSet k v -> Bool
 containsElement (k, v) m = Set.containsElement v $ getValues k m
@@ -194,8 +194,11 @@ addToKey :: (Ord k, Ord v) => k -> v -> MapSet k v -> MapSet k v
 addToKey k v (MapSet m) = MapSet $ Map.insertWith (\new old -> Set.addElement v old) k (singleton v) m
 	where singleton v = Set.addElement v $ Set.empty
 
+-- | Removes the value from the key.
+-- If key does not exist the original MapSet is returned.
+-- If the value does not exists the original MapSet is returned.
 removeFromKey :: (Ord k, Ord v) => k -> v ->  MapSet k v ->  MapSet k v
-removeFromKey = removeValue
+removeFromKey k v (MapSet m) = MapSet $ Map.adjust (Set.removeElement v) k m
 
 -- | Value exists for the key?
 containedInKey :: (Ord k, Ord v) => k -> v -> MapSet k v -> Bool
@@ -252,12 +255,6 @@ foldlWithKey' = DCMM.foldlWithKey' -- Use provided default implementation.
 
 
 
-
--- | Removes the value from the key.
--- If key does not exist the original MapSet is returned.
--- If the value does not exists the original MapSet is returned.
-removeValue :: (Ord k, Ord v) => k -> v ->  MapSet k v ->  MapSet k v
-removeValue k v (MapSet m) = MapSet $ Map.adjust (Set.removeElement v) k m
 
 -- | A list with all the different keys.
 -- getKeys :: (Ord k, Ord v) => MapSet k v -> [k]
