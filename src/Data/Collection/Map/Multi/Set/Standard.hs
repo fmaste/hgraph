@@ -262,9 +262,6 @@ addValue k v (MapSet m) = MapSet $ Map.insertWith (\new old -> Set.addElement v 
 removeValue :: (Ord k, Ord v) => k -> v ->  MapSet k v ->  MapSet k v
 removeValue k v (MapSet m) = MapSet $ Map.adjust (Set.removeElement v) k m
 
--- * ATOMIC QUERY FUNCTIONS
--------------------------------------------------------------------------------
-
 -- | A list with all the different keys.
 -- getKeys :: (Ord k, Ord v) => MapSet k v -> [k]
 -- getKeys (MapSet m) = Map.keys m
@@ -273,9 +270,6 @@ removeValue k v (MapSet m) = MapSet $ Map.adjust (Set.removeElement v) k m
 -- If key does not exist an empty Set is returned.
 getValues :: (Ord k, Ord v) => k -> MapSet k v -> Set.Set v
 getValues k (MapSet m) = Map.findWithDefault Set.empty k m
-
--- * UTILS FUNCTIONS
--------------------------------------------------------------------------------
 
 getValuesAndRemoveKey :: (Ord k, Ord v) => k -> MapSet k v -> (MapSet k v, [v])
 getValuesAndRemoveKey k (MapSet m) = f $ Map.updateLookupWithKey (\_ _ -> Nothing) k m where
@@ -293,11 +287,6 @@ foldSet f ans (MapSet mm) = Map.fold f ans mm
 
 foldSetWithKey :: (Ord k, Ord v) => (k -> Set.Set v -> ans -> ans) -> ans -> MapSet k v -> ans
 foldSetWithKey f ans (MapSet mm) = Map.foldWithKey f ans mm
-
--- * QUERY FUNCTIONS
--------------------------------------------------------------------------------
-
--- TODO
 
 -- INSTANCES
 -------------------------------------------------------------------------------
