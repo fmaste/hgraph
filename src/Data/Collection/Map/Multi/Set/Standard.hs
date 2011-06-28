@@ -36,7 +36,12 @@ module Data.Collection.Map.Multi.Set.Standard (
 	foldrSetWithKey,
 	foldlSetWithKey,
 	foldrSetWithKey',
-	foldlSetWithKey' ) where
+	foldlSetWithKey',
+	addKey,
+	addToKey,
+	removeFromKey,
+	containedInKey,
+	getValuesCount ) where
 
 -- IMPORTS
 -------------------------------------------------------------------------------
@@ -166,12 +171,29 @@ foldrSetWithKey' = DCMF.foldrWithKey' -- Use provided default implementation.
 foldlSetWithKey' :: (Ord k, Ord v) => (a -> k -> Set.Set v -> a) -> a -> MapSet k v -> a
 foldlSetWithKey' = DCMF.foldlWithKey' -- Use provided default implementation.
 
-
-
 -- | Adds a key without any values.
 -- If the key already exists the original MapSet is returned.
 addKey :: (Ord k, Ord v) => k -> MapSet k v -> MapSet k v
 addKey k (MapSet m) = MapSet $ Map.union m (Map.singleton k Set.empty)
+
+addToKey :: (Ord k, Ord v) => k -> v -> MapSet k v -> MapSet k v
+addToKey = addValue
+
+removeFromKey :: (Ord k, Ord v) => k -> v ->  MapSet k v ->  MapSet k v
+removeFromKey = removeValue
+
+-- | Value exists for the key?
+containedInKey :: (Ord k, Ord v) => k -> v -> MapSet k v -> Bool
+containedInKey k v mm = Set.containsElement v $ getValues k mm
+
+-- | The number of different values that exist for the key.
+getValuesCount :: (Ord k, Ord v) => k -> MapSet k v -> Integer
+getValuesCount k mm = Set.getElementsCount $ getValues k mm
+
+
+
+
+
 
 -- | Adds a value to key.
 -- If key does not exist it is added.
@@ -211,14 +233,6 @@ getKeyCount (MapSet m) = Map.size m
 -- | All the different values that exist for the key.
 getValuesList :: (Ord k, Ord v) => k -> MapSet k v -> [v]
 getValuesList k mm = DCL.toList $ getValues k mm
-
--- | The number of different values that exist for the key.
-getValueCount :: (Ord k, Ord v) => k -> MapSet k v -> Int
-getValueCount k mm = fromInteger $ Set.getElementsCount $ getValues k mm
-
--- | Value exists for the key?
-containsValue :: (Ord k, Ord v) => k -> v -> MapSet k v -> Bool
-containsValue k v mm = Set.containsElement v $ getValues k mm
 
 getValuesAndRemoveKey :: (Ord k, Ord v) => k -> MapSet k v -> (MapSet k v, [v])
 getValuesAndRemoveKey k (MapSet m) = f $ Map.updateLookupWithKey (\_ _ -> Nothing) k m where
@@ -296,10 +310,10 @@ instance (Ord k, Ord v) => DCMF.Foldable (MapSet k v) where
 
 instance (Ord k, Ord v) => DCMM.MultiMap (MapSet k v) where
 	addKey = addKey
-	addToKey = addValue
-	removeFromKey = removeValue
-	containedInKey = containsValue
-	getValuesCount k mm = toInteger $ getValueCount k mm
+	addToKey = addToKey
+	removeFromKey = removeFromKey
+	containedInKey = containedInKey
+	getValuesCount = getValuesCount
 
 instance (Ord k, Ord v) => DCMM.Batch (MapSet k v) where
 	remove v (MapSet m) = MapSet (Map.map (DC.removeElement v) m)
