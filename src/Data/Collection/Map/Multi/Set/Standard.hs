@@ -288,9 +288,6 @@ getValuesAndRemoveKey k (MapSet m) = f $ Map.updateLookupWithKey (\_ _ -> Nothin
 removeValuesAll :: (Ord k, Ord v) => k -> MapSet k v ->  MapSet k v
 removeValuesAll k (MapSet m) = MapSet $ Map.adjust (const Set.empty) k m
 
-mapSet :: (Set.Set v -> Set.Set v') -> MapSet k v -> MapSet k v'
-mapSet f (MapSet mm) = MapSet (Map.map f mm)
-
 foldSet :: (Ord k, Ord v) => (Set.Set v -> ans -> ans) -> ans -> MapSet k v -> ans
 foldSet f ans (MapSet mm) = Map.fold f ans mm
 
