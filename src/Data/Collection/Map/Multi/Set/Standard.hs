@@ -25,7 +25,10 @@ module Data.Collection.Map.Multi.Set.Standard (
 	getKeys,
 	containsKey,
 	getKeysCount,
-	getValue ) where
+	getValue,
+	getValueMaybe,
+	getValueWithDefault,
+	getValueAndRemoveKey ) where
 
 -- IMPORTS
 -------------------------------------------------------------------------------
@@ -115,6 +118,16 @@ getKeysCount (MapSet m) = toInteger $ Map.size m
 
 getValue :: (Ord k, Ord v) => k -> MapSet k v -> Set.Set v
 getValue k mm = getValues k mm
+
+getValueMaybe :: (Ord k, Ord v) => k -> MapSet k v -> Maybe (Set.Set v)
+getValueMaybe k mm = Just $ getValues k mm
+
+getValueWithDefault :: (Ord k, Ord v) => Set.Set v -> k -> MapSet k v -> Set.Set v
+getValueWithDefault _ k mm = getValues k mm
+
+getValueAndRemoveKey :: (Ord k, Ord v) => k -> MapSet k v -> (Maybe (Set.Set v), MapSet k v)
+getValueAndRemoveKey k mm = (Just $ getValues k mm, removeKey k mm)
+
 
 
 
@@ -230,9 +243,9 @@ instance (Ord k, Ord v) => DCM.Map (MapSet k v) where
 	getValue = getValue
 
 instance (Ord k, Ord v) => DCM.Combination (MapSet k v) where
-	getValueMaybe k mm = Just $ getValues k mm
-	getValueWithDefault _ k mm = getValues k mm
-	getValueAndRemoveKey k mm = (Just $ getValues k mm, removeKey k mm)
+	getValueMaybe = getValueMaybe
+	getValueWithDefault = getValueWithDefault
+	getValueAndRemoveKey = getValueAndRemoveKey
 
 instance (Ord k, Ord v) => DCMF.Foldable (MapSet k v) where
 	foldr f a (MapSet m) = Map.foldrWithKey g a m where
