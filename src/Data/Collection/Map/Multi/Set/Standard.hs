@@ -41,7 +41,9 @@ module Data.Collection.Map.Multi.Set.Standard (
 	addToKey,
 	removeFromKey,
 	containedInKey,
-	getValuesCount ) where
+	getValuesCount,
+	remove,
+	removeFromKeys ) where
 
 -- IMPORTS
 -------------------------------------------------------------------------------
@@ -190,7 +192,14 @@ containedInKey k v mm = Set.containsElement v $ getValues k mm
 getValuesCount :: (Ord k, Ord v) => k -> MapSet k v -> Integer
 getValuesCount k mm = Set.getElementsCount $ getValues k mm
 
+remove :: Ord v => v -> MapSet k v -> MapSet k v
+remove v (MapSet m) = MapSet (Map.map (DC.removeElement v) m)
 
+removeFromKeys :: (Ord k, Ord v) => [k] -> v -> MapSet k v -> MapSet k v
+removeFromKeys ks v (MapSet m) = MapSet (Map.unionWith f m m') where
+	f set _ = Set.removeElement v set
+	m' = Map.fromList $ map g ks where
+		g k = (k, Set.empty)
 
 
 
@@ -238,12 +247,6 @@ getValuesAndRemoveKey :: (Ord k, Ord v) => k -> MapSet k v -> (MapSet k v, [v])
 getValuesAndRemoveKey k (MapSet m) = f $ Map.updateLookupWithKey (\_ _ -> Nothing) k m where
 	f (Nothing, m) = (MapSet m, [])
 	f (Just v, m) = (MapSet m, DCL.toList v)
-
-removeValueFromKeys :: (Ord k, Ord v) => [k] -> v -> MapSet k v -> MapSet k v
-removeValueFromKeys ks v (MapSet m) = MapSet (Map.unionWith f m m') where
-	f set _ = Set.removeElement v set
-	m' = Map.fromList $ map g ks where
-		g k = (k, Set.empty)
 
 -- | Removes all the values from the key, the key is retained with no values.
 -- If key does not exist the original MapSet is returned.
@@ -316,8 +319,8 @@ instance (Ord k, Ord v) => DCMM.MultiMap (MapSet k v) where
 	getValuesCount = getValuesCount
 
 instance (Ord k, Ord v) => DCMM.Batch (MapSet k v) where
-	remove v (MapSet m) = MapSet (Map.map (DC.removeElement v) m)
-	removeFromKeys = removeValueFromKeys
+	remove = remove
+	removeFromKeys = removeFromKeys
 
 instance (Ord k, Ord v) => DCMM.Foldable (MapSet k v) where
 	foldr f a (MapSet m) = Map.foldrWithKey g a m where
