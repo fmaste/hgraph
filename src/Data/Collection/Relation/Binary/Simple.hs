@@ -159,7 +159,7 @@ containsCodomainElement :: (Ord domain, Ord codomain) => codomain -> BinaryRelat
 containsCodomainElement element (BinaryRelation _ codomain) = Set.containsElement element codomain
 
 getRelatedToList :: (Ord domain, Ord codomain) => domain -> BinaryRelation domain codomain -> [codomain]
-getRelatedToList element (BinaryRelation relatedTo _) = DCL.toList $ DCMMS.getValueWithDefault Set.empty element relatedTo
+getRelatedToList element br = DCL.toList $ getRelatedTo element br
 
 getRelatedFromList :: (Ord domain, Ord codomain) => codomain -> BinaryRelation domain codomain -> [domain]
 getRelatedFromList element br = DCL.toList $ getRelatedFrom element br
