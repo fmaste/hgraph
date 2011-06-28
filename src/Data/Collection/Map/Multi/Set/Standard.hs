@@ -277,9 +277,6 @@ getValues k (MapSet m) = Map.findWithDefault Set.empty k m
 -- * UTILS FUNCTIONS
 -------------------------------------------------------------------------------
 
-isEmpty :: (Ord k, Ord v) => MapSet k v -> Bool
-isEmpty (MapSet m) = Map.null m
-
 -- | The number of different keys present.
 getKeyCount :: (Ord k, Ord v) => MapSet k v -> Int
 getKeyCount (MapSet m) = Map.size m
