@@ -251,14 +251,10 @@ foldrWithKey' = DCMM.foldrWithKey' -- Use provided default implementation.
 foldlWithKey' :: (Ord k, Ord v) => (a -> k -> v -> a) -> a -> MapSet k v -> a
 foldlWithKey' = DCMM.foldlWithKey' -- Use provided default implementation.
 
-
-
-
-
-
+{--
 -- | A list with all the different keys.
--- getKeys :: (Ord k, Ord v) => MapSet k v -> [k]
--- getKeys (MapSet m) = Map.keys m
+getKeys :: (Ord k, Ord v) => MapSet k v -> [k]
+getKeys (MapSet m) = Map.keys m
 
 -- | A set with the different values that exist for the key.
 -- If key does not exist an empty Set is returned.
@@ -275,6 +271,7 @@ getValuesAndRemoveKey k (MapSet m) = f $ Map.updateLookupWithKey (\_ _ -> Nothin
 -- If there are no values the original MapSet is returned.
 removeValuesAll :: (Ord k, Ord v) => k -> MapSet k v ->  MapSet k v
 removeValuesAll k (MapSet m) = MapSet $ Map.adjust (const Set.empty) k m
+--}
 
 -- INSTANCES
 -------------------------------------------------------------------------------
