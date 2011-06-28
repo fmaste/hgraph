@@ -277,10 +277,6 @@ getValues k (MapSet m) = Map.findWithDefault Set.empty k m
 -- * UTILS FUNCTIONS
 -------------------------------------------------------------------------------
 
--- | The number of different keys present.
-getKeyCount :: (Ord k, Ord v) => MapSet k v -> Int
-getKeyCount (MapSet m) = Map.size m
-
 getValuesAndRemoveKey :: (Ord k, Ord v) => k -> MapSet k v -> (MapSet k v, [v])
 getValuesAndRemoveKey k (MapSet m) = f $ Map.updateLookupWithKey (\_ _ -> Nothing) k m where
 	f (Nothing, m) = (MapSet m, [])
