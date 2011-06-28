@@ -82,7 +82,7 @@ empty :: (Ord k, Ord v) => MapSet k v
 empty = MapSet $ Map.empty
 
 addElement :: (Ord k, Ord v) => (k, v) -> MapSet k v -> MapSet k v
-addElement (k, v) = addValue k v
+addElement (k, v) = addToKey k v
 
 removeElement :: (Ord k, Ord v) => (k, v) -> MapSet k v -> MapSet k v
 removeElement (k, v) = removeValue k v
@@ -97,7 +97,7 @@ toList :: (Ord k, Ord v) => MapSet k v -> [(k, v)]
 toList m = foldSetWithKey (\k set ans -> ans ++ [(k, v) | v <- (DCL.toList set)]) [] m
 
 fromList :: (Ord k, Ord v) => [(k, v)] -> MapSet k v
-fromList list = DL.foldl' (\ans (k, v) -> addValue k v ans) empty list
+fromList list = DL.foldl' (\ans (k, v) -> addToKey k v ans) empty list
 
 -- Collection version of fold
 
@@ -187,8 +187,12 @@ foldlSetWithKey' = DCMF.foldlWithKey' -- Use provided default implementation.
 addKey :: (Ord k, Ord v) => k -> MapSet k v -> MapSet k v
 addKey k (MapSet m) = MapSet $ Map.union m (Map.singleton k Set.empty)
 
+-- | Adds a value to key.
+-- If key does not exist it is added.
+-- If the value already exists the orignal MapSet is returned.
 addToKey :: (Ord k, Ord v) => k -> v -> MapSet k v -> MapSet k v
-addToKey = addValue
+addToKey k v (MapSet m) = MapSet $ Map.insertWith (\new old -> Set.addElement v old) k (singleton v) m
+	where singleton v = Set.addElement v $ Set.empty
 
 removeFromKey :: (Ord k, Ord v) => k -> v ->  MapSet k v ->  MapSet k v
 removeFromKey = removeValue
@@ -248,13 +252,6 @@ foldlWithKey' = DCMM.foldlWithKey' -- Use provided default implementation.
 
 
 
-
--- | Adds a value to key.
--- If key does not exist it is added.
--- If the value already exists the orignal MapSet is returned.
-addValue :: (Ord k, Ord v) => k -> v -> MapSet k v -> MapSet k v
-addValue k v (MapSet m) = MapSet $ Map.insertWith (\new old -> Set.addElement v old) k (singleton v) m
-	where singleton v = Set.addElement v $ Set.empty
 
 -- | Removes the value from the key.
 -- If key does not exist the original MapSet is returned.
