@@ -28,7 +28,15 @@ module Data.Collection.Map.Multi.Set.Standard (
 	getValue,
 	getValueMaybe,
 	getValueWithDefault,
-	getValueAndRemoveKey ) where
+	getValueAndRemoveKey,
+	foldrSet,
+	foldlSet,
+	foldrSet',
+	foldlSet',
+	foldrSetWithKey,
+	foldlSetWithKey,
+	foldrSetWithKey',
+	foldlSetWithKey' ) where
 
 -- IMPORTS
 -------------------------------------------------------------------------------
@@ -128,6 +136,35 @@ getValueWithDefault _ k mm = getValues k mm
 getValueAndRemoveKey :: (Ord k, Ord v) => k -> MapSet k v -> (Maybe (Set.Set v), MapSet k v)
 getValueAndRemoveKey k mm = (Just $ getValues k mm, removeKey k mm)
 
+foldrSet :: (Set.Set v -> a -> a) -> a -> MapSet k v -> a
+foldrSet f a (MapSet m) = Map.foldrWithKey g a m where
+	g k v a = f v a
+
+foldlSet :: (a -> Set.Set v -> a) -> a -> MapSet k v -> a
+foldlSet f a (MapSet m) = Map.foldlWithKey g a m where
+	g a k v = f a v
+
+-- TODO: Move the default implementation so I can remove the Ord contexts.
+foldrSet' :: (Ord k, Ord v) => (Set.Set v -> a -> a) -> a -> MapSet k v -> a
+foldrSet' = DCMF.foldr' -- Use provided default implementation.
+
+-- TODO: Move the default implementation so I can remove the Ord contexts.
+foldlSet' :: (Ord k, Ord v) => (a -> Set.Set v -> a) -> a -> MapSet k v -> a
+foldlSet' = DCMF.foldl' -- Use provided default implementation.
+
+foldrSetWithKey :: (k -> Set.Set v -> a -> a) -> a -> MapSet k v -> a
+foldrSetWithKey f a (MapSet m) = Map.foldrWithKey f a m
+
+foldlSetWithKey :: (a -> k -> Set.Set v -> a) -> a -> MapSet k v -> a
+foldlSetWithKey f a (MapSet m) = Map.foldlWithKey f a m
+
+-- TODO: Move the default implementation so I can remove the Ord contexts.
+foldrSetWithKey' :: (Ord k, Ord v) => (k -> Set.Set v -> a -> a) -> a -> MapSet k v -> a
+foldrSetWithKey' = DCMF.foldrWithKey' -- Use provided default implementation.
+
+-- TODO: Move the default implementation so I can remove the Ord contexts.
+foldlSetWithKey' :: (Ord k, Ord v) => (a -> k -> Set.Set v -> a) -> a -> MapSet k v -> a
+foldlSetWithKey' = DCMF.foldlWithKey' -- Use provided default implementation.
 
 
 
@@ -248,14 +285,12 @@ instance (Ord k, Ord v) => DCM.Combination (MapSet k v) where
 	getValueAndRemoveKey = getValueAndRemoveKey
 
 instance (Ord k, Ord v) => DCMF.Foldable (MapSet k v) where
-	foldr f a (MapSet m) = Map.foldrWithKey g a m where
-		g k v a = f v a
-	foldl f a (MapSet m) = Map.foldlWithKey g a m where
-		g a k v = f a v
+	foldr = foldrSet
+	foldl = foldlSet
 	-- Default implementations for foldr'
 	-- Default implementations for foldr'
-	foldrWithKey f a (MapSet m) = Map.foldrWithKey f a m
-	foldlWithKey f a (MapSet m) = Map.foldlWithKey f a m
+	foldrWithKey = foldrSetWithKey
+	foldlWithKey = foldlSetWithKey
 	-- Default implementations for foldrWithKey'
 	-- Default implementations for foldlWithKey'
 
