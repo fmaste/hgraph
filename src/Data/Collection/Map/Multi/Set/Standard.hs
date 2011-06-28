@@ -94,7 +94,7 @@ getElementsCount :: (Ord k, Ord v) => MapSet k v -> Integer
 getElementsCount m = toInteger $ foldSet (\set ans -> ans + (Set.getElementsCount set)) 0 m
 
 toList :: (Ord k, Ord v) => MapSet k v -> [(k, v)]
-toList m = foldSetWithKey (\k set ans -> ans ++ [(k, v) | v <- (DCL.toList set)]) [] m
+toList (MapSet mm) = Map.foldWithKey (\k set ans -> ans ++ [(k, v) | v <- (DCL.toList set)]) [] mm
 
 fromList :: (Ord k, Ord v) => [(k, v)] -> MapSet k v
 fromList list = DL.foldl' (\ans (k, v) -> addToKey k v ans) empty list
@@ -278,9 +278,6 @@ removeValuesAll k (MapSet m) = MapSet $ Map.adjust (const Set.empty) k m
 
 foldSet :: (Ord k, Ord v) => (Set.Set v -> ans -> ans) -> ans -> MapSet k v -> ans
 foldSet f ans (MapSet mm) = Map.fold f ans mm
-
-foldSetWithKey :: (Ord k, Ord v) => (k -> Set.Set v -> ans -> ans) -> ans -> MapSet k v -> ans
-foldSetWithKey f ans (MapSet mm) = Map.foldWithKey f ans mm
 
 -- INSTANCES
 -------------------------------------------------------------------------------
