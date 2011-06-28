@@ -91,7 +91,7 @@ containsElement :: (Ord k, Ord v) => (k, v) -> MapSet k v -> Bool
 containsElement (k, v) m = Set.containsElement v $ getValues k m
 
 getElementsCount :: (Ord k, Ord v) => MapSet k v -> Integer
-getElementsCount m = toInteger $ foldSet (\set ans -> ans + (Set.getElementsCount set)) 0 m
+getElementsCount (MapSet mm) = toInteger $ Map.fold (\set ans -> ans + (Set.getElementsCount set)) 0 mm
 
 toList :: (Ord k, Ord v) => MapSet k v -> [(k, v)]
 toList (MapSet mm) = Map.foldWithKey (\k set ans -> ans ++ [(k, v) | v <- (DCL.toList set)]) [] mm
@@ -275,9 +275,6 @@ getValuesAndRemoveKey k (MapSet m) = f $ Map.updateLookupWithKey (\_ _ -> Nothin
 -- If there are no values the original MapSet is returned.
 removeValuesAll :: (Ord k, Ord v) => k -> MapSet k v ->  MapSet k v
 removeValuesAll k (MapSet m) = MapSet $ Map.adjust (const Set.empty) k m
-
-foldSet :: (Ord k, Ord v) => (Set.Set v -> ans -> ans) -> ans -> MapSet k v -> ans
-foldSet f ans (MapSet mm) = Map.fold f ans mm
 
 -- INSTANCES
 -------------------------------------------------------------------------------
