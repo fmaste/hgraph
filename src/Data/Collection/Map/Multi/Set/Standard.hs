@@ -88,7 +88,7 @@ removeElement :: (Ord k, Ord v) => (k, v) -> MapSet k v -> MapSet k v
 removeElement (k, v) = removeFromKey k v
 
 containsElement :: (Ord k, Ord v) => (k, v) -> MapSet k v -> Bool
-containsElement (k, v) m = Set.containsElement v $ getValue k m
+containsElement (k, v) m = Set.containsElement v $ getValueWithDefault Set.empty k m
 
 getElementsCount :: (Ord k, Ord v) => MapSet k v -> Integer
 getElementsCount (MapSet mm) = toInteger $ Map.fold (\set ans -> ans + (Set.getElementsCount set)) 0 mm
@@ -204,11 +204,11 @@ removeFromKey k v (MapSet m) = MapSet $ Map.adjust (Set.removeElement v) k m
 
 -- | Value exists for the key?
 containedInKey :: (Ord k, Ord v) => k -> v -> MapSet k v -> Bool
-containedInKey k v mm = Set.containsElement v $ getValue k mm
+containedInKey k v mm = Set.containsElement v $ getValueWithDefault Set.empty k mm
 
 -- | The number of different values that exist for the key.
 getValuesCount :: (Ord k, Ord v) => k -> MapSet k v -> Integer
-getValuesCount k mm = Set.getElementsCount $ getValue k mm
+getValuesCount k mm = Set.getElementsCount $ getValueWithDefault Set.empty k mm
 
 remove :: Ord v => v -> MapSet k v -> MapSet k v
 remove v (MapSet m) = MapSet (Map.map (DC.removeElement v) m)
