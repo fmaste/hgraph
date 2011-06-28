@@ -139,10 +139,10 @@ getCodomain :: (Ord domain, Ord codomain) => BinaryRelation domain codomain -> S
 getCodomain (BinaryRelation _ relatedFrom) = DCMMS.getKeys relatedFrom
 
 getRelatedTo :: (Ord domain, Ord codomain) => domain -> BinaryRelation domain codomain -> Set.Set codomain
-getRelatedTo element (BinaryRelation relatedTo _) = DCMMS.getValue element relatedTo
+getRelatedTo element (BinaryRelation relatedTo _) = DCMMS.getValueWithDefault Set.empty element relatedTo
 
 getRelatedFrom :: (Ord domain, Ord codomain) => codomain -> BinaryRelation domain codomain -> Set.Set domain
-getRelatedFrom element (BinaryRelation _ relatedFrom) = DCMMS.getValue element relatedFrom
+getRelatedFrom element (BinaryRelation _ relatedFrom) = DCMMS.getValueWithDefault Set.empty element relatedFrom
 
 -- INSTANCE
 -------------------------------------------------------------------------------
