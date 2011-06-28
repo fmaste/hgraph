@@ -43,12 +43,21 @@ module Data.Collection.Map.Multi.Set.Standard (
 	containedInKey,
 	getValuesCount,
 	remove,
-	removeFromKeys ) where
+	removeFromKeys,
+	foldr,
+	foldl,
+	foldr',
+	foldl',
+	foldrWithKey,
+	foldlWithKey,
+	foldrWithKey',
+	foldlWithKey' ) where
 
 -- IMPORTS
 -------------------------------------------------------------------------------
 
-import Data.List (foldl, foldl', foldr)
+import Prelude hiding (foldr, foldl)
+import qualified Data.List as DL
 import qualified Data.Map as Map -- TODO: Use Data.Collection.Map.Standard instead.
 import qualified Data.Collection as DC
 import qualified Data.Collection.List as DCL
@@ -88,7 +97,7 @@ toList :: (Ord k, Ord v) => MapSet k v -> [(k, v)]
 toList m = foldSetWithKey (\k set ans -> ans ++ [(k, v) | v <- (DCL.toList set)]) [] m
 
 fromList :: (Ord k, Ord v) => [(k, v)] -> MapSet k v
-fromList list = foldl' (\ans (k, v) -> addValue k v ans) empty list
+fromList list = DL.foldl' (\ans (k, v) -> addValue k v ans) empty list
 
 -- Collection version of fold
 
@@ -200,6 +209,42 @@ removeFromKeys ks v (MapSet m) = MapSet (Map.unionWith f m m') where
 	f set _ = Set.removeElement v set
 	m' = Map.fromList $ map g ks where
 		g k = (k, Set.empty)
+
+foldr :: Ord v => (v -> a -> a) -> a -> MapSet k v -> a
+foldr f a (MapSet m) = Map.foldrWithKey g a m where
+	g k set a = DCF.foldr f a set
+
+foldl :: Ord v => (a -> v -> a) -> a -> MapSet k v -> a
+foldl f a (MapSet m) = Map.foldlWithKey g a m where
+	g a k set = DCF.foldl f a set
+
+-- TODO: Move the default implementation so I can remove the Ord contexts.
+foldr' :: (Ord k, Ord v) => (v -> a -> a) -> a -> MapSet k v -> a
+foldr' = DCMM.foldr' -- Use provided default implementation.
+
+-- TODO: Move the default implementation so I can remove the Ord contexts.
+foldl' :: (Ord k, Ord v) => (a -> v -> a) -> a -> MapSet k v -> a
+foldl' = DCMM.foldl' -- Use provided default implementation.
+
+foldrWithKey :: Ord v => (k -> v -> a -> a) -> a -> MapSet k v -> a
+foldrWithKey f a (MapSet m) = Map.foldrWithKey g a m where
+	g k set a = DCF.foldr f' a set where
+		f' v a = f k v a
+
+foldlWithKey :: Ord v => (a -> k -> v -> a) -> a -> MapSet k v -> a
+foldlWithKey f a (MapSet m) = Map.foldlWithKey g a m where
+	g a k set = DCF.foldl f' a set where
+		f' a v = f a k v
+
+-- TODO: Move the default implementation so I can remove the Ord contexts.
+foldrWithKey' :: (Ord k, Ord v) => (k -> v -> a -> a) -> a -> MapSet k v -> a
+foldrWithKey' = DCMM.foldrWithKey' -- Use provided default implementation.
+
+-- TODO: Move the default implementation so I can remove the Ord contexts.
+foldlWithKey' :: (Ord k, Ord v) => (a -> k -> v -> a) -> a -> MapSet k v -> a
+foldlWithKey' = DCMM.foldlWithKey' -- Use provided default implementation.
+
+
 
 
 
@@ -323,18 +368,12 @@ instance (Ord k, Ord v) => DCMM.Batch (MapSet k v) where
 	removeFromKeys = removeFromKeys
 
 instance (Ord k, Ord v) => DCMM.Foldable (MapSet k v) where
-	foldr f a (MapSet m) = Map.foldrWithKey g a m where
-		g k set a = DCF.foldr f a set
-	foldl f a (MapSet m) = Map.foldlWithKey g a m where
-		g a k set = DCF.foldl f a set
+	foldr = foldr
+	foldl = foldl
 	-- Default implementations for foldr'. TODO: Use DCM.Foldable to implement!
-	-- Default implementations for foldr'. TODO: Use DCM.Foldable to implement!
-	foldrWithKey f a (MapSet m) = Map.foldrWithKey g a m where
-		g k set a = DCF.foldr f' a set where
-			f' v a = f k v a
-	foldlWithKey f a (MapSet m) = Map.foldlWithKey g a m where
-		g a k set = DCF.foldl f' a set where
-			f' a v = f a k v
+	-- Default implementations for foldl'. TODO: Use DCM.Foldable to implement!
+	foldrWithKey = foldrWithKey
+	foldlWithKey = foldlWithKey
 	-- Default implementations for foldrWithKey'. TODO: Use DCM.Foldable to implement!
 	-- Default implementations for foldlWithKey'. TODO: Use DCM.Foldable to implement!
 
