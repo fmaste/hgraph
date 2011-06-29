@@ -65,6 +65,7 @@ import qualified Data.Collection.Foldable as DCF
 import qualified Data.Collection.Map as DCM
 import qualified Data.Collection.Map.Foldable as DCMF
 import qualified Data.Collection.Map.Multi as DCMM
+import qualified Data.Collection.Map.Multi.Foldable as DCMMF
 import qualified Data.Collection.Map.Multi.Set as DCMMS
 import qualified Data.Collection.Set.Standard as Set
 
@@ -226,11 +227,11 @@ foldl f a (MapSet m) = Map.foldlWithKey g a m where
 
 -- TODO: Move the default implementation so I can remove the Ord contexts.
 foldr' :: (Ord k, Ord v) => (v -> a -> a) -> a -> MapSet k v -> a
-foldr' = DCMM.foldr' -- Use provided default implementation.
+foldr' = DCMMF.foldr' -- Use provided default implementation.
 
 -- TODO: Move the default implementation so I can remove the Ord contexts.
 foldl' :: (Ord k, Ord v) => (a -> v -> a) -> a -> MapSet k v -> a
-foldl' = DCMM.foldl' -- Use provided default implementation.
+foldl' = DCMMF.foldl' -- Use provided default implementation.
 
 foldrWithKey :: Ord v => (k -> v -> a -> a) -> a -> MapSet k v -> a
 foldrWithKey f a (MapSet m) = Map.foldrWithKey g a m where
@@ -244,11 +245,11 @@ foldlWithKey f a (MapSet m) = Map.foldlWithKey g a m where
 
 -- TODO: Move the default implementation so I can remove the Ord contexts.
 foldrWithKey' :: (Ord k, Ord v) => (k -> v -> a -> a) -> a -> MapSet k v -> a
-foldrWithKey' = DCMM.foldrWithKey' -- Use provided default implementation.
+foldrWithKey' = DCMMF.foldrWithKey' -- Use provided default implementation.
 
 -- TODO: Move the default implementation so I can remove the Ord contexts.
 foldlWithKey' :: (Ord k, Ord v) => (a -> k -> v -> a) -> a -> MapSet k v -> a
-foldlWithKey' = DCMM.foldlWithKey' -- Use provided default implementation.
+foldlWithKey' = DCMMF.foldlWithKey' -- Use provided default implementation.
 
 {--
 -- | A list with all the different keys.
@@ -324,7 +325,7 @@ instance (Ord k, Ord v) => DCMM.Batch (MapSet k v) where
 	remove = remove
 	removeFromKeys = removeFromKeys
 
-instance (Ord k, Ord v) => DCMM.Foldable (MapSet k v) where
+instance (Ord k, Ord v) => DCMMF.Foldable (MapSet k v) where
 	foldr = foldr
 	foldl = foldl
 	-- Default implementations for foldr'
