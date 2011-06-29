@@ -21,5 +21,5 @@ import qualified Data.Collection.Map.Multi as DCMM
 -- CLASS
 -------------------------------------------------------------------------------
 
-class (DCMM.MultiMap a, DCS.Set (DCM.Value a)) => MapSet a
+class (DCMM.MultiMap ms, DCS.Set (DCM.Value ms)) => MapSet ms
 
