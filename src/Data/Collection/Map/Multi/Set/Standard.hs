@@ -59,6 +59,7 @@ import Prelude hiding (foldr, foldl)
 import qualified Data.List as DL
 import qualified Data.Map as Map -- TODO: Use Data.Collection.Map.Standard instead.
 import qualified Data.Collection as DC
+import qualified Data.Collection.Cardinality as DCC
 import qualified Data.Collection.List as DCL
 import qualified Data.Collection.Foldable as DCF
 import qualified Data.Collection.Map as DCM
@@ -274,6 +275,8 @@ instance (Ord k, Ord v) => DC.Collection (MapSet k v) where
 	addElement = addElement
 	removeElement = removeElement
 	containsElement = containsElement
+
+instance (Ord k, Ord v) => DCC.Cardinality (MapSet k v) where
 	getElementsCount = getElementsCount
 
 instance (Ord k, Ord v) => DCL.List (MapSet k v) where

@@ -47,6 +47,7 @@ module Data.Collection.Map.Standard (
 import Prelude hiding (map, foldr, foldl)
 import qualified Data.Map as DM
 import qualified Data.Collection as DC
+import qualified Data.Collection.Cardinality as DCC
 import qualified Data.Collection.List as DCL
 import qualified Data.Collection.Foldable as DCF
 import qualified Data.Collection.Set.Standard as DCSS
@@ -169,6 +170,8 @@ instance (Ord k, Ord v) => DC.Collection (Map k v) where
 	addElement = addElement
 	removeElement = removeElement
 	containsElement = containsElement
+
+instance (Ord k, Ord v) => DCC.Cardinality (Map k v) where
 	getElementsCount = getElementsCount
 
 instance (Ord k, Ord v) => DCL.List (Map k v) where

@@ -24,6 +24,7 @@ module Data.Collection.Set.Int (
 
 import qualified Data.IntSet as DI
 import qualified Data.Collection as DC
+import qualified Data.Collection.Cardinality as DCC
 import qualified Data.Collection.List as DCL
 import qualified Data.Collection.Set as DCS
 
@@ -70,6 +71,8 @@ instance DC.Collection IntSet where
 	addElement = addElement
 	removeElement = removeElement
 	containsElement = containsElement
+
+instance DCC.Cardinality IntSet where
 	getElementsCount = getElementsCount
 
 instance DCL.List IntSet where

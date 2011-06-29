@@ -46,6 +46,7 @@ module Data.Collection.Relation.Binary.Simple (
 
 import qualified Data.List as DL
 import qualified Data.Collection as DC
+import qualified Data.Collection.Cardinality as DCC
 import qualified Data.Collection.List as DCL
 import qualified Data.Collection.Map as DCM
 import qualified Data.Collection.Map.Foldable as DCMF
@@ -150,7 +151,7 @@ getDomainCount :: (Ord domain, Ord codomain) => BinaryRelation domain codomain -
 getDomainCount (BinaryRelation relatedTo _) = fromInteger $ DCMMS.getKeysCount relatedTo
 
 getCodomainCount :: (Ord domain, Ord codomain) => BinaryRelation domain codomain -> Int
-getCodomainCount (BinaryRelation _ codomain) = fromInteger $ Set.getElementsCount codomain
+getCodomainCount (BinaryRelation _ codomain) = fromInteger $ DCC.getElementsCount codomain
 
 containsDomainElement :: (Ord domain, Ord codomain) => domain -> BinaryRelation domain codomain -> Bool
 containsDomainElement element (BinaryRelation relatedTo _) = DCMMS.containsKey element relatedTo
@@ -168,7 +169,7 @@ getRelatedToCount :: (Ord domain, Ord codomain) => domain -> BinaryRelation doma
 getRelatedToCount element (BinaryRelation relatedTo _) = fromInteger $ DCMMS.getValuesCount element relatedTo
 
 getRelatedFromCount :: (Ord domain, Ord codomain) => codomain -> BinaryRelation domain codomain -> Int
-getRelatedFromCount element br = fromInteger $ Set.getElementsCount $ getRelatedFrom element br
+getRelatedFromCount element br = fromInteger $ DCC.getElementsCount $ getRelatedFrom element br
 
 isRelatedTo :: (Ord domain, Ord codomain) => domain -> codomain -> BinaryRelation domain codomain -> Bool
 isRelatedTo domain codomain br = containsRelation domain codomain br
@@ -202,7 +203,9 @@ instance (Ord domain, Ord codomain) => DC.Collection (BinaryRelation domain codo
 	addElement (d, c) br = addRelation d c br
 	removeElement (d, c) br = removeRelation d c br
 	containsElement (d, c) br = containsRelation d c br
-	getElementsCount br = DC.getElementsCount $ getGraph br
+
+instance (Ord domain, Ord codomain) => DCC.Cardinality (BinaryRelation domain codomain) where
+	getElementsCount br = DCC.getElementsCount $ getGraph br
 
 instance (Ord domain, Ord codomain) => DCRB.BinaryRelation (BinaryRelation domain codomain) where
 	type DCRB.DomainSet (BinaryRelation domain codomain) = Set.Set domain

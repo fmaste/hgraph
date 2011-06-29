@@ -45,6 +45,7 @@ module Data.Collection.Relation.Binary.Double (
 -------------------------------------------------------------------------------
 
 import qualified Data.Collection as DC
+import qualified Data.Collection.Cardinality as DCC
 import qualified Data.Collection.List as DCL
 import qualified Data.Collection.Map.Multi.Set as DCMMS
 import qualified Data.Collection.Map.Multi.Set.Standard as MapSet
@@ -217,7 +218,9 @@ instance (Ord domain, Ord codomain) => DC.Collection (BinaryRelation domain codo
 	addElement (d, c) br = addRelation d c br
 	removeElement (d, c) br = removeRelation d c br
 	containsElement (d, c) br = containsRelation d c br
-	getElementsCount br = DC.getElementsCount $ getGraph br
+
+instance (Ord domain, Ord codomain) => DCC.Cardinality (BinaryRelation domain codomain) where
+	getElementsCount br = DCC.getElementsCount $ getGraph br
 
 instance (Ord domain, Ord codomain) => DCRB.BinaryRelation (BinaryRelation domain codomain) where
 	type DCRB.DomainSet (BinaryRelation domain codomain) = Set.Set domain
