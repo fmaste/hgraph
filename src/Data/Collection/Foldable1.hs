@@ -7,7 +7,7 @@
 -------------------------------------------------------------------------------
 
 {-# LANGUAGE TypeFamilies #-}
-module Data.Collection.Foldable (
+module Data.Collection.Foldable1 (
 	Foldable1(..) ) where
 
 -- IMPORTS
