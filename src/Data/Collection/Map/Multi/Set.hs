@@ -8,11 +8,6 @@
 
 {-# LANGUAGE TypeFamilies, FlexibleContexts #-}
 module Data.Collection.Map.Multi.Set (
-	DC.Collection(..),
-	DCM.Map(..),
-	DCM.Combination(..),
-	DCMM.MultiMap(..),
-	DCMM.Batch(..),
 	MapSet(..) ) where
 
 -- IMPORTS
