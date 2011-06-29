@@ -14,7 +14,6 @@ module Data.Collection.Map.Foldable (
 -------------------------------------------------------------------------------
 
 import Prelude hiding (foldr, foldl)
-import Data.Maybe (fromMaybe)
 import qualified Data.Collection as DC
 import qualified Data.Collection.Map as DCM
 
