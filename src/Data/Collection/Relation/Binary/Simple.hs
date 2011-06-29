@@ -50,6 +50,7 @@ import qualified Data.Collection.Cardinality as DCC
 import qualified Data.Collection.List as DCL
 import qualified Data.Collection.Map as DCM
 import qualified Data.Collection.Map.Foldable as DCMF
+import qualified Data.Collection.Map.Multi as DCMM
 import qualified Data.Collection.Map.Multi.Set as DCMMS
 import qualified Data.Collection.Map.Multi.Set.Standard as MapSet
 import qualified Data.Collection.Relation.Binary as DCRB
@@ -75,7 +76,7 @@ empty = BinaryRelation MapSet.empty Set.empty
 -- If this element already exists the original BinaryRelation is returned.
 addDomainElement :: (Ord domain, Ord codomain) => domain -> BinaryRelation domain codomain -> BinaryRelation domain codomain
 addDomainElement element (BinaryRelation relatedTo codomain) = BinaryRelation relatedTo' codomain where
-	relatedTo' = DCMMS.addKey element relatedTo
+	relatedTo' = DCMM.addKey element relatedTo
 
 -- Adds an element to the codomain.
 -- If this element already exists the original BinaryRelation is returned.
@@ -87,14 +88,14 @@ addCodomainElement element (BinaryRelation relatedTo codomain) = BinaryRelation 
 -- If this element does not exists the original BinaryRelation is returned.
 removeDomainElement :: (Ord domain, Ord codomain) => domain -> BinaryRelation domain codomain -> BinaryRelation domain codomain
 removeDomainElement element (BinaryRelation relatedTo codomain) = BinaryRelation relatedTo' codomain where
-	relatedTo' = DCMMS.removeKey element relatedTo
+	relatedTo' = DCM.removeKey element relatedTo
 
 -- Removes an element from the codomain.
 -- If this element does not exists the original BinaryRelation is returned.
 removeCodomainElement :: (Ord domain, Ord codomain) => codomain -> BinaryRelation domain codomain -> BinaryRelation domain codomain
 removeCodomainElement element (BinaryRelation relatedTo codomain) = 
 	let
-		relatedTo' = DCMMS.remove element relatedTo
+		relatedTo' = DCMM.remove element relatedTo
 		codomain' = Set.removeElement element codomain
 	in BinaryRelation relatedTo' codomain'
 
@@ -104,7 +105,7 @@ removeCodomainElement element (BinaryRelation relatedTo codomain) =
 addRelation :: (Ord domain, Ord codomain) => domain -> codomain -> BinaryRelation domain codomain -> BinaryRelation domain codomain
 addRelation elementD elementC (BinaryRelation relatedTo codomain) =
 	let 
-		relatedTo' = DCMMS.addToKey elementD elementC relatedTo
+		relatedTo' = DCMM.addToKey elementD elementC relatedTo
 		-- TODO: Make a simpler version that does not checks if the values were already inserted.
 		codomain' = Set.addElement elementC codomain
 	in BinaryRelation relatedTo' codomain'
@@ -113,19 +114,19 @@ addRelation elementD elementC (BinaryRelation relatedTo codomain) =
 -- If this relation is not present the original BinaryRelation is returned.
 removeRelation :: (Ord domain, Ord codomain) => domain -> codomain -> BinaryRelation domain codomain -> BinaryRelation domain codomain
 removeRelation elementD elementC (BinaryRelation relatedTo codomain) = BinaryRelation relatedTo' codomain where
-	relatedTo' = DCMMS.removeFromKey elementD elementC relatedTo
+	relatedTo' = DCMM.removeFromKey elementD elementC relatedTo
 
 -- ATOMIC QUERY FUNCTIONS
 -------------------------------------------------------------------------------
 
 getDomain :: (Ord domain, Ord codomain) => BinaryRelation domain codomain -> Set.Set domain
-getDomain (BinaryRelation relatedTo _) = DCMMS.getKeys relatedTo
+getDomain (BinaryRelation relatedTo _) = DCM.getKeys relatedTo
 
 getCodomain :: (Ord domain, Ord codomain) => BinaryRelation domain codomain -> Set.Set codomain
 getCodomain (BinaryRelation _ codomain) = codomain
 
 getRelatedTo :: (Ord domain, Ord codomain) => domain -> BinaryRelation domain codomain -> Set.Set codomain
-getRelatedTo element (BinaryRelation relatedTo _) = DCMMS.getValueWithDefault Set.empty element relatedTo
+getRelatedTo element (BinaryRelation relatedTo _) = DCM.getValueWithDefault Set.empty element relatedTo
 
 getRelatedFrom :: (Ord domain, Ord codomain) => codomain -> BinaryRelation domain codomain -> Set.Set domain
 getRelatedFrom element (BinaryRelation relatedTo _) = DCMF.foldrWithKey f Set.empty relatedTo where
@@ -142,19 +143,19 @@ getGraph br = DCL.fromList [ (domain, codomain) | domain <- getDomainList br, co
 -------------------------------------------------------------------------------
 
 getDomainList :: (Ord domain, Ord codomain) => BinaryRelation domain codomain -> [domain]
-getDomainList (BinaryRelation relatedTo _) = DCL.toList $ DCMMS.getKeys relatedTo
+getDomainList (BinaryRelation relatedTo _) = DCL.toList $ DCM.getKeys relatedTo
 
 getCodomainList :: (Ord domain, Ord codomain) => BinaryRelation domain codomain -> [codomain]
 getCodomainList (BinaryRelation _ codomain) = DCL.toList codomain
 
 getDomainCount :: (Ord domain, Ord codomain) => BinaryRelation domain codomain -> Int
-getDomainCount (BinaryRelation relatedTo _) = fromInteger $ DCMMS.getKeysCount relatedTo
+getDomainCount (BinaryRelation relatedTo _) = fromInteger $ DCM.getKeysCount relatedTo
 
 getCodomainCount :: (Ord domain, Ord codomain) => BinaryRelation domain codomain -> Int
 getCodomainCount (BinaryRelation _ codomain) = fromInteger $ DCC.getElementsCount codomain
 
 containsDomainElement :: (Ord domain, Ord codomain) => domain -> BinaryRelation domain codomain -> Bool
-containsDomainElement element (BinaryRelation relatedTo _) = DCMMS.containsKey element relatedTo
+containsDomainElement element (BinaryRelation relatedTo _) = DCM.containsKey element relatedTo
 
 containsCodomainElement :: (Ord domain, Ord codomain) => codomain -> BinaryRelation domain codomain -> Bool
 containsCodomainElement element (BinaryRelation _ codomain) = Set.containsElement element codomain
@@ -166,7 +167,7 @@ getRelatedFromList :: (Ord domain, Ord codomain) => codomain -> BinaryRelation d
 getRelatedFromList element br = DCL.toList $ getRelatedFrom element br
 
 getRelatedToCount :: (Ord domain, Ord codomain) => domain -> BinaryRelation domain codomain -> Int
-getRelatedToCount element (BinaryRelation relatedTo _) = fromInteger $ DCMMS.getValuesCount element relatedTo
+getRelatedToCount element (BinaryRelation relatedTo _) = fromInteger $ DCMM.getValuesCount element relatedTo
 
 getRelatedFromCount :: (Ord domain, Ord codomain) => codomain -> BinaryRelation domain codomain -> Int
 getRelatedFromCount element br = fromInteger $ DCC.getElementsCount $ getRelatedFrom element br
@@ -178,7 +179,7 @@ isRelatedFrom :: (Ord domain, Ord codomain) => codomain -> domain -> BinaryRelat
 isRelatedFrom codomain domain br = containsRelation domain codomain br
 
 containsRelation :: (Ord domain, Ord codomain) => domain -> codomain ->  BinaryRelation domain codomain -> Bool
-containsRelation domain codomain  (BinaryRelation relatedTo _) = DCMMS.containedInKey domain codomain relatedTo
+containsRelation domain codomain  (BinaryRelation relatedTo _) = DCMM.containedInKey domain codomain relatedTo
 
 -- RELATION THEORY
 -------------------------------------------------------------------------------
@@ -190,7 +191,7 @@ revert :: (Ord domain, Ord codomain) => BinaryRelation domain codomain -> Binary
 revert br@(BinaryRelation relatedTo codomain) = BinaryRelation relatedTo' codomain' where
 	relatedTo' = DL.foldl' f MapSet.empty $ getCodomainList br where
 		f mm elementC = DL.foldl' g mm $ getRelatedFromList elementC br where
-			g mm elementD = DCMMS.addToKey elementC elementD mm
+			g mm elementD = DCMM.addToKey elementC elementD mm
 	codomain' = getDomain br
 
 --TODO: Add more functions, like image, range, isFunction, biyective, etc, etc.
