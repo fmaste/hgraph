@@ -295,10 +295,12 @@ instance (Ord k, Ord v) => DCM.Map (MapSet k v) where
 	type DCM.Value (MapSet k v) = Set.Set v
 	putValue = putValue
 	removeKey = removeKey
+	getValue = getValue
+
+instance (Ord k, Ord v) => DCM.MapKeys (MapSet k v) where
 	getKeys = getKeys
 	containsKey = containsKey
 	getKeysCount = getKeysCount
-	getValue = getValue
 
 instance (Ord k, Ord v) => DCM.Combination (MapSet k v) where
 	getValueWithDefault = getValueWithDefault

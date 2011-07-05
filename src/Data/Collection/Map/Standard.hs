@@ -189,10 +189,12 @@ instance (Ord k, Ord v) => DCM.Map (Map k v) where
 	type DCM.Value (Map k v) = v
 	putValue = putValue
 	removeKey = removeKey
+	getValue = getValue
+
+instance (Ord k, Ord v) => DCM.MapKeys (Map k v) where
 	getKeys = getKeys
 	containsKey = containsKey
 	getKeysCount = getKeysCount
-	getValue = getValue
 
 instance (Ord k, Ord v) => DCM.Combination (Map k v) where
 	getValueWithDefault = getValueWithDefault

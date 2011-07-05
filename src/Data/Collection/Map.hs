@@ -9,6 +9,7 @@
 {-# LANGUAGE TypeFamilies, FlexibleContexts #-}
 module Data.Collection.Map (
 	Map(..),
+	MapKeys(..),
 	Combination(..) ) where
 
 -- IMPORTS
@@ -39,6 +40,14 @@ class (DC.Collection m, DC.Collection (Keys m)) => Map m where
 	-- ATOMIC QUERY FUNCTIONS
 	-----------------------------------------------------------------------
 
+	-- Get the associated value of the provided key.
+	-- If the key does not exists Nothing is returned.
+	getValue :: DC.Element (Keys m) -> m -> Maybe (Value m)
+
+-------------------------------------------------------------------------------
+
+class Map m => MapKeys m where
+
 	-- All the keys that have an associated value.
 	getKeys :: m -> Keys m
 
@@ -47,10 +56,6 @@ class (DC.Collection m, DC.Collection (Keys m)) => Map m where
 
 	-- The number of keys that have an associated value.
 	getKeysCount :: m -> Integer
-
-	-- Get the associated value of the provided key.
-	-- If the key does not exists Nothing is returned.
-	getValue :: DC.Element (Keys m) -> m -> Maybe (Value m)
 
 -------------------------------------------------------------------------------
 
