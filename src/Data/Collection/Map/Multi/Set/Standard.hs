@@ -64,6 +64,7 @@ import qualified Data.Collection.Import as DCI
 import qualified Data.Collection.Export as DCE
 import qualified Data.Collection.Foldable as DCF
 import qualified Data.Collection.Map as DCM
+import qualified Data.Collection.Map.Keys as DCMK
 import qualified Data.Collection.Map.Foldable as DCMF
 import qualified Data.Collection.Map.Multi as DCMM
 import qualified Data.Collection.Map.Multi.Foldable as DCMMF
@@ -300,7 +301,7 @@ instance (Ord k, Ord v) => DCM.Map (MapSet k v) where
 	removeKey = removeKey
 	getValue = getValue
 
-instance (Ord k, Ord v) => DCM.MapKeys (MapSet k v) where
+instance (Ord k, Ord v) => DCMK.Keys (MapSet k v) where
 	getKeys = getKeys
 	containsKey = containsKey
 	getKeysCount = getKeysCount

@@ -9,7 +9,6 @@
 {-# LANGUAGE TypeFamilies, FlexibleContexts #-}
 module Data.Collection.Map (
 	Map(..),
-	MapKeys(..),
 	Combination(..) ) where
 
 -- IMPORTS
@@ -43,19 +42,6 @@ class DC.Collection m => Map m where
 	-- Get the associated value of the provided key.
 	-- If the key does not exists Nothing is returned.
 	getValue :: Key m -> m -> Maybe (Value m)
-
--------------------------------------------------------------------------------
-
-class Map m => MapKeys m where
-
-	-- All the keys that have an associated value.
-	getKeys :: m -> [Key m]
-
-	-- True if the key has an associated value, otherwise, false.
-	containsKey :: Key m -> m -> Bool
-
-	-- The number of keys that have an associated value.
-	getKeysCount :: m -> Integer
 
 -------------------------------------------------------------------------------
 

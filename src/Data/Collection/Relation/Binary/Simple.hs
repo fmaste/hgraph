@@ -50,6 +50,7 @@ import qualified Data.Collection.Cardinality as DCC
 import qualified Data.Collection.Import as DCI
 import qualified Data.Collection.Export as DCE
 import qualified Data.Collection.Map as DCM
+import qualified Data.Collection.Map.Keys as DCMK
 import qualified Data.Collection.Map.Foldable as DCMF
 import qualified Data.Collection.Map.Multi as DCMM
 import qualified Data.Collection.Map.Multi.Set as DCMMS
@@ -121,7 +122,7 @@ removeRelation elementD elementC (BinaryRelation relatedTo codomain) = BinaryRel
 -------------------------------------------------------------------------------
 
 getDomain :: (Ord domain, Ord codomain) => BinaryRelation domain codomain -> Set.Set domain
-getDomain (BinaryRelation relatedTo _) = Set.fromList $ DCM.getKeys relatedTo
+getDomain (BinaryRelation relatedTo _) = Set.fromList $ DCMK.getKeys relatedTo
 
 getCodomain :: (Ord domain, Ord codomain) => BinaryRelation domain codomain -> Set.Set codomain
 getCodomain (BinaryRelation _ codomain) = codomain
@@ -144,19 +145,19 @@ getGraph br = DCI.fromList [ (domain, codomain) | domain <- getDomainList br, co
 -------------------------------------------------------------------------------
 
 getDomainList :: (Ord domain, Ord codomain) => BinaryRelation domain codomain -> [domain]
-getDomainList (BinaryRelation relatedTo _) = DCM.getKeys relatedTo
+getDomainList (BinaryRelation relatedTo _) = DCMK.getKeys relatedTo
 
 getCodomainList :: (Ord domain, Ord codomain) => BinaryRelation domain codomain -> [codomain]
 getCodomainList (BinaryRelation _ codomain) = DCE.toList codomain
 
 getDomainCount :: (Ord domain, Ord codomain) => BinaryRelation domain codomain -> Int
-getDomainCount (BinaryRelation relatedTo _) = fromInteger $ DCM.getKeysCount relatedTo
+getDomainCount (BinaryRelation relatedTo _) = fromInteger $ DCMK.getKeysCount relatedTo
 
 getCodomainCount :: (Ord domain, Ord codomain) => BinaryRelation domain codomain -> Int
 getCodomainCount (BinaryRelation _ codomain) = fromInteger $ DCC.getElementsCount codomain
 
 containsDomainElement :: (Ord domain, Ord codomain) => domain -> BinaryRelation domain codomain -> Bool
-containsDomainElement element (BinaryRelation relatedTo _) = DCM.containsKey element relatedTo
+containsDomainElement element (BinaryRelation relatedTo _) = DCMK.containsKey element relatedTo
 
 containsCodomainElement :: (Ord domain, Ord codomain) => codomain -> BinaryRelation domain codomain -> Bool
 containsCodomainElement element (BinaryRelation _ codomain) = Set.containsElement element codomain

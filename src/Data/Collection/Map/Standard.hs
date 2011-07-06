@@ -53,6 +53,7 @@ import qualified Data.Collection.Export as DCE
 import qualified Data.Collection.Foldable as DCF
 import qualified Data.Collection.Set.Standard as DCSS
 import qualified Data.Collection.Map as DCM
+import qualified Data.Collection.Map.Keys as DCMK
 import qualified Data.Collection.Map.Foldable as DCMF
 
 -- DATA DEFINITION
@@ -194,7 +195,7 @@ instance (Ord k, Ord v) => DCM.Map (Map k v) where
 	removeKey = removeKey
 	getValue = getValue
 
-instance (Ord k, Ord v) => DCM.MapKeys (Map k v) where
+instance (Ord k, Ord v) => DCMK.Keys (Map k v) where
 	getKeys = getKeys
 	containsKey = containsKey
 	getKeysCount = getKeysCount
