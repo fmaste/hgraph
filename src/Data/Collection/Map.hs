@@ -59,6 +59,19 @@ class Map m => MapKeys m where
 
 -------------------------------------------------------------------------------
 
+class Map m => MapValues m where
+
+	-- All the values that are associated with a key.
+	getValues :: m -> [Value m]
+
+	-- True if the value is associated with any key, otherwise, false.
+	containsValue :: Value m -> m -> Bool
+
+	-- Remove the keys that have this associated value.
+	removeValue :: Value m -> m -> m
+
+-------------------------------------------------------------------------------
+
 -- Performant way of making a combination of the above Map atomic functions.
 class Map m => Combination m where
 
