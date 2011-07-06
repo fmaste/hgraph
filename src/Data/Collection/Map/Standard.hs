@@ -49,6 +49,7 @@ import qualified Data.Map as DM
 import qualified Data.Collection as DC
 import qualified Data.Collection.Cardinality as DCC
 import qualified Data.Collection.List as DCL
+import qualified Data.Collection.Import as DCI
 import qualified Data.Collection.Foldable as DCF
 import qualified Data.Collection.Set.Standard as DCSS
 import qualified Data.Collection.Map as DCM
@@ -176,6 +177,8 @@ instance (Ord k, Ord v) => DCC.Cardinality (Map k v) where
 
 instance (Ord k, Ord v) => DCL.List (Map k v) where
 	toList = toList
+
+instance (Ord k, Ord v) => DCI.Import (Map k v) where
 	fromList = fromList
 
 instance (Ord k, Ord v) => DCF.Foldable (Map k v) where

@@ -33,6 +33,7 @@ import qualified Data.Foldable as DF
 import qualified Data.Collection as DC
 import qualified Data.Collection.Cardinality as DCC
 import qualified Data.Collection.List as DCL
+import qualified Data.Collection.Import as DCI
 import qualified Data.Collection.Foldable as DCF
 import qualified Data.Collection.Set as DCS
 
@@ -100,6 +101,8 @@ instance Ord a => DCC.Cardinality (Set a) where
 
 instance Ord a => DCL.List (Set a) where
 	toList = toList
+
+instance Ord a => DCI.Import (Set a) where
 	fromList = fromList
 
 instance Ord a => DCF.Foldable (Set a) where

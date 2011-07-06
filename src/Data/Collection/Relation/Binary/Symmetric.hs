@@ -43,6 +43,7 @@ module Data.Collection.Relation.Binary.Symmetric (
 import Data.List (foldl, foldl', foldr)
 import qualified Data.Set as Set
 import qualified Data.Collection.List as DCL
+import qualified Data.Collection.Import as DCI
 import qualified Data.Collection.Map.Multi.Set.Standard as MM
 
 -- DATA DEFINITION
@@ -120,7 +121,7 @@ getRelatedFrom element br = getRelatedTo br
 -- here because the graph is part of the signature of a binary relation.
 getGraph :: Ord domain => BinaryRelation domain -> Set.Set (domain, codomain)
 -- TODO: Make it more performant, it is traversing the sets too many times.
-getGraph br = DCL.fromList [ (domain, codomain) | domain <- getDomainList br, codomain <- getRelatedToList domain br]
+getGraph br = DCI.fromList [ (domain, codomain) | domain <- getDomainList br, codomain <- getRelatedToList domain br]
 
 -- UTIL QUERY FUNCTIONS
 -------------------------------------------------------------------------------

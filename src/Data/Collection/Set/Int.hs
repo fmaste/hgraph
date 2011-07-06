@@ -26,6 +26,7 @@ import qualified Data.IntSet as DI
 import qualified Data.Collection as DC
 import qualified Data.Collection.Cardinality as DCC
 import qualified Data.Collection.List as DCL
+import qualified Data.Collection.Import as DCI
 import qualified Data.Collection.Set as DCS
 
 -- DATA DEFINITION
@@ -77,6 +78,8 @@ instance DCC.Cardinality IntSet where
 
 instance DCL.List IntSet where
 	toList = toList
+
+instance DCI.Import IntSet where
 	fromList = fromList
 
 -- TODO: Implement DC.Foldable like in the Standard version.

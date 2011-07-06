@@ -48,6 +48,7 @@ import qualified Data.List as DL
 import qualified Data.Collection as DC
 import qualified Data.Collection.Cardinality as DCC
 import qualified Data.Collection.List as DCL
+import qualified Data.Collection.Import as DCI
 import qualified Data.Collection.Map as DCM
 import qualified Data.Collection.Map.Foldable as DCMF
 import qualified Data.Collection.Map.Multi as DCMM
@@ -137,7 +138,7 @@ getRelatedFrom element (BinaryRelation relatedTo _) = DCMF.foldrWithKey f Set.em
 -- here because the graph is part of the signature of a binary relation.
 getGraph :: (Ord domain, Ord codomain) => BinaryRelation domain codomain -> Set.Set (domain, codomain)
 -- TODO: Make it more performant, it is traversing the sets too many times.
-getGraph br = DCL.fromList [ (domain, codomain) | domain <- getDomainList br, codomain <- getRelatedToList domain br]
+getGraph br = DCI.fromList [ (domain, codomain) | domain <- getDomainList br, codomain <- getRelatedToList domain br]
 
 -- UTIL QUERY FUNCTIONS
 -------------------------------------------------------------------------------
