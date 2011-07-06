@@ -24,10 +24,10 @@ module Data.Collection.Map.Standard (
 	foldlElements',
 	putValue,
 	removeKey,
+	getValue,
 	getKeys,
 	containsKey,
 	getKeysCount,
-	getValue,
 	getValueWithDefault,
 	getValueAndRemoveKey,
 	foldr,
@@ -109,6 +109,9 @@ putValue = DM.insert
 removeKey :: Ord k => k -> Map k v -> Map k v
 removeKey = DM.delete
 
+getValue :: Ord k => k -> Map k v -> Maybe v
+getValue = DM.lookup
+
 getKeys :: Map k v -> DCSS.Set k 
 getKeys = DM.keysSet
 
@@ -117,9 +120,6 @@ containsKey = DM.member
 
 getKeysCount :: Map k v -> Integer
 getKeysCount m = toInteger $ DM.size m
-
-getValue :: Ord k => k -> Map k v -> Maybe v
-getValue = DM.lookup
 
 getValueWithDefault :: Ord k => v -> k -> Map k v -> v
 getValueWithDefault = DM.findWithDefault
