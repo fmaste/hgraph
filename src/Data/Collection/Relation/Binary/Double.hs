@@ -46,8 +46,8 @@ module Data.Collection.Relation.Binary.Double (
 
 import qualified Data.Collection as DC
 import qualified Data.Collection.Cardinality as DCC
-import qualified Data.Collection.List as DCL
 import qualified Data.Collection.Import as DCI
+import qualified Data.Collection.Export as DCE
 import qualified Data.Collection.Map as DCM
 import qualified Data.Collection.Map.Multi as DCMM
 import qualified Data.Collection.Map.Multi.Set.Standard as MapSet
@@ -99,7 +99,7 @@ removeDomainElement domain (BinaryRelation relatedTo relatedFrom) =
 		(relatedTo', relatedToElements) = f $ DCM.getValueAndRemoveKey domain relatedTo where
 			f (Just relatedToElements, relatedTo) = (relatedTo, relatedToElements)
 			f (Nothing, relatedTo) = (relatedTo, Set.empty)
-		relatedFrom' = DCMM.removeFromKeys (DCL.toList relatedToElements) domain relatedFrom
+		relatedFrom' = DCMM.removeFromKeys (DCE.toList relatedToElements) domain relatedFrom
 	in BinaryRelation relatedTo' relatedFrom'
 
 -- Removes an element from the codomain.
@@ -110,7 +110,7 @@ removeCodomainElement codomain (BinaryRelation relatedTo relatedFrom) =
 		(relatedFrom', relatedFromElements) = f $ DCM.getValueAndRemoveKey codomain relatedFrom where
 			f (Just relatedFromElements, relatedFrom) = (relatedFrom, relatedFromElements)
 			f (Nothing, relatedFrom) = (relatedFrom, Set.empty)
-		relatedTo' = DCMM.removeFromKeys (DCL.toList relatedFromElements) codomain relatedTo
+		relatedTo' = DCMM.removeFromKeys (DCE.toList relatedFromElements) codomain relatedTo
 	in BinaryRelation relatedTo' relatedFrom'
 
 -- Adds a relation from a domain element to a codomain one.
@@ -163,10 +163,10 @@ getGraph :: (Ord domain, Ord codomain) => BinaryRelation domain codomain -> Set.
 getGraph br = DCI.fromList [ (domain, codomain) | domain <- getDomainList br, codomain <- getRelatedToList domain br]
 
 getDomainList :: (Ord domain, Ord codomain) => BinaryRelation domain codomain -> [domain]
-getDomainList (BinaryRelation relatedTo _) = DCL.toList $ DCM.getKeys relatedTo
+getDomainList (BinaryRelation relatedTo _) = DCE.toList $ DCM.getKeys relatedTo
 
 getCodomainList :: (Ord domain, Ord codomain) => BinaryRelation domain codomain -> [codomain]
-getCodomainList (BinaryRelation _ relatedFrom) = DCL.toList $ DCM.getKeys relatedFrom
+getCodomainList (BinaryRelation _ relatedFrom) = DCE.toList $ DCM.getKeys relatedFrom
 
 getDomainCount :: (Ord domain, Ord codomain) => BinaryRelation domain codomain -> Int
 getDomainCount (BinaryRelation relatedTo _) = fromInteger $ DCM.getKeysCount relatedTo
@@ -181,10 +181,10 @@ containsCodomainElement :: (Ord domain, Ord codomain) => codomain -> BinaryRelat
 containsCodomainElement element (BinaryRelation _ relatedFrom) = DCM.containsKey element relatedFrom
 
 getRelatedToList :: (Ord domain, Ord codomain) => domain -> BinaryRelation domain codomain -> [codomain]
-getRelatedToList element br = DCL.toList $ getRelatedTo element br
+getRelatedToList element br = DCE.toList $ getRelatedTo element br
 
 getRelatedFromList :: (Ord domain, Ord codomain) => codomain -> BinaryRelation domain codomain -> [domain]
-getRelatedFromList element br = DCL.toList $ getRelatedFrom element br
+getRelatedFromList element br = DCE.toList $ getRelatedFrom element br
 
 getRelatedToCount :: (Ord domain, Ord codomain) => domain -> BinaryRelation domain codomain -> Int
 getRelatedToCount element (BinaryRelation relatedTo _) = fromInteger $ DCMM.getValuesCount element relatedTo

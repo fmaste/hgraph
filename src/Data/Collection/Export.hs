@@ -7,8 +7,8 @@
 -------------------------------------------------------------------------------
 
 {-# LANGUAGE TypeFamilies #-}
-module Data.Collection.List (
-	List(..) ) where
+module Data.Collection.Export (
+	Export(..) ) where
 
 -- IMPORTS
 -------------------------------------------------------------------------------
@@ -19,7 +19,7 @@ import qualified Data.Collection as DC
 -------------------------------------------------------------------------------
 
 -- List conversion functions.
-class DC.Collection c => List c where
+class DC.Collection c => Export c where
 
 	-- Export to a list representation.
 	toList :: c -> [DC.Element c]

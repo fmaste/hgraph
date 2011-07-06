@@ -47,8 +47,8 @@ module Data.Collection.Relation.Binary.Simple (
 import qualified Data.List as DL
 import qualified Data.Collection as DC
 import qualified Data.Collection.Cardinality as DCC
-import qualified Data.Collection.List as DCL
 import qualified Data.Collection.Import as DCI
+import qualified Data.Collection.Export as DCE
 import qualified Data.Collection.Map as DCM
 import qualified Data.Collection.Map.Foldable as DCMF
 import qualified Data.Collection.Map.Multi as DCMM
@@ -144,10 +144,10 @@ getGraph br = DCI.fromList [ (domain, codomain) | domain <- getDomainList br, co
 -------------------------------------------------------------------------------
 
 getDomainList :: (Ord domain, Ord codomain) => BinaryRelation domain codomain -> [domain]
-getDomainList (BinaryRelation relatedTo _) = DCL.toList $ DCM.getKeys relatedTo
+getDomainList (BinaryRelation relatedTo _) = DCE.toList $ DCM.getKeys relatedTo
 
 getCodomainList :: (Ord domain, Ord codomain) => BinaryRelation domain codomain -> [codomain]
-getCodomainList (BinaryRelation _ codomain) = DCL.toList codomain
+getCodomainList (BinaryRelation _ codomain) = DCE.toList codomain
 
 getDomainCount :: (Ord domain, Ord codomain) => BinaryRelation domain codomain -> Int
 getDomainCount (BinaryRelation relatedTo _) = fromInteger $ DCM.getKeysCount relatedTo
@@ -162,10 +162,10 @@ containsCodomainElement :: (Ord domain, Ord codomain) => codomain -> BinaryRelat
 containsCodomainElement element (BinaryRelation _ codomain) = Set.containsElement element codomain
 
 getRelatedToList :: (Ord domain, Ord codomain) => domain -> BinaryRelation domain codomain -> [codomain]
-getRelatedToList element br = DCL.toList $ getRelatedTo element br
+getRelatedToList element br = DCE.toList $ getRelatedTo element br
 
 getRelatedFromList :: (Ord domain, Ord codomain) => codomain -> BinaryRelation domain codomain -> [domain]
-getRelatedFromList element br = DCL.toList $ getRelatedFrom element br
+getRelatedFromList element br = DCE.toList $ getRelatedFrom element br
 
 getRelatedToCount :: (Ord domain, Ord codomain) => domain -> BinaryRelation domain codomain -> Int
 getRelatedToCount element (BinaryRelation relatedTo _) = fromInteger $ DCMM.getValuesCount element relatedTo

@@ -42,7 +42,6 @@ module Data.Collection.Relation.Binary.Symmetric (
 
 import Data.List (foldl, foldl', foldr)
 import qualified Data.Set as Set
-import qualified Data.Collection.List as DCL
 import qualified Data.Collection.Import as DCI
 import qualified Data.Collection.Map.Multi.Set.Standard as MM
 

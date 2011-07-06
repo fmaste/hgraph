@@ -25,8 +25,8 @@ module Data.Collection.Set.Int (
 import qualified Data.IntSet as DI
 import qualified Data.Collection as DC
 import qualified Data.Collection.Cardinality as DCC
-import qualified Data.Collection.List as DCL
 import qualified Data.Collection.Import as DCI
+import qualified Data.Collection.Export as DCE
 import qualified Data.Collection.Set as DCS
 
 -- DATA DEFINITION
@@ -76,11 +76,11 @@ instance DC.Collection IntSet where
 instance DCC.Cardinality IntSet where
 	getElementsCount = getElementsCount
 
-instance DCL.List IntSet where
-	toList = toList
-
 instance DCI.Import IntSet where
 	fromList = fromList
+
+instance DCE.Export IntSet where
+	toList = toList
 
 -- TODO: Implement DC.Foldable like in the Standard version.
 

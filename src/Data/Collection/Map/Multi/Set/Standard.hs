@@ -60,8 +60,8 @@ import qualified Data.List as DL
 import qualified Data.Map as Map -- TODO: Use Data.Collection.Map.Standard instead.
 import qualified Data.Collection as DC
 import qualified Data.Collection.Cardinality as DCC
-import qualified Data.Collection.List as DCL
 import qualified Data.Collection.Import as DCI
+import qualified Data.Collection.Export as DCE
 import qualified Data.Collection.Foldable as DCF
 import qualified Data.Collection.Map as DCM
 import qualified Data.Collection.Map.Foldable as DCMF
@@ -96,7 +96,7 @@ getElementsCount :: (Ord k, Ord v) => MapSet k v -> Integer
 getElementsCount (MapSet mm) = toInteger $ Map.fold (\set ans -> ans + (Set.getElementsCount set)) 0 mm
 
 toList :: (Ord k, Ord v) => MapSet k v -> [(k, v)]
-toList (MapSet mm) = Map.foldWithKey (\k set ans -> ans ++ [(k, v) | v <- (DCL.toList set)]) [] mm
+toList (MapSet mm) = Map.foldWithKey (\k set ans -> ans ++ [(k, v) | v <- (DCE.toList set)]) [] mm
 
 fromList :: (Ord k, Ord v) => [(k, v)] -> MapSet k v
 fromList list = DL.foldl' (\ans (k, v) -> addToKey k v ans) empty list
@@ -281,11 +281,11 @@ instance (Ord k, Ord v) => DC.Collection (MapSet k v) where
 instance (Ord k, Ord v) => DCC.Cardinality (MapSet k v) where
 	getElementsCount = getElementsCount
 
-instance (Ord k, Ord v) => DCL.List (MapSet k v) where
-	toList = toList
-
 instance (Ord k, Ord v) => DCI.Import (MapSet k v) where
 	fromList = fromList
+
+instance (Ord k, Ord v) => DCE.Export (MapSet k v) where
+	toList = toList
 
 instance (Ord k, Ord v) => DCF.Foldable (MapSet k v) where
 	foldr = foldrElements 
