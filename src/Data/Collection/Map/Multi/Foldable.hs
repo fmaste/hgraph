@@ -39,17 +39,17 @@ class DCMM.MultiMap mm => Foldable mm where
 	foldl' = defaultFoldl'
 
 	-- Right-associative fold with key of a Map.
-	foldrWithKey :: (DC.Element (DCM.Keys mm) -> DC.Element (DCM.Value mm) -> a -> a) -> a -> mm -> a
+	foldrWithKey :: (DCM.Key mm -> DC.Element (DCM.Value mm) -> a -> a) -> a -> mm -> a
 
 	-- Left-associative fold with key of a Map.
-	foldlWithKey :: (a -> DC.Element (DCM.Keys mm) -> DC.Element (DCM.Value mm) -> a) -> a -> mm -> a
+	foldlWithKey :: (a -> DCM.Key mm -> DC.Element (DCM.Value mm) -> a) -> a -> mm -> a
 
 	-- Fold over the elements of a Map with key, associating to the right, but strictly.
-	foldrWithKey' :: (DC.Element (DCM.Keys mm) -> DC.Element (DCM.Value mm) -> a -> a) -> a -> mm -> a
+	foldrWithKey' :: (DCM.Key mm -> DC.Element (DCM.Value mm) -> a -> a) -> a -> mm -> a
 	foldrWithKey' = defaultFoldrWithKey'
 
 	-- Fold over the elements of a Map with key, associating to the left, but strictly.
-	foldlWithKey' :: (a -> DC.Element (DCM.Keys mm) -> DC.Element (DCM.Value mm) -> a) -> a -> mm -> a
+	foldlWithKey' :: (a -> DCM.Key mm -> DC.Element (DCM.Value mm) -> a) -> a -> mm -> a
 	foldlWithKey' = defaultFoldlWithKey'
 
 defaultFoldr' :: (DCMM.MultiMap mm, Foldable mm) => (DC.Element (DCM.Value mm) -> a -> a) -> a -> mm -> a
@@ -60,11 +60,11 @@ defaultFoldl' :: (DCMM.MultiMap mm, Foldable mm) => (a -> DC.Element (DCM.Value 
 defaultFoldl' f z0 xs = foldr f' id xs z0 where 
 	f' x g z = g $! f z x
 
-defaultFoldrWithKey' :: (DCMM.MultiMap mm, Foldable mm) => (DC.Element (DCM.Keys mm) -> DC.Element (DCM.Value mm) -> a -> a) -> a -> mm -> a
+defaultFoldrWithKey' :: (DCMM.MultiMap mm, Foldable mm) => (DCM.Key mm -> DC.Element (DCM.Value mm) -> a -> a) -> a -> mm -> a
 defaultFoldrWithKey' f z0 xs = foldlWithKey f' id xs z0 where 
 	f' g k x z = g $! f k x z
 
-defaultFoldlWithKey' :: (DCMM.MultiMap mm, Foldable mm) => (a -> DC.Element (DCM.Keys mm) -> DC.Element (DCM.Value mm) -> a) -> a -> mm -> a
+defaultFoldlWithKey' :: (DCMM.MultiMap mm, Foldable mm) => (a -> DCM.Key mm -> DC.Element (DCM.Value mm) -> a) -> a -> mm -> a
 defaultFoldlWithKey' f z0 xs = foldrWithKey f' id xs z0 where 
 	f' k x g z = g $! f z k x
 

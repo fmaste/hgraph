@@ -38,17 +38,17 @@ class DCM.Map m => Foldable m where
 	foldl' = defaultFoldl'
 
 	-- Right-associative fold with key of a Map.
-	foldrWithKey :: (DC.Element (DCM.Keys m) -> DCM.Value m -> a -> a) -> a -> m -> a
+	foldrWithKey :: (DCM.Key m -> DCM.Value m -> a -> a) -> a -> m -> a
 
 	-- Left-associative fold with key of a Map.
-	foldlWithKey :: (a -> DC.Element (DCM.Keys m) -> DCM.Value m -> a) -> a -> m -> a
+	foldlWithKey :: (a -> DCM.Key m -> DCM.Value m -> a) -> a -> m -> a
 
 	-- Fold over the elements of a Map with key, associating to the right, but strictly.
-	foldrWithKey' :: (DC.Element (DCM.Keys m) -> DCM.Value m -> a -> a) -> a -> m -> a
+	foldrWithKey' :: (DCM.Key m -> DCM.Value m -> a -> a) -> a -> m -> a
 	foldrWithKey' = defaultFoldrWithKey'
 
 	-- Fold over the elements of a Map with key, associating to the left, but strictly.
-	foldlWithKey' :: (a -> DC.Element (DCM.Keys m) -> DCM.Value m -> a) -> a -> m -> a
+	foldlWithKey' :: (a -> DCM.Key m -> DCM.Value m -> a) -> a -> m -> a
 	foldlWithKey' = defaultFoldlWithKey'
 
 defaultFoldr' :: (DCM.Map m, Foldable m) => (DCM.Value m -> a -> a) -> a -> m -> a
@@ -59,11 +59,11 @@ defaultFoldl' :: (DCM.Map m, Foldable m) => (a -> DCM.Value m -> a) -> a -> m ->
 defaultFoldl' f z0 xs = foldr f' id xs z0 where 
 	f' x g z = g $! f z x
 
-defaultFoldrWithKey' :: (DCM.Map m, Foldable m) => (DC.Element (DCM.Keys m) -> DCM.Value m -> a -> a) -> a -> m -> a
+defaultFoldrWithKey' :: (DCM.Map m, Foldable m) => (DCM.Key m -> DCM.Value m -> a -> a) -> a -> m -> a
 defaultFoldrWithKey' f z0 xs = foldlWithKey f' id xs z0 where 
 	f' g k x z = g $! f k x z
 
-defaultFoldlWithKey' :: (DCM.Map m, Foldable m) => (a -> DC.Element (DCM.Keys m) -> DCM.Value m -> a) -> a -> m -> a
+defaultFoldlWithKey' :: (DCM.Map m, Foldable m) => (a -> DCM.Key m -> DCM.Value m -> a) -> a -> m -> a
 defaultFoldlWithKey' f z0 xs = foldrWithKey f' id xs z0 where 
 	f' k x g z = g $! f z k x
 

@@ -137,8 +137,8 @@ getValue :: (Ord k, Ord v) => k -> MapSet k v -> Maybe (Set.Set v)
 getValue k (MapSet m) = Map.lookup k m
 
 -- | A set with all the different keys.
-getKeys :: (Ord k, Ord v) => MapSet k v -> Set.Set k
-getKeys (MapSet m) = Map.keysSet m
+getKeys :: (Ord k, Ord v) => MapSet k v -> [k]
+getKeys (MapSet m) = Map.keys m
 
 -- | Key exists?
 containsKey :: (Ord k, Ord v) => k -> MapSet k v -> Bool
@@ -294,7 +294,7 @@ instance (Ord k, Ord v) => DCF.Foldable (MapSet k v) where
 	-- Default implementations for foldl'
 
 instance (Ord k, Ord v) => DCM.Map (MapSet k v) where
-	type DCM.Keys (MapSet k v) = Set.Set k
+	type DCM.Key (MapSet k v) = k
 	type DCM.Value (MapSet k v) = Set.Set v
 	putValue = putValue
 	removeKey = removeKey

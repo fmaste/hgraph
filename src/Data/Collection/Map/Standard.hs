@@ -112,8 +112,8 @@ removeKey = DM.delete
 getValue :: Ord k => k -> Map k v -> Maybe v
 getValue = DM.lookup
 
-getKeys :: Map k v -> DCSS.Set k 
-getKeys = DM.keysSet
+getKeys :: Map k v -> [k]
+getKeys = DM.keys
 
 containsKey :: Ord k => k -> Map k v -> Bool
 containsKey = DM.member
@@ -188,7 +188,7 @@ instance (Ord k, Ord v) => DCF.Foldable (Map k v) where
 	-- Default implementations for foldr'
 
 instance (Ord k, Ord v) => DCM.Map (Map k v) where
-	type DCM.Keys (Map k v) = DCSS.Set k
+	type DCM.Key (Map k v) = k
 	type DCM.Value (Map k v) = v
 	putValue = putValue
 	removeKey = removeKey
