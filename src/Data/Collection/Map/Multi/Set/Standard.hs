@@ -22,8 +22,8 @@ module Data.Collection.Map.Multi.Set.Standard (
 	foldlElements',
 	putValue,
 	removeKey,
-	getValue,
 	getKeys,
+	getValue,
 	containsKey,
 	getKeysCount,
 	getValueWithDefault,
@@ -132,14 +132,14 @@ putValue k vSet (MapSet m) = MapSet (Map.insert k vSet m)
 removeKey :: (Ord k, Ord v) => k -> MapSet k v -> MapSet k v
 removeKey k (MapSet m) = MapSet $ Map.delete k m
 
+-- | A set with all the different keys.
+getKeys :: (Ord k, Ord v) => MapSet k v -> [k]
+getKeys (MapSet m) = Map.keys m
+
 -- | A set with the different values that exist for the key.
 -- If key does not exist an empty Set is returned.
 getValue :: (Ord k, Ord v) => k -> MapSet k v -> Maybe (Set.Set v)
 getValue k (MapSet m) = Map.lookup k m
-
--- | A set with all the different keys.
-getKeys :: (Ord k, Ord v) => MapSet k v -> [k]
-getKeys (MapSet m) = Map.keys m
 
 -- | Key exists?
 containsKey :: (Ord k, Ord v) => k -> MapSet k v -> Bool
@@ -299,10 +299,10 @@ instance (Ord k, Ord v) => DCM.Map (MapSet k v) where
 	type DCM.Value (MapSet k v) = Set.Set v
 	putValue = putValue
 	removeKey = removeKey
+	getKeys = getKeys
 	getValue = getValue
 
 instance (Ord k, Ord v) => DCMK.Keys (MapSet k v) where
-	getKeys = getKeys
 	containsKey = containsKey
 	getKeysCount = getKeysCount
 

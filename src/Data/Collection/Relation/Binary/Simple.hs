@@ -122,7 +122,7 @@ removeRelation elementD elementC (BinaryRelation relatedTo codomain) = BinaryRel
 -------------------------------------------------------------------------------
 
 getDomain :: (Ord domain, Ord codomain) => BinaryRelation domain codomain -> Set.Set domain
-getDomain (BinaryRelation relatedTo _) = Set.fromList $ DCMK.getKeys relatedTo
+getDomain (BinaryRelation relatedTo _) = Set.fromList $ DCM.getKeys relatedTo
 
 getCodomain :: (Ord domain, Ord codomain) => BinaryRelation domain codomain -> Set.Set codomain
 getCodomain (BinaryRelation _ codomain) = codomain
@@ -145,7 +145,7 @@ getGraph br = DCI.fromList [ (domain, codomain) | domain <- getDomainList br, co
 -------------------------------------------------------------------------------
 
 getDomainList :: (Ord domain, Ord codomain) => BinaryRelation domain codomain -> [domain]
-getDomainList (BinaryRelation relatedTo _) = DCMK.getKeys relatedTo
+getDomainList (BinaryRelation relatedTo _) = DCM.getKeys relatedTo
 
 getCodomainList :: (Ord domain, Ord codomain) => BinaryRelation domain codomain -> [codomain]
 getCodomainList (BinaryRelation _ codomain) = DCE.toList codomain

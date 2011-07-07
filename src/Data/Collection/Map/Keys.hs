@@ -20,9 +20,6 @@ import qualified Data.Collection.Map as DCM
 
 class DCM.Map m => Keys m where
 
-	-- All the keys that have an associated value.
-	getKeys :: m -> [DCM.Key m]
-
 	-- True if the key has an associated value, otherwise, false.
 	containsKey :: DCM.Key m -> m -> Bool
 

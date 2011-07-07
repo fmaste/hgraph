@@ -24,8 +24,8 @@ module Data.Collection.Map.Standard (
 	foldlElements',
 	putValue,
 	removeKey,
-	getValue,
 	getKeys,
+	getValue,
 	containsKey,
 	getKeysCount,
 	getValueWithDefault,
@@ -110,11 +110,11 @@ putValue = DM.insert
 removeKey :: Ord k => k -> Map k v -> Map k v
 removeKey = DM.delete
 
-getValue :: Ord k => k -> Map k v -> Maybe v
-getValue = DM.lookup
-
 getKeys :: Map k v -> [k]
 getKeys = DM.keys
+
+getValue :: Ord k => k -> Map k v -> Maybe v
+getValue = DM.lookup
 
 containsKey :: Ord k => k -> Map k v -> Bool
 containsKey = DM.member
@@ -193,10 +193,10 @@ instance (Ord k, Ord v) => DCM.Map (Map k v) where
 	type DCM.Value (Map k v) = v
 	putValue = putValue
 	removeKey = removeKey
+	getKeys = getKeys
 	getValue = getValue
 
 instance (Ord k, Ord v) => DCMK.Keys (Map k v) where
-	getKeys = getKeys
 	containsKey = containsKey
 	getKeysCount = getKeysCount
 

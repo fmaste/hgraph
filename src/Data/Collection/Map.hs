@@ -39,6 +39,9 @@ class DC.Collection m => Map m where
 	-- ATOMIC QUERY FUNCTIONS
 	-----------------------------------------------------------------------
 
+	-- All the keys that have an associated value.
+	getKeys :: m -> [Key m]
+
 	-- Get the associated value of the provided key.
 	-- If the key does not exists Nothing is returned.
 	getValue :: Key m -> m -> Maybe (Value m)
