@@ -3,6 +3,12 @@
 -- Association class.
 -- TODO: Make it haddock compatible!
 
+-- A Map is a binary relation that is a function. 
+-- The domain is a set of Keys.
+-- The codomain is a bag of Values.
+-- Every domain element is associated with only one value on the codomain.
+-- Every codomain element is associated with only one key on the domain.
+
 -- MODULE
 -------------------------------------------------------------------------------
 
