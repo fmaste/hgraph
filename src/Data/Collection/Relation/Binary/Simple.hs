@@ -1,7 +1,7 @@
 -- Author: Federico Mastellone (fmaste@gmail.com)
 
 -- Generic module to manage binary relationships.
--- TODO: Make it haddock compatibele!
+-- TODO: Make it haddock compatible!
 
 -- MODULE
 -------------------------------------------------------------------------------

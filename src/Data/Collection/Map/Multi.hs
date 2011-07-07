@@ -1,7 +1,7 @@
 -- Author: Federico Mastellone (fmaste@gmail.com)
 
 -- Association of the type (Key, Collection Value) class.
--- TODO: Make it haddock compatibele!
+-- TODO: Make it haddock compatible!
 
 -- MODULE
 -------------------------------------------------------------------------------

@@ -1,7 +1,7 @@
 -- Author: Federico Mastellone (fmaste@gmail.com)
 
 -- Standard library Data.Map repackaged.
--- TODO: Make it haddock compatibele!
+-- TODO: Make it haddock compatible!
 
 -- MODULE
 -------------------------------------------------------------------------------
