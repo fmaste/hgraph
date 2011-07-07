@@ -26,6 +26,7 @@ module Data.Collection.Map.Standard (
 	removeKey,
 	getKeys,
 	getValue,
+	alter,
 	containsKey,
 	getKeysCount,
 	getValueWithDefault,
@@ -53,6 +54,7 @@ import qualified Data.Collection.Export as DCE
 import qualified Data.Collection.Foldable as DCF
 import qualified Data.Collection.Set.Standard as DCSS
 import qualified Data.Collection.Map as DCM
+import qualified Data.Collection.Map.Alter as DCMA
 import qualified Data.Collection.Map.Keys as DCMK
 import qualified Data.Collection.Map.Foldable as DCMF
 
@@ -115,6 +117,9 @@ getKeys = DM.keys
 
 getValue :: Ord k => k -> Map k v -> Maybe v
 getValue = DM.lookup
+
+alter :: Ord k => (Maybe v -> Maybe v) -> k -> Map k v -> Map k v
+alter = DM.alter
 
 containsKey :: Ord k => k -> Map k v -> Bool
 containsKey = DM.member
@@ -195,6 +200,9 @@ instance (Ord k, Ord v) => DCM.Map (Map k v) where
 	removeKey = removeKey
 	getKeys = getKeys
 	getValue = getValue
+
+instance (Ord k, Ord v) => DCMA.Alter (Map k v) where
+	alter = alter
 
 instance (Ord k, Ord v) => DCMK.Keys (Map k v) where
 	containsKey = containsKey
