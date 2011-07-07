@@ -46,7 +46,7 @@ module Data.Collection.Map.Standard (
 -------------------------------------------------------------------------------
 
 import Prelude hiding (map, foldr, foldl)
-import qualified Data.Map as DM
+import qualified Data.Map as Map
 import qualified Data.Collection as DC
 import qualified Data.Collection.Cardinality as DCC
 import qualified Data.Collection.Import as DCI
@@ -61,41 +61,41 @@ import qualified Data.Collection.Map.Foldable as DCMF
 -- DATA DEFINITION
 -------------------------------------------------------------------------------
 
-type Map = DM.Map
+type Map = Map.Map
 
 -- EXPORTED
 -------------------------------------------------------------------------------
 
 empty :: Map k v
-empty = DM.empty
+empty = Map.empty
 
 addElement :: Ord k => (k, v) -> Map k v -> Map k v
 addElement (k, v) = putValue k v
 
 removeElement :: (Ord k, Ord v) => (k, v) -> Map k v -> Map k v
-removeElement (k, v) m = DM.update f k m where
+removeElement (k, v) m = Map.update f k m where
 	f x = if x == v then Just x else Nothing
 
 containsElement :: (Ord k, Ord v) => (k, v) -> Map k v -> Bool
 containsElement (k, v) m = if getValue k m == Just v then True else False
 
 getElementsCount :: Map k v -> Integer
-getElementsCount = toInteger . DM.size
+getElementsCount = toInteger . Map.size
 
 toList :: Map k v -> [(k, v)]
-toList = DM.toList 
+toList = Map.toList 
 
 fromList :: Ord k => [(k, v)] -> Map k v
-fromList = DM.fromList
+fromList = Map.fromList
 
 -- Collection version of fold
 
 foldrElements :: ((k, v) -> a -> a) -> a -> Map k v -> a
-foldrElements f a m = DM.foldrWithKey g a m where
+foldrElements f a m = Map.foldrWithKey g a m where
 	g k v a = f (k, v) a
 
 foldlElements :: (a -> (k, v) -> a) -> a -> Map k v -> a
-foldlElements f a m = DM.foldlWithKey g a m where
+foldlElements f a m = Map.foldlWithKey g a m where
 	g a k v = f a (k, v)
 
 -- TODO: Move the default implementation so I can remove the Ord contexts.
@@ -107,40 +107,40 @@ foldlElements' :: (Ord k, Ord v) => (a -> (k, v) -> a) -> a -> Map k v -> a
 foldlElements' = DCF.foldl' -- Use provided default implementation.
 
 putValue :: Ord k => k -> v -> Map k v -> Map k v
-putValue = DM.insert
+putValue = Map.insert
 
 removeKey :: Ord k => k -> Map k v -> Map k v
-removeKey = DM.delete
+removeKey = Map.delete
 
 getKeys :: Map k v -> [k]
-getKeys = DM.keys
+getKeys = Map.keys
 
 getValue :: Ord k => k -> Map k v -> Maybe v
-getValue = DM.lookup
+getValue = Map.lookup
 
 alter :: Ord k => (Maybe v -> Maybe v) -> k -> Map k v -> Map k v
-alter = DM.alter
+alter = Map.alter
 
 containsKey :: Ord k => k -> Map k v -> Bool
-containsKey = DM.member
+containsKey = Map.member
 
 getKeysCount :: Map k v -> Integer
-getKeysCount m = toInteger $ DM.size m
+getKeysCount m = toInteger $ Map.size m
 
 getValueWithDefault :: Ord k => v -> k -> Map k v -> v
-getValueWithDefault = DM.findWithDefault
+getValueWithDefault = Map.findWithDefault
 
 getValueAndRemoveKey :: Ord k => k -> Map k v -> (Maybe v, Map k v)
-getValueAndRemoveKey k m = DM.updateLookupWithKey (\_ _ -> Nothing) k m where
+getValueAndRemoveKey k m = Map.updateLookupWithKey (\_ _ -> Nothing) k m where
 
 -- Map version of fold
 
 foldr :: (v -> a -> a) -> a -> Map k v -> a
-foldr f a m = DM.foldrWithKey g a m where
+foldr f a m = Map.foldrWithKey g a m where
 	g k v a = f v a
 
 foldl :: (a -> v -> a) -> a -> Map k v -> a
-foldl f a m = DM.foldlWithKey g a m where
+foldl f a m = Map.foldlWithKey g a m where
 	g a k v = f a v
 
 -- TODO: Move the default implementation so I can remove the Ord contexts.
@@ -152,10 +152,10 @@ foldl' :: (Ord k, Ord v) => (a -> v -> a) -> a -> Map k v -> a
 foldl' = DCMF.foldl' -- Use provided default implementation.
 
 foldrWithKey :: (k -> v -> a -> a) -> a -> Map k v -> a
-foldrWithKey = DM.foldrWithKey
+foldrWithKey = Map.foldrWithKey
 
 foldlWithKey :: (a -> k -> v -> a) -> a -> Map k v -> a
-foldlWithKey = DM.foldlWithKey
+foldlWithKey = Map.foldlWithKey
 
 -- TODO: Move the default implementation so I can remove the Ord contexts.
 foldrWithKey' :: (Ord k, Ord v) => (k -> v -> a -> a) -> a -> Map k v -> a
@@ -166,7 +166,7 @@ foldlWithKey' :: (Ord k, Ord v) => (a -> k -> v -> a) -> a -> Map k v -> a
 foldlWithKey' = DCMF.foldlWithKey' -- Use provided default implementation.
 
 map :: (a -> b) -> Map k a -> Map k b
-map = DM.map
+map = Map.map
 
 -- INSTANCES
 -------------------------------------------------------------------------------
