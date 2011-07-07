@@ -6,8 +6,8 @@
 -- An efficient way to make (key, value) associations.
 -- You can think about it as a binary relation that is a function. 
 -- Where, the domain is a set of Keys and the codomain is a bag of Values.
--- Every domain element is associated with only one value on the codomain.
--- Every codomain element is associated with only one key on the domain.
+-- Every domain element is always associated with only one value on the codomain.
+-- Every codomain element is always associated with only one key on the domain.
 
 -- MODULE
 -------------------------------------------------------------------------------
