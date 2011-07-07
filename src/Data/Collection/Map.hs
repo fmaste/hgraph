@@ -12,7 +12,7 @@
 -- MODULE
 -------------------------------------------------------------------------------
 
-{-# LANGUAGE TypeFamilies, FlexibleContexts #-}
+{-# LANGUAGE TypeFamilies #-}
 module Data.Collection.Map (
 	Map(..),
 	Combination(..) ) where
