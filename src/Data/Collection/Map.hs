@@ -40,6 +40,7 @@ class DC.Collection m => Map m where
 	-----------------------------------------------------------------------
 
 	-- All the keys that have an associated value.
+	-- TODO: Create type KeysSet with class context (Set (KeysSet m) , (Element (KeysSet m)) ~ Key m)
 	getKeys :: m -> [Key m]
 
 	-- Get the associated value of the provided key.
