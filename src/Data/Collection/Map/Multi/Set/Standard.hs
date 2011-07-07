@@ -57,7 +57,6 @@ module Data.Collection.Map.Multi.Set.Standard (
 
 import Prelude hiding (foldr, foldl)
 import qualified Data.List as DL
-import qualified Data.Map as Map -- TODO: Use Data.Collection.Map.Standard instead.
 import qualified Data.Collection as DC
 import qualified Data.Collection.Cardinality as DCC
 import qualified Data.Collection.Import as DCI
@@ -69,6 +68,7 @@ import qualified Data.Collection.Map.Foldable as DCMF
 import qualified Data.Collection.Map.Multi as DCMM
 import qualified Data.Collection.Map.Multi.Foldable as DCMMF
 import qualified Data.Collection.Map.Multi.Set as DCMMS
+import qualified Data.Collection.Map.Standard as Map
 import qualified Data.Collection.Set.Standard as Set
 
 -- * DATA DEFINITION
@@ -94,10 +94,10 @@ containsElement :: (Ord k, Ord v) => (k, v) -> MapSet k v -> Bool
 containsElement (k, v) m = Set.containsElement v $ getValueWithDefault Set.empty k m
 
 getElementsCount :: (Ord k, Ord v) => MapSet k v -> Integer
-getElementsCount (MapSet mm) = toInteger $ Map.fold (\set ans -> ans + (Set.getElementsCount set)) 0 mm
+getElementsCount (MapSet mm) = toInteger $ Map.foldr (\set ans -> ans + (Set.getElementsCount set)) 0 mm
 
 toList :: (Ord k, Ord v) => MapSet k v -> [(k, v)]
-toList (MapSet mm) = Map.foldWithKey (\k set ans -> ans ++ [(k, v) | v <- (DCE.toList set)]) [] mm
+toList (MapSet mm) = Map.foldrWithKey (\k set ans -> ans ++ [(k, v) | v <- (DCE.toList set)]) [] mm
 
 fromList :: (Ord k, Ord v) => [(k, v)] -> MapSet k v
 fromList list = DL.foldl' (\ans (k, v) -> addToKey k v ans) empty list
@@ -125,31 +125,31 @@ foldlElements' :: (Ord k, Ord v) => (a -> (k, v) -> a) -> a -> MapSet k v -> a
 foldlElements' f a m = DCF.foldl' f a m -- Use provided default implementation.
 
 putValue :: (Ord k, Ord v) => k -> Set.Set v -> MapSet k v -> MapSet k v
-putValue k vSet (MapSet m) = MapSet (Map.insert k vSet m)
+putValue k vSet (MapSet m) = MapSet (Map.putValue k vSet m)
 
 -- | Removes the key and all its values.
 -- If the key does not exists the original MapSet is returned.
 removeKey :: (Ord k, Ord v) => k -> MapSet k v -> MapSet k v
-removeKey k (MapSet m) = MapSet $ Map.delete k m
+removeKey k (MapSet m) = MapSet $ Map.removeKey k m
 
 -- | A set with all the different keys.
 getKeys :: (Ord k, Ord v) => MapSet k v -> [k]
-getKeys (MapSet m) = Map.keys m
+getKeys (MapSet m) = Map.getKeys m
 
 -- | A set with the different values that exist for the key.
 -- If key does not exist an empty Set is returned.
 getValue :: (Ord k, Ord v) => k -> MapSet k v -> Maybe (Set.Set v)
-getValue k (MapSet m) = Map.lookup k m
+getValue k (MapSet m) = Map.getValue k m
 
 -- | Key exists?
 containsKey :: (Ord k, Ord v) => k -> MapSet k v -> Bool
-containsKey k (MapSet m) = Map.member k m
+containsKey k (MapSet m) = Map.containsKey k m
 
 getKeysCount :: MapSet k v -> Integer
-getKeysCount (MapSet m) = toInteger $ Map.size m
+getKeysCount (MapSet m) = toInteger $ Map.getKeysCount m
 
 getValueWithDefault :: (Ord k, Ord v) => Set.Set v -> k -> MapSet k v -> Set.Set v
-getValueWithDefault v k (MapSet mm) = Map.findWithDefault v k mm
+getValueWithDefault v k (MapSet mm) = Map.getValueWithDefault v k mm
 
 getValueAndRemoveKey :: (Ord k, Ord v) => k -> MapSet k v -> (Maybe (Set.Set v), MapSet k v)
 getValueAndRemoveKey k mm = (getValue k mm, removeKey k mm)
@@ -187,20 +187,25 @@ foldlSetWithKey' = DCMF.foldlWithKey' -- Use provided default implementation.
 -- | Adds a key without any values.
 -- If the key already exists the original MapSet is returned.
 addKey :: (Ord k, Ord v) => k -> MapSet k v -> MapSet k v
-addKey k (MapSet m) = MapSet $ Map.union m (Map.singleton k Set.empty)
+addKey k (MapSet m) = MapSet $ Map.alter f k m where
+	f (Just v) = Just v
+	f Nothing = Just Set.empty
 
 -- | Adds a value to key.
 -- If key does not exist it is added.
 -- If the value already exists the orignal MapSet is returned.
 addToKey :: (Ord k, Ord v) => k -> v -> MapSet k v -> MapSet k v
-addToKey k v (MapSet m) = MapSet $ Map.insertWith (\new old -> Set.addElement v old) k (singleton v) m
-	where singleton v = Set.addElement v $ Set.empty
+addToKey k v (MapSet m) = MapSet $ Map.alter f k m where
+	f (Just set) = Just (Set.addElement v set)
+	f Nothing = Just (Set.addElement v Set.empty)
 
 -- | Removes the value from the key.
 -- If key does not exist the original MapSet is returned.
 -- If the value does not exists the original MapSet is returned.
 removeFromKey :: (Ord k, Ord v) => k -> v ->  MapSet k v ->  MapSet k v
-removeFromKey k v (MapSet m) = MapSet $ Map.adjust (Set.removeElement v) k m
+removeFromKey k v (MapSet m) = MapSet $ Map.alter f k m where
+	f (Just set) = Just (Set.removeElement v set)
+	f Nothing = Nothing
 
 -- | Value exists for the key?
 containedInKey :: (Ord k, Ord v) => k -> v -> MapSet k v -> Bool
@@ -214,10 +219,14 @@ remove :: Ord v => v -> MapSet k v -> MapSet k v
 remove v (MapSet m) = MapSet (Map.map (DC.removeElement v) m)
 
 removeFromKeys :: (Ord k, Ord v) => [k] -> v -> MapSet k v -> MapSet k v
+removeFromKeys ks v mm = DL.foldr f mm ks where
+	f k mm = removeFromKey k v mm
+{-- TODO: Efficient version
 removeFromKeys ks v (MapSet m) = MapSet (Map.unionWith f m m') where
 	f set _ = Set.removeElement v set
 	m' = Map.fromList $ map g ks where
 		g k = (k, Set.empty)
+--}
 
 foldr :: Ord v => (v -> a -> a) -> a -> MapSet k v -> a
 foldr f a (MapSet m) = Map.foldrWithKey g a m where
