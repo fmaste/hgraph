@@ -8,8 +8,8 @@
 
 {-# LANGUAGE TypeFamilies #-}
 module Data.Collection.Relation.Binary.Simple (
-	-- Atomic constructor functions.
 	BinaryRelation(),
+	-- Atomic constructor functions.
 	empty,
 	addDomainElement,
 	addCodomainElement,

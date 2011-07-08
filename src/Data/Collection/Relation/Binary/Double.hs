@@ -8,8 +8,8 @@
 
 {-# LANGUAGE TypeFamilies #-}
 module Data.Collection.Relation.Binary.Double (
-	-- Atomic constructor functions.
 	BinaryRelation(),
+	-- Atomic constructor functions.
 	empty,
 	addDomainElement,
 	addCodomainElement,
@@ -157,11 +157,6 @@ containsRelation domain codomain  (BinaryRelation relatedTo _) = DCMM.containedI
 getGraph :: (Ord domain, Ord codomain) => BinaryRelation domain codomain -> [(domain, codomain)]
 -- TODO: Make it more performant, it is traversing the sets too many times.
 getGraph br = [ (domain, codomain) | domain <- getDomainList br, codomain <- getRelatedToList domain br]
-
--- INSTANCE
--------------------------------------------------------------------------------
-
-
 
 -- UTIL DOMAIN QUERY FUNCTIONS
 -------------------------------------------------------------------------------
