@@ -1,7 +1,15 @@
 -- Author: Federico Mastellone (fmaste@gmail.com)
 
--- Association of the type (Key, Collection Value) class.
+-- Multi associations class.
 -- TODO: Make it haddock compatible!
+
+-- An easy way to handle a (Map k v) where Value is a Collection.
+-- You can think of it a Map (its superclass) where the Value is a Collection.
+-- This way you can think about it as a binary relation that is a function from Keys to Collections.
+-- Or you can handle the Collection Elements individually.
+-- This way you can think about it as a binary relation from Keys to Elements.
+-- The domain is a set of Keys where each Key is associated with zero or more Elements.
+-- The codomain is a bag of Elements where each Value is associated with only one key.
 
 -- MODULE
 -------------------------------------------------------------------------------
