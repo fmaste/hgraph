@@ -208,6 +208,9 @@ isRelatedFrom codomain domain br = containsRelation domain codomain br
 isInjective :: (Ord domain, Ord codomain) => BinaryRelation domain codomain -> Bool
 isInjective br = all (\codomain -> getRelatedFromCount codomain br <= 1) $ getCodomainList br
 
+-- TRANSFORMATION FUNCTIONS
+-------------------------------------------------------------------------------
+
 revert :: (Ord domain, Ord codomain) => BinaryRelation domain codomain -> BinaryRelation codomain domain
 revert (BinaryRelation relatedTo relatedFrom) = BinaryRelation relatedFrom relatedTo
 
