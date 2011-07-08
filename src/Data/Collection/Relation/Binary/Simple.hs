@@ -56,6 +56,8 @@ import qualified Data.Collection.Map.Foldable as DCMF
 import qualified Data.Collection.Map.Multi as DCMM
 import qualified Data.Collection.Map.Multi.Set as DCMMS
 import qualified Data.Collection.Relation.Binary as DCRB
+import qualified Data.Collection.Relation.Binary.Domain as DCRBD
+import qualified Data.Collection.Relation.Binary.Codomain as DCRBC
 import qualified Data.Collection.Map.Multi.Set.Standard as MapSet
 import qualified Data.Collection.Set.Standard as Set
 
@@ -226,4 +228,20 @@ instance (Ord domain, Ord codomain) => DCRB.BinaryRelation (BinaryRelation domai
 	getRelatedFrom = getRelatedFrom
 	containsRelation = containsRelation
 	getGraph = getGraph
+
+instance (Ord domain, Ord codomain) => DCRBD.Domain (BinaryRelation domain codomain) where
+	getDomainList = getDomainList
+	getDomainCount r = toInteger $ getDomainCount r
+	containsDomainElement = containsDomainElement
+	getRelatedToList = getRelatedToList
+	getRelatedToCount d r = toInteger $ getRelatedToCount d r
+	isRelatedTo = isRelatedTo
+
+instance (Ord domain, Ord codomain) => DCRBC.Codomain (BinaryRelation domain codomain) where
+	getCodomainList = getCodomainList
+	getCodomainCount r = toInteger $ getCodomainCount r
+	containsCodomainElement = containsCodomainElement
+	getRelatedFromList = getRelatedFromList
+	getRelatedFromCount c r = toInteger $ getRelatedFromCount c r
+	isRelatedFrom = isRelatedFrom
 
