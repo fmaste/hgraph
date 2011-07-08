@@ -30,6 +30,7 @@ module Data.Graph.Labels (
 -------------------------------------------------------------------------------
 
 import qualified Data.Set as Set
+import qualified Data.Collection.Relation.Binary as DCRB
 import qualified Data.Collection.Relation.Binary.Double as BR
 
 -- DATA DEFINITION
@@ -51,25 +52,25 @@ empty = Labels BR.empty
 -- If this label already exists the original Labels is returned.
 addLabel :: (Ord element, Ord label) => label -> Labels element label -> Labels element label
 addLabel label (Labels br) = Labels br' where
-	br' = BR.addCodomainElement label br
+	br' = DCRB.addCodomainElement label br
 
 -- Adds an element without any labels relationships.
 -- If this element already exists the original Labels is returned.
 addElement :: (Ord element, Ord label) => element -> Labels element label -> Labels element label
 addElement element (Labels br) = Labels br' where
-	br' = BR.addDomainElement element br
+	br' = DCRB.addDomainElement element br
 
 -- Removes a label and all its elements relationships.
 -- If this label does not exists the original Labels is returned.
 removeLabel :: (Ord element, Ord label) => label -> Labels element label -> Labels element label
 removeLabel label (Labels br) = Labels br' where
-	br' = BR.removeCodomainElement label br
+	br' = DCRB.removeCodomainElement label br
 
 -- Removes an element and all its labels relationships.
 -- If this element does not exists the original Labels is returned.
 removeElement :: (Ord element, Ord label) => element -> Labels element label -> Labels element label
 removeElement element (Labels br) = Labels br' where
-	br' = BR.removeDomainElement element br
+	br' = DCRB.removeDomainElement element br
 
 -- Adds a label to the element.
 -- If the element or label don't exist they are added.
@@ -77,7 +78,7 @@ removeElement element (Labels br) = Labels br' where
 -- If this label already exists for this element the original Labels is returned.
 addLabelToElement :: (Ord element, Ord label) => element -> label -> Labels element label -> Labels element label
 addLabelToElement element label (Labels br) = Labels br' where
-	br' = BR.addRelation element label br
+	br' = DCRB.addRelation element label br
 
 -- Removes a label from the element.
 -- If the element or label don't exist the original Labels is returned.
@@ -85,7 +86,7 @@ addLabelToElement element label (Labels br) = Labels br' where
 -- If this element already exists for this label the original Labels is returned.
 removeLabelFromElement :: (Ord element, Ord label) => element -> label -> Labels element label -> Labels element label
 removeLabelFromElement element label (Labels br) = Labels br' where
-	br' = BR.removeRelation element label br
+	br' = DCRB.removeRelation element label br
 
 -- QUERY
 -------------------------------------------------------------------------------
@@ -109,10 +110,10 @@ getElementLabels :: (Ord element, Ord label) => element -> Labels element label 
 getElementLabels element (Labels br) = BR.getRelatedToList element br
 
 getLabelElementsSet :: (Ord element, Ord label) => label -> Labels element label -> Set.Set element
-getLabelElementsSet label (Labels br) = BR.getRelatedFrom label br
+getLabelElementsSet label (Labels br) = DCRB.getRelatedFrom label br
 
 getElementLabelsSet :: (Ord element, Ord label) => element -> Labels element label -> Set.Set label
-getElementLabelsSet element (Labels br) = BR.getRelatedTo element br
+getElementLabelsSet element (Labels br) = DCRB.getRelatedTo element br
 
 getLabelElementsCount :: (Ord element, Ord label) => label -> Labels element label -> Int
 getLabelElementsCount label (Labels br) = BR.getRelatedFromCount label br

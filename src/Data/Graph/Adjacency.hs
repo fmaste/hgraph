@@ -44,6 +44,7 @@ module Data.Graph.Adjacency (
 import Data.List (foldl, foldl', foldr)
 import qualified Data.Set as Set
 import qualified Data.Map as Map
+import qualified Data.Collection.Relation.Binary as DCRB
 import qualified Data.Collection.Relation.Binary.Double as BR
 
 -- * DATA DEFINITION
@@ -68,27 +69,27 @@ empty = Adjacency BR.empty
 -- If the node already exists the original Adjacency is returned.
 addNode :: Ord node => node -> Adjacency node -> Adjacency node
 addNode node (Adjacency br) = Adjacency br' where
-	br' = BR.addCodomainElement node $ BR.addDomainElement node br
+	br' = DCRB.addCodomainElement node $ DCRB.addDomainElement node br
 
 -- | Removes the node and all the adjacencies were the node participates.
 -- If the node does not exists the original Adjacency is returned.
 removeNode :: Ord node => node -> Adjacency node -> Adjacency node
 removeNode node (Adjacency br) = Adjacency br' where
-	br' = BR.removeCodomainElement node $ BR.removeDomainElement node br
+	br' = DCRB.removeCodomainElement node $ DCRB.removeDomainElement node br
 
 -- | Adds an adjacency from src to dst.
 -- If src or dst do not exist they are added.
 -- If the adjacency already exists the original Adjacency is returned.
 addAdjacency :: Ord node => node -> node -> Adjacency node -> Adjacency node
 addAdjacency src dst (Adjacency br) = Adjacency br' where
-	br' = BR.addRelation src dst br
+	br' = DCRB.addRelation src dst br
 
 -- | Removes the adjacency from src to dst.
 -- If src or dst do not exist the original Adjacency is returned.
 -- If the adjancecy does not exists the original Adjacency is returned.
 removeAdjacency :: Ord node => node -> node -> Adjacency node -> Adjacency node
 removeAdjacency src dst (Adjacency br) = Adjacency br' where
-	br' = BR.removeRelation src dst br
+	br' = DCRB.removeRelation src dst br
 
 -- | Removes all the adjacencies between node1 and node2.
 -- If node1 or node2 do not exist the original Adjacency is returned.
@@ -110,7 +111,7 @@ removeNodeAdjacencies node adj =
 removeNodeSuccAdjacencies :: Ord node => node -> Adjacency node -> Adjacency node
 removeNodeSuccAdjacencies node adj@(Adjacency br) = Adjacency br' where
 	br' = foldl' removeSuccFromPreds br (getNodeSuccNodes node adj) where
-		removeSuccFromPreds br'' succNode = BR.removeRelation node succNode br''
+		removeSuccFromPreds br'' succNode = DCRB.removeRelation node succNode br''
 
 -- | Removes all the adjacencies were this node is successor.
 -- If node does not exists the original Adjacency is returned.
@@ -118,7 +119,7 @@ removeNodeSuccAdjacencies node adj@(Adjacency br) = Adjacency br' where
 removeNodePredAdjacencies :: Ord node => node -> Adjacency node -> Adjacency node
 removeNodePredAdjacencies node adj@(Adjacency br) = Adjacency br' where
 	br' = foldl' removePredFromSuccs br (getNodePredNodes node adj) where
-		removePredFromSuccs br'' predNode = BR.removeRelation predNode node br''
+		removePredFromSuccs br'' predNode = DCRB.removeRelation predNode node br''
 
 -- * QUERY FUNCTIONS
 -------------------------------------------------------------------------------
@@ -141,11 +142,11 @@ getNodePredNodes node (Adjacency br) = BR.getRelatedFromList node br
 
 -- | A set with the node successors.
 getNodeSuccNodesSet :: Ord node => node -> Adjacency node -> Set.Set node
-getNodeSuccNodesSet node (Adjacency br) = BR.getRelatedTo node br
+getNodeSuccNodesSet node (Adjacency br) = DCRB.getRelatedTo node br
 
 -- | A set with the node predecessors.
 getNodePredNodesSet :: Ord node => node -> Adjacency node -> Set.Set node
-getNodePredNodesSet node (Adjacency br) = BR.getRelatedFrom node br
+getNodePredNodesSet node (Adjacency br) = DCRB.getRelatedFrom node br
 
 -- | The different nodes that are adjacencent, either succs or preds.
 getNodeAdjacentNodes :: Ord node => node -> Adjacency node -> [node]
