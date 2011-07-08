@@ -14,12 +14,13 @@ module Data.Collection.Graph (
 -------------------------------------------------------------------------------
 
 import qualified Data.Collection as DC
+import qualified Data.Collection.Set as DCS
 
 -- CLASSES
 -------------------------------------------------------------------------------
 
 -- The main Graph class.
-class (DC.Collection g, DC.Collection (Nodes g), DC.Collection (Edges g)) => Graph g where
+class (DC.Collection g, DCS.Set (Nodes g), DC.Collection (Edges g)) => Graph g where
 	type Nodes g
 	type Edges g
 
