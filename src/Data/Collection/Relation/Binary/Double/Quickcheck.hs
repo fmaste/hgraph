@@ -98,12 +98,12 @@ prop_addToCodomainCheckDomainCount elements = BR.getDomainCount createdBR == 0 w
 
 -- | Add all the elements to the domain and check if there are relations.
 prop_addToDomainCheckRelations :: [Int] -> Bool
-prop_addToDomainCheckRelations elements = BR.getGraph createdBR == Set.empty where
+prop_addToDomainCheckRelations elements = BR.getGraph createdBR == [] where
 	createdBR = addElementsToDomain elements (BR.empty :: BR.BinaryRelation Int Int)
 
 -- | Add all the elements to the codomain and check if there are relations.
 prop_addToCodomainCheckRelations :: [Int] -> Bool
-prop_addToCodomainCheckRelations elements = BR.getGraph createdBR == Set.empty where
+prop_addToCodomainCheckRelations elements = BR.getGraph createdBR == [] where
 	createdBR = addElementsToCodomain elements (BR.empty :: BR.BinaryRelation Int Int)
 
 -- REMOVE ELEMENTS

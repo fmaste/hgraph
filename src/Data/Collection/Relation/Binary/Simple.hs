@@ -134,9 +134,9 @@ getRelatedFrom :: (Ord domain, Ord codomain) => codomain -> BinaryRelation domai
 getRelatedFrom element (BinaryRelation relatedTo _) = DCMF.foldrWithKey f Set.empty relatedTo where
 	f key set ans = if Set.containsElement element set then Set.addElement key ans else ans
 
-getGraph :: (Ord domain, Ord codomain) => BinaryRelation domain codomain -> Set.Set (domain, codomain)
+getGraph :: (Ord domain, Ord codomain) => BinaryRelation domain codomain -> [(domain, codomain)]
 -- TODO: Make it more performant, it is traversing the sets too many times.
-getGraph br = DCI.fromList [ (domain, codomain) | domain <- getDomainList br, codomain <- getRelatedToList domain br]
+getGraph br = [ (domain, codomain) | domain <- getDomainList br, codomain <- getRelatedToList domain br]
 
 -- UTIL QUERY FUNCTIONS
 -------------------------------------------------------------------------------
@@ -205,7 +205,7 @@ instance (Ord domain, Ord codomain) => DC.Collection (BinaryRelation domain codo
 	containsElement (d, c) br = containsRelation d c br
 
 instance (Ord domain, Ord codomain) => DCC.Cardinality (BinaryRelation domain codomain) where
-	getElementsCount br = DCC.getElementsCount $ getGraph br
+	getElementsCount br = toInteger $ length $ getGraph br
 
 instance (Ord domain, Ord codomain) => DCRB.BinaryRelation (BinaryRelation domain codomain) where
 	type DCRB.DomainSet (BinaryRelation domain codomain) = Set.Set domain
@@ -220,4 +220,5 @@ instance (Ord domain, Ord codomain) => DCRB.BinaryRelation (BinaryRelation domai
 	getCodomain = getCodomain
 	getRelatedTo = getRelatedTo
 	getRelatedFrom = getRelatedFrom
+	getGraph = getGraph
 

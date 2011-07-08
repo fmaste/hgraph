@@ -66,7 +66,8 @@ class (DC.Collection r, DCS.Set (DomainSet r), DCS.Set (CodomainSet r)) => Binar
 	-- All the relationships. Elements without relationships are not shown.
 	-- This function can be constructed using other funtions, but it is
 	-- here because the graph is part of the signature of a relation.
-	getGraph :: r -> [(Domain r, Codomain r)]
+	-- TODO: Return a Set of (domain, codomain).
+	getGraph :: r -> [(DC.Element (DomainSet r), DC.Element (CodomainSet r))]
 
 -- TODO
 -------------------------------------------------------------------------------
