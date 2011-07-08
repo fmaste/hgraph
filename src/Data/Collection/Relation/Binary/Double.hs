@@ -22,8 +22,8 @@ module Data.Collection.Relation.Binary.Double (
 	getCodomain,
 	getRelatedTo,
 	getRelatedFrom,
-	-- Util query functions.
 	getGraph,
+	-- Util query functions.
 	getDomainList,
 	getCodomainList,
 	getDomainCount,
@@ -148,6 +148,10 @@ getRelatedTo element (BinaryRelation relatedTo _) = DCM.getValueWithDefault Set.
 getRelatedFrom :: (Ord domain, Ord codomain) => codomain -> BinaryRelation domain codomain -> Set.Set domain
 getRelatedFrom element (BinaryRelation _ relatedFrom) = DCM.getValueWithDefault Set.empty element relatedFrom
 
+getGraph :: (Ord domain, Ord codomain) => BinaryRelation domain codomain -> Set.Set (domain, codomain)
+-- TODO: Make it more performant, it is traversing the sets too many times.
+getGraph br = DCI.fromList [ (domain, codomain) | domain <- getDomainList br, codomain <- getRelatedToList domain br]
+
 -- INSTANCE
 -------------------------------------------------------------------------------
 
@@ -155,13 +159,6 @@ getRelatedFrom element (BinaryRelation _ relatedFrom) = DCM.getValueWithDefault 
 
 -- UTIL QUERY FUNCTIONS
 -------------------------------------------------------------------------------
-
--- All the relationships. Elements without relationships are not shown.
--- This function can be constructed using other funtions, but it is
--- here because the graph is part of the signature of a binary relation.
-getGraph :: (Ord domain, Ord codomain) => BinaryRelation domain codomain -> Set.Set (domain, codomain)
--- TODO: Make it more performant, it is traversing the sets too many times.
-getGraph br = DCI.fromList [ (domain, codomain) | domain <- getDomainList br, codomain <- getRelatedToList domain br]
 
 getDomainList :: (Ord domain, Ord codomain) => BinaryRelation domain codomain -> [domain]
 getDomainList (BinaryRelation relatedTo _) = DCM.getKeys relatedTo

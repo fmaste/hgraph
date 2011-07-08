@@ -134,9 +134,6 @@ getRelatedFrom :: (Ord domain, Ord codomain) => codomain -> BinaryRelation domai
 getRelatedFrom element (BinaryRelation relatedTo _) = DCMF.foldrWithKey f Set.empty relatedTo where
 	f key set ans = if Set.containsElement element set then Set.addElement key ans else ans
 
--- All the relationships. Elements without relationships are not shown.
--- This function can be constructed using other funtions, but it is
--- here because the graph is part of the signature of a binary relation.
 getGraph :: (Ord domain, Ord codomain) => BinaryRelation domain codomain -> Set.Set (domain, codomain)
 -- TODO: Make it more performant, it is traversing the sets too many times.
 getGraph br = DCI.fromList [ (domain, codomain) | domain <- getDomainList br, codomain <- getRelatedToList domain br]
