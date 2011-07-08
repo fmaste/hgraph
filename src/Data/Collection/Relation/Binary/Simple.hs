@@ -54,8 +54,8 @@ import qualified Data.Collection.Map.Keys as DCMK
 import qualified Data.Collection.Map.Foldable as DCMF
 import qualified Data.Collection.Map.Multi as DCMM
 import qualified Data.Collection.Map.Multi.Set as DCMMS
-import qualified Data.Collection.Map.Multi.Set.Standard as MapSet
 import qualified Data.Collection.Relation.Binary as DCRB
+import qualified Data.Collection.Map.Multi.Set.Standard as MapSet
 import qualified Data.Collection.Set.Standard as Set
 
 -- DATA DEFINITION
