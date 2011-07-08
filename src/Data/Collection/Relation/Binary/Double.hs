@@ -38,7 +38,7 @@ module Data.Collection.Relation.Binary.Double (
 	getRelatedFromList,
 	getRelatedFromCount,
 	isRelatedFrom,
-	-- Relation theory functions.
+	-- Theory functions.
 	isInjective,
 	revert) where
 
