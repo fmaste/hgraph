@@ -24,18 +24,19 @@ module Data.Collection.Relation.Binary.Double (
 	getRelatedFrom,
 	containsRelation,
 	getGraph,
-	-- Util query functions.
+	-- Util domain query functions.
 	getDomainList,
-	getCodomainList,
 	getDomainCount,
-	getCodomainCount,
 	containsDomainElement,
-	containsCodomainElement,
 	getRelatedToList,
-	getRelatedFromList,
 	getRelatedToCount,
-	getRelatedFromCount,
 	isRelatedTo,
+	-- Util codomain query functions.
+	getCodomainList,
+	getCodomainCount,
+	containsCodomainElement,
+	getRelatedFromList,
+	getRelatedFromCount,
 	isRelatedFrom,
 	-- Relation theory functions.
 	isInjective,
@@ -160,41 +161,44 @@ getGraph br = [ (domain, codomain) | domain <- getDomainList br, codomain <- get
 
 
 
--- UTIL QUERY FUNCTIONS
+-- UTIL DOMAIN QUERY FUNCTIONS
 -------------------------------------------------------------------------------
 
 getDomainList :: (Ord domain, Ord codomain) => BinaryRelation domain codomain -> [domain]
 getDomainList (BinaryRelation relatedTo _) = DCM.getKeys relatedTo
 
-getCodomainList :: (Ord domain, Ord codomain) => BinaryRelation domain codomain -> [codomain]
-getCodomainList (BinaryRelation _ relatedFrom) = DCM.getKeys relatedFrom
-
 getDomainCount :: (Ord domain, Ord codomain) => BinaryRelation domain codomain -> Int
 getDomainCount (BinaryRelation relatedTo _) = fromInteger $ DCMK.getKeysCount relatedTo
-
-getCodomainCount :: (Ord domain, Ord codomain) => BinaryRelation domain codomain -> Int
-getCodomainCount (BinaryRelation _ relatedFrom) = fromInteger $ DCMK.getKeysCount relatedFrom
 
 containsDomainElement :: (Ord domain, Ord codomain) => domain -> BinaryRelation domain codomain -> Bool
 containsDomainElement element (BinaryRelation relatedTo _) = DCMK.containsKey element relatedTo
 
-containsCodomainElement :: (Ord domain, Ord codomain) => codomain -> BinaryRelation domain codomain -> Bool
-containsCodomainElement element (BinaryRelation _ relatedFrom) = DCMK.containsKey element relatedFrom
-
 getRelatedToList :: (Ord domain, Ord codomain) => domain -> BinaryRelation domain codomain -> [codomain]
 getRelatedToList element br = DCE.toList $ getRelatedTo element br
-
-getRelatedFromList :: (Ord domain, Ord codomain) => codomain -> BinaryRelation domain codomain -> [domain]
-getRelatedFromList element br = DCE.toList $ getRelatedFrom element br
 
 getRelatedToCount :: (Ord domain, Ord codomain) => domain -> BinaryRelation domain codomain -> Int
 getRelatedToCount element (BinaryRelation relatedTo _) = fromInteger $ DCMM.getValuesCount element relatedTo
 
-getRelatedFromCount :: (Ord domain, Ord codomain) => codomain -> BinaryRelation domain codomain -> Int
-getRelatedFromCount element (BinaryRelation _ relatedFrom) = fromInteger $ DCMM.getValuesCount element relatedFrom
-
 isRelatedTo :: (Ord domain, Ord codomain) => domain -> codomain -> BinaryRelation domain codomain -> Bool
 isRelatedTo domain codomain br = containsRelation domain codomain br
+
+-- UTIL CODOMAIN QUERY FUNCTIONS
+-------------------------------------------------------------------------------
+
+getCodomainList :: (Ord domain, Ord codomain) => BinaryRelation domain codomain -> [codomain]
+getCodomainList (BinaryRelation _ relatedFrom) = DCM.getKeys relatedFrom
+
+getCodomainCount :: (Ord domain, Ord codomain) => BinaryRelation domain codomain -> Int
+getCodomainCount (BinaryRelation _ relatedFrom) = fromInteger $ DCMK.getKeysCount relatedFrom
+
+containsCodomainElement :: (Ord domain, Ord codomain) => codomain -> BinaryRelation domain codomain -> Bool
+containsCodomainElement element (BinaryRelation _ relatedFrom) = DCMK.containsKey element relatedFrom
+
+getRelatedFromList :: (Ord domain, Ord codomain) => codomain -> BinaryRelation domain codomain -> [domain]
+getRelatedFromList element br = DCE.toList $ getRelatedFrom element br
+
+getRelatedFromCount :: (Ord domain, Ord codomain) => codomain -> BinaryRelation domain codomain -> Int
+getRelatedFromCount element (BinaryRelation _ relatedFrom) = fromInteger $ DCMM.getValuesCount element relatedFrom
 
 isRelatedFrom :: (Ord domain, Ord codomain) => codomain -> domain -> BinaryRelation domain codomain -> Bool
 isRelatedFrom codomain domain br = containsRelation domain codomain br
