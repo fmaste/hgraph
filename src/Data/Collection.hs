@@ -3,6 +3,8 @@
 -- Collection classes.
 -- TODO: Make it haddock compatible!
 
+-- A container of zero or more elements were the order is not important!
+
 -- MODULE
 -------------------------------------------------------------------------------
 
