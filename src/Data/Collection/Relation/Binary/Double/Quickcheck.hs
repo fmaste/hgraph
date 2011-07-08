@@ -66,13 +66,13 @@ prop_addToCodomainCheckCodomain elements = BR.getCodomain createdBR == insertedE
 
 -- | Add all the elements to the domain and check the size of the added elements with getDomainCount.
 prop_addToDomainCheckDomainCount :: [Int] -> Bool
-prop_addToDomainCheckDomainCount elements = BR.getDomainCount createdBR == Set.size insertedElementsSet where
+prop_addToDomainCheckDomainCount elements = BR.getDomainCount createdBR == toInteger (Set.size insertedElementsSet) where
 	createdBR = addElementsToDomain elements (BR.empty :: BR.BinaryRelation Int Int)
 	insertedElementsSet = Set.fromList elements
 
 -- | Add all the elements to the codomain and check the size of the added elements with getCodomainCount.
 prop_addToCodomainCheckCodomainCount :: [Int] -> Bool
-prop_addToCodomainCheckCodomainCount elements = BR.getCodomainCount createdBR == Set.size insertedElementsSet where
+prop_addToCodomainCheckCodomainCount elements = BR.getCodomainCount createdBR == toInteger (Set.size insertedElementsSet) where
 	createdBR = addElementsToCodomain elements (BR.empty :: BR.BinaryRelation Int Int)
 	insertedElementsSet = Set.fromList elements
 

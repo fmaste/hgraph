@@ -152,8 +152,8 @@ getGraph br = [ (domain, codomain) | domain <- getDomainList br, codomain <- get
 getDomainList :: (Ord domain, Ord codomain) => BinaryRelation domain codomain -> [domain]
 getDomainList (BinaryRelation relatedTo _) = DCM.getKeys relatedTo
 
-getDomainCount :: (Ord domain, Ord codomain) => BinaryRelation domain codomain -> Int
-getDomainCount (BinaryRelation relatedTo _) = fromInteger $ DCMK.getKeysCount relatedTo
+getDomainCount :: (Ord domain, Ord codomain) => BinaryRelation domain codomain -> Integer
+getDomainCount (BinaryRelation relatedTo _) = DCMK.getKeysCount relatedTo
 
 containsDomainElement :: (Ord domain, Ord codomain) => domain -> BinaryRelation domain codomain -> Bool
 containsDomainElement element (BinaryRelation relatedTo _) = DCMK.containsKey element relatedTo
@@ -161,8 +161,8 @@ containsDomainElement element (BinaryRelation relatedTo _) = DCMK.containsKey el
 getRelatedToList :: (Ord domain, Ord codomain) => domain -> BinaryRelation domain codomain -> [codomain]
 getRelatedToList element br = DCE.toList $ getRelatedTo element br
 
-getRelatedToCount :: (Ord domain, Ord codomain) => domain -> BinaryRelation domain codomain -> Int
-getRelatedToCount element (BinaryRelation relatedTo _) = fromInteger $ DCMM.getValuesCount element relatedTo
+getRelatedToCount :: (Ord domain, Ord codomain) => domain -> BinaryRelation domain codomain -> Integer
+getRelatedToCount element (BinaryRelation relatedTo _) = DCMM.getValuesCount element relatedTo
 
 isRelatedTo :: (Ord domain, Ord codomain) => domain -> codomain -> BinaryRelation domain codomain -> Bool
 isRelatedTo domain codomain br = containsRelation domain codomain br
@@ -173,8 +173,8 @@ isRelatedTo domain codomain br = containsRelation domain codomain br
 getCodomainList :: (Ord domain, Ord codomain) => BinaryRelation domain codomain -> [codomain]
 getCodomainList (BinaryRelation _ codomain) = DCE.toList codomain
 
-getCodomainCount :: (Ord domain, Ord codomain) => BinaryRelation domain codomain -> Int
-getCodomainCount (BinaryRelation _ codomain) = fromInteger $ DCC.getElementsCount codomain
+getCodomainCount :: (Ord domain, Ord codomain) => BinaryRelation domain codomain -> Integer
+getCodomainCount (BinaryRelation _ codomain) = DCC.getElementsCount codomain
 
 containsCodomainElement :: (Ord domain, Ord codomain) => codomain -> BinaryRelation domain codomain -> Bool
 containsCodomainElement element (BinaryRelation _ codomain) = Set.containsElement element codomain
@@ -182,8 +182,8 @@ containsCodomainElement element (BinaryRelation _ codomain) = Set.containsElemen
 getRelatedFromList :: (Ord domain, Ord codomain) => codomain -> BinaryRelation domain codomain -> [domain]
 getRelatedFromList element br = DCE.toList $ getRelatedFrom element br
 
-getRelatedFromCount :: (Ord domain, Ord codomain) => codomain -> BinaryRelation domain codomain -> Int
-getRelatedFromCount element br = fromInteger $ DCC.getElementsCount $ getRelatedFrom element br
+getRelatedFromCount :: (Ord domain, Ord codomain) => codomain -> BinaryRelation domain codomain -> Integer
+getRelatedFromCount element br = DCC.getElementsCount $ getRelatedFrom element br
 
 isRelatedFrom :: (Ord domain, Ord codomain) => codomain -> domain -> BinaryRelation domain codomain -> Bool
 isRelatedFrom codomain domain br = containsRelation domain codomain br
@@ -237,22 +237,18 @@ instance (Ord domain, Ord codomain) => DCRB.BinaryRelation (BinaryRelation domai
 
 instance (Ord domain, Ord codomain) => DCRBD.Domain (BinaryRelation domain codomain) where
 	getDomainList = getDomainList
-	-- TODO: Remove toInteger
-	getDomainCount r = toInteger $ getDomainCount r
+	getDomainCount = getDomainCount
 	containsDomainElement = containsDomainElement
 	getRelatedToList = getRelatedToList
-	-- TODO: Remove toInteger
-	getRelatedToCount d r = toInteger $ getRelatedToCount d r
+	getRelatedToCount = getRelatedToCount
 	isRelatedTo = isRelatedTo
 
 instance (Ord domain, Ord codomain) => DCRBC.Codomain (BinaryRelation domain codomain) where
 	getCodomainList = getCodomainList
-	-- TODO: Remove toInteger
-	getCodomainCount r = toInteger $ getCodomainCount r
+	getCodomainCount = getCodomainCount
 	containsCodomainElement = containsCodomainElement
 	getRelatedFromList = getRelatedFromList
-	-- TODO: Remove toInteger
-	getRelatedFromCount c r = toInteger $ getRelatedFromCount c r
+	getRelatedFromCount = getRelatedFromCount
 	isRelatedFrom = isRelatedFrom
 
 instance (Ord domain, Ord codomain) => DCRBT.Theory (BinaryRelation domain codomain) where
