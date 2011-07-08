@@ -22,6 +22,7 @@ module Data.Collection.Relation.Binary.Double (
 	getCodomain,
 	getRelatedTo,
 	getRelatedFrom,
+	containsRelation,
 	getGraph,
 	-- Util query functions.
 	getDomainList,
@@ -36,7 +37,6 @@ module Data.Collection.Relation.Binary.Double (
 	getRelatedFromCount,
 	isRelatedTo,
 	isRelatedFrom,
-	containsRelation,
 	-- Relation theory functions.
 	isInjective,
 	revert) where
@@ -148,6 +148,9 @@ getRelatedTo element (BinaryRelation relatedTo _) = DCM.getValueWithDefault Set.
 getRelatedFrom :: (Ord domain, Ord codomain) => codomain -> BinaryRelation domain codomain -> Set.Set domain
 getRelatedFrom element (BinaryRelation _ relatedFrom) = DCM.getValueWithDefault Set.empty element relatedFrom
 
+containsRelation :: (Ord domain, Ord codomain) => domain -> codomain ->  BinaryRelation domain codomain -> Bool
+containsRelation domain codomain  (BinaryRelation relatedTo _) = DCMM.containedInKey domain codomain relatedTo
+
 getGraph :: (Ord domain, Ord codomain) => BinaryRelation domain codomain -> [(domain, codomain)]
 -- TODO: Make it more performant, it is traversing the sets too many times.
 getGraph br = [ (domain, codomain) | domain <- getDomainList br, codomain <- getRelatedToList domain br]
@@ -196,9 +199,6 @@ isRelatedTo domain codomain br = containsRelation domain codomain br
 isRelatedFrom :: (Ord domain, Ord codomain) => codomain -> domain -> BinaryRelation domain codomain -> Bool
 isRelatedFrom codomain domain br = containsRelation domain codomain br
 
-containsRelation :: (Ord domain, Ord codomain) => domain -> codomain ->  BinaryRelation domain codomain -> Bool
-containsRelation domain codomain  (BinaryRelation relatedTo _) = DCMM.containedInKey domain codomain relatedTo
-
 -- RELATION THEORY
 -------------------------------------------------------------------------------
 
@@ -235,5 +235,6 @@ instance (Ord domain, Ord codomain) => DCRB.BinaryRelation (BinaryRelation domai
 	getCodomain = getCodomain
 	getRelatedTo = getRelatedTo
 	getRelatedFrom = getRelatedFrom
+	containsRelation = containsRelation
 	getGraph = getGraph
 

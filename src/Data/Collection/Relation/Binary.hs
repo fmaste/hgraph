@@ -63,6 +63,8 @@ class (DC.Collection r, DCS.Set (DomainSet r), DCS.Set (CodomainSet r)) => Binar
 
 	getRelatedFrom :: DC.Element (CodomainSet r) -> r -> DomainSet r
 
+	containsRelation :: DC.Element (DomainSet r) -> DC.Element (CodomainSet r) ->  r -> Bool
+
 	-- All the relationships. Elements without relationships are not shown.
 	-- This function can be constructed using other funtions, but it is
 	-- here because the graph is part of the signature of a relation.

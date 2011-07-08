@@ -22,6 +22,7 @@ module Data.Collection.Relation.Binary.Simple (
 	getCodomain,
 	getRelatedTo,
 	getRelatedFrom,
+	containsRelation,
 	getGraph,
 	-- Util query functions.
 	getDomainList,
@@ -36,7 +37,6 @@ module Data.Collection.Relation.Binary.Simple (
 	getRelatedFromCount,
 	isRelatedTo,
 	isRelatedFrom,
-	containsRelation,
 	-- Relation theory functions.
 	isInjective,
 	revert) where
@@ -134,6 +134,9 @@ getRelatedFrom :: (Ord domain, Ord codomain) => codomain -> BinaryRelation domai
 getRelatedFrom element (BinaryRelation relatedTo _) = DCMF.foldrWithKey f Set.empty relatedTo where
 	f key set ans = if Set.containsElement element set then Set.addElement key ans else ans
 
+containsRelation :: (Ord domain, Ord codomain) => domain -> codomain ->  BinaryRelation domain codomain -> Bool
+containsRelation domain codomain  (BinaryRelation relatedTo _) = DCMM.containedInKey domain codomain relatedTo
+
 getGraph :: (Ord domain, Ord codomain) => BinaryRelation domain codomain -> [(domain, codomain)]
 -- TODO: Make it more performant, it is traversing the sets too many times.
 getGraph br = [ (domain, codomain) | domain <- getDomainList br, codomain <- getRelatedToList domain br]
@@ -177,9 +180,6 @@ isRelatedTo domain codomain br = containsRelation domain codomain br
 isRelatedFrom :: (Ord domain, Ord codomain) => codomain -> domain -> BinaryRelation domain codomain -> Bool
 isRelatedFrom codomain domain br = containsRelation domain codomain br
 
-containsRelation :: (Ord domain, Ord codomain) => domain -> codomain ->  BinaryRelation domain codomain -> Bool
-containsRelation domain codomain  (BinaryRelation relatedTo _) = DCMM.containedInKey domain codomain relatedTo
-
 -- RELATION THEORY
 -------------------------------------------------------------------------------
 
@@ -220,5 +220,6 @@ instance (Ord domain, Ord codomain) => DCRB.BinaryRelation (BinaryRelation domai
 	getCodomain = getCodomain
 	getRelatedTo = getRelatedTo
 	getRelatedFrom = getRelatedFrom
+	containsRelation = containsRelation
 	getGraph = getGraph
 
