@@ -206,6 +206,7 @@ revert br@(BinaryRelation relatedTo codomain) = BinaryRelation relatedTo' codoma
 -- INSTANCES
 -------------------------------------------------------------------------------
 
+-- Seen the relation as a Collection, it isn't more than its graph.
 instance (Ord domain, Ord codomain) => DC.Collection (BinaryRelation domain codomain) where
 	type DC.Element (BinaryRelation domain codomain) = (domain, codomain)
 	addElement (d, c) br = addRelation d c br
