@@ -246,17 +246,21 @@ instance (Ord domain, Ord codomain) => DCRB.BinaryRelation (BinaryRelation domai
 
 instance (Ord domain, Ord codomain) => DCRBD.Domain (BinaryRelation domain codomain) where
 	getDomainList = getDomainList
+	-- TODO: Remove toInteger
 	getDomainCount r = toInteger $ getDomainCount r
 	containsDomainElement = containsDomainElement
 	getRelatedToList = getRelatedToList
+	-- TODO: Remove toInteger
 	getRelatedToCount d r = toInteger $ getRelatedToCount d r
 	isRelatedTo = isRelatedTo
 
 instance (Ord domain, Ord codomain) => DCRBC.Codomain (BinaryRelation domain codomain) where
 	getCodomainList = getCodomainList
+	-- TODO: Remove toInteger
 	getCodomainCount r = toInteger $ getCodomainCount r
 	containsCodomainElement = containsCodomainElement
 	getRelatedFromList = getRelatedFromList
+	-- TODO: Remove toInteger
 	getRelatedFromCount c r = toInteger $ getRelatedFromCount c r
 	isRelatedFrom = isRelatedFrom
 
