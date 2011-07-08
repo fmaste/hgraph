@@ -31,6 +31,8 @@ module Data.Graph.Labels (
 
 import qualified Data.Set as Set
 import qualified Data.Collection.Relation.Binary as DCRB
+import qualified Data.Collection.Relation.Binary.Domain as DCRBD
+import qualified Data.Collection.Relation.Binary.Codomain as DCRBC
 import qualified Data.Collection.Relation.Binary.Double as BR
 
 -- DATA DEFINITION
@@ -92,22 +94,22 @@ removeLabelFromElement element label (Labels br) = Labels br' where
 -------------------------------------------------------------------------------
 
 getLabels :: (Ord element, Ord label) => Labels element label -> [label]
-getLabels (Labels br) = BR.getCodomainList br
+getLabels (Labels br) = DCRBC.getCodomainList br
 
 getElements :: (Ord element, Ord label) => Labels element label -> [element]
-getElements (Labels br) = BR.getDomainList br
+getElements (Labels br) = DCRBD.getDomainList br
 
-getLabelsCount :: (Ord element, Ord label) => Labels element label -> Int
-getLabelsCount (Labels br) = BR.getCodomainCount br
+getLabelsCount :: (Ord element, Ord label) => Labels element label -> Integer
+getLabelsCount (Labels br) = DCRBC.getCodomainCount br
 
-getElementsCount :: (Ord element, Ord label) => Labels element label -> Int
-getElementsCount (Labels br) = BR.getDomainCount br
+getElementsCount :: (Ord element, Ord label) => Labels element label -> Integer
+getElementsCount (Labels br) = DCRBD.getDomainCount br
 
 getLabelElements :: (Ord element, Ord label) => label -> Labels element label -> [element]
-getLabelElements label (Labels br) = BR.getRelatedFromList label br
+getLabelElements label (Labels br) = DCRBC.getRelatedFromList label br
 
 getElementLabels :: (Ord element, Ord label) => element -> Labels element label -> [label]
-getElementLabels element (Labels br) = BR.getRelatedToList element br
+getElementLabels element (Labels br) = DCRBD.getRelatedToList element br
 
 getLabelElementsSet :: (Ord element, Ord label) => label -> Labels element label -> Set.Set element
 getLabelElementsSet label (Labels br) = DCRB.getRelatedFrom label br
@@ -115,20 +117,21 @@ getLabelElementsSet label (Labels br) = DCRB.getRelatedFrom label br
 getElementLabelsSet :: (Ord element, Ord label) => element -> Labels element label -> Set.Set label
 getElementLabelsSet element (Labels br) = DCRB.getRelatedTo element br
 
-getLabelElementsCount :: (Ord element, Ord label) => label -> Labels element label -> Int
-getLabelElementsCount label (Labels br) = BR.getRelatedFromCount label br
+getLabelElementsCount :: (Ord element, Ord label) => label -> Labels element label -> Integer
+getLabelElementsCount label (Labels br) = DCRBC.getRelatedFromCount label br
 
-getElementLabelsCount :: (Ord element, Ord label) => element -> Labels element label -> Int
-getElementLabelsCount element (Labels br) = BR.getRelatedToCount element br
+getElementLabelsCount :: (Ord element, Ord label) => element -> Labels element label -> Integer
+getElementLabelsCount element (Labels br) = DCRBD.getRelatedToCount element br
 
 containsLabel :: (Ord element, Ord label) => label -> Labels element label -> Bool
-containsLabel label (Labels br) = BR.containsCodomainElement label br
+containsLabel label (Labels br) = DCRBC.containsCodomainElement label br
 
 containsElement :: (Ord element, Ord label) => element -> Labels element label -> Bool
-containsElement element (Labels br) = BR.containsDomainElement element br
+containsElement element (Labels br) = DCRBD.containsDomainElement element br
 
 labelContainsElement :: (Ord element, Ord label) => label -> element -> Labels element label -> Bool
-labelContainsElement label element (Labels br) = BR.isRelatedFrom label element br
+labelContainsElement label element (Labels br) = DCRBC.isRelatedFrom label element br
 
 elementContainsLabel :: (Ord element, Ord label) => element -> label -> Labels element label -> Bool
-elementContainsLabel element label (Labels br) = BR.isRelatedTo element label br
+elementContainsLabel element label (Labels br) = DCRBD.isRelatedTo element label br
+

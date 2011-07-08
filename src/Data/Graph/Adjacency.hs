@@ -45,6 +45,8 @@ import Data.List (foldl, foldl', foldr)
 import qualified Data.Set as Set
 import qualified Data.Map as Map
 import qualified Data.Collection.Relation.Binary as DCRB
+import qualified Data.Collection.Relation.Binary.Domain as DCRBD
+import qualified Data.Collection.Relation.Binary.Codomain as DCRBC
 import qualified Data.Collection.Relation.Binary.Double as BR
 
 -- * DATA DEFINITION
@@ -126,19 +128,19 @@ removeNodePredAdjacencies node adj@(Adjacency br) = Adjacency br' where
 
 -- | A list with all the different nodes.
 getNodes :: Ord node => Adjacency node -> [node]
-getNodes (Adjacency br) = BR.getDomainList br
+getNodes (Adjacency br) = DCRBD.getDomainList br
 
 -- | The number of different nodes present.
-getNodeCount :: Ord node => Adjacency node -> Int
-getNodeCount (Adjacency br) = BR.getDomainCount br
+getNodeCount :: Ord node => Adjacency node -> Integer
+getNodeCount (Adjacency br) = DCRBD.getDomainCount br
 
 -- | Get all the different nodes that are successors.
 getNodeSuccNodes :: Ord node => node -> Adjacency node -> [node]
-getNodeSuccNodes node (Adjacency br) = BR.getRelatedToList node br
+getNodeSuccNodes node (Adjacency br) = DCRBD.getRelatedToList node br
 
 -- | Get all the different nodes that are predecessors.
 getNodePredNodes :: Ord node => node -> Adjacency node -> [node]
-getNodePredNodes node (Adjacency br) = BR.getRelatedFromList node br
+getNodePredNodes node (Adjacency br) = DCRBC.getRelatedFromList node br
 
 -- | A set with the node successors.
 getNodeSuccNodesSet :: Ord node => node -> Adjacency node -> Set.Set node
@@ -177,13 +179,13 @@ getAdjacencies adj =
 	concatMap (\node -> [(node, x) | x <- getNodeSuccNodes node adj]) (getNodes adj)
 
 -- | The number of different adjacencies.
-getAdjacencyCount :: Ord node => Adjacency node -> Int
+getAdjacencyCount :: Ord node => Adjacency node -> Integer
 getAdjacencyCount (Adjacency br) = 
-	foldl (\ans key -> ans + (BR.getRelatedToCount key br)) 0 $ BR.getDomainList br
+	foldl (\ans key -> ans + (DCRBD.getRelatedToCount key br)) 0 $ DCRBD.getDomainList br
 
 -- | Node exists?
 containsNode :: Ord node => node -> Adjacency node -> Bool
-containsNode node (Adjacency br) = BR.containsDomainElement node br
+containsNode node (Adjacency br) = DCRBD.containsDomainElement node br
 
 -- | Is this a successor of node?
 containsNodeSucc :: Ord node => node -> node -> Adjacency node -> Bool
@@ -195,7 +197,7 @@ containsNodePred node pred adj = containsAdjacency pred node adj
 
 -- | Adjacency exists?
 containsAdjacency :: Ord node => node -> node -> Adjacency node -> Bool
-containsAdjacency src dst (Adjacency br) = BR.isRelatedTo src dst br
+containsAdjacency src dst (Adjacency br) = DCRBD.isRelatedTo src dst br
 
 -- * CONVERSION
 -------------------------------------------------------------------------------
