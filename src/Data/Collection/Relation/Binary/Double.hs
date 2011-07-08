@@ -56,6 +56,7 @@ import qualified Data.Collection.Map.Multi as DCMM
 import qualified Data.Collection.Relation.Binary as DCRB
 import qualified Data.Collection.Relation.Binary.Domain as DCRBD
 import qualified Data.Collection.Relation.Binary.Codomain as DCRBC
+import qualified Data.Collection.Relation.Binary.Theory as DCRBT
 import qualified Data.Collection.Map.Multi.Set.Standard as MapSet
 import qualified Data.Collection.Set.Standard as Set
 
@@ -259,4 +260,7 @@ instance (Ord domain, Ord codomain) => DCRBC.Codomain (BinaryRelation domain cod
 	-- TODO: Remove toInteger
 	getRelatedFromCount c r = toInteger $ getRelatedFromCount c r
 	isRelatedFrom = isRelatedFrom
+
+instance (Ord domain, Ord codomain) => DCRBT.Theory (BinaryRelation domain codomain) where
+	isInjective = isInjective
 
