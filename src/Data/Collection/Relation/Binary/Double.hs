@@ -40,6 +40,7 @@ module Data.Collection.Relation.Binary.Double (
 	isRelatedFrom,
 	-- Theory functions.
 	isInjective,
+	-- Transformation functions.
 	revert) where
 
 -- IMPORTS
