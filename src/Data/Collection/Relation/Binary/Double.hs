@@ -202,7 +202,7 @@ getRelatedFromCount element (BinaryRelation _ relatedFrom) = fromInteger $ DCMM.
 isRelatedFrom :: (Ord domain, Ord codomain) => codomain -> domain -> BinaryRelation domain codomain -> Bool
 isRelatedFrom codomain domain br = containsRelation domain codomain br
 
--- RELATION THEORY
+-- THEORY FUNCTIONS
 -------------------------------------------------------------------------------
 
 isInjective :: (Ord domain, Ord codomain) => BinaryRelation domain codomain -> Bool
