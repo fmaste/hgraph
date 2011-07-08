@@ -46,6 +46,7 @@ module Data.Collection.Relation.Binary.Simple (
 -- IMPORTS
 -------------------------------------------------------------------------------
 
+-- Interfaces.
 import qualified Data.List as DL
 import qualified Data.Collection as DC
 import qualified Data.Collection.Cardinality as DCC
@@ -60,6 +61,8 @@ import qualified Data.Collection.Relation.Binary as DCRB
 import qualified Data.Collection.Relation.Binary.Domain as DCRBD
 import qualified Data.Collection.Relation.Binary.Codomain as DCRBC
 import qualified Data.Collection.Relation.Binary.Theory as DCRBT
+
+-- Implementations.
 import qualified Data.Collection.Map.Multi.Set.Standard as MapSet
 import qualified Data.Collection.Set.Standard as Set
 
