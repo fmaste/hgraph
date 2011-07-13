@@ -6,7 +6,7 @@
 -- MODULE
 -------------------------------------------------------------------------------
 
-{-# LANGUAGE TypeFamilies, TypeSynonymInstances #-}
+{-# LANGUAGE TypeFamilies #-}
 module Data.Collection.Set (
 	Set(..) ) where
 
