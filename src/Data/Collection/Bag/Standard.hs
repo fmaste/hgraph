@@ -1,6 +1,6 @@
 -- Author: Federico Mastellone (fmaste@gmail.com)
 
--- Standard bag.
+-- Ord bag.
 -- TODO: Make it haddock compatible!
 
 -- MODULE
