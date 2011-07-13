@@ -74,7 +74,7 @@ addElement (k, v) = putValue k v
 
 removeElement :: (Ord k, Ord v) => (k, v) -> Map k v -> Map k v
 removeElement (k, v) m = Map.update f k m where
-	f x = if x == v then Just x else Nothing
+	f x = if x == v then Nothing else Just x
 
 containsElement :: (Ord k, Ord v) => (k, v) -> Map k v -> Bool
 containsElement (k, v) m = if getValue k m == Just v then True else False
