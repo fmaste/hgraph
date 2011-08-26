@@ -1,4 +1,9 @@
 A graph library (weigth, directed and multi variants).
+
+I highly value graphs as a structure that can model many complex problem and have a strong theoretic background.
+
+I am building many types of collections that will be useful to build my graph library.
+
 The graph is represented by two structures:
 	- The adjacency:
 		This structure contains for each node a list with its predecessors and another one with its successors.
