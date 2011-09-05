@@ -60,6 +60,9 @@ toList = DI.elems
 fromList :: [Int] -> IntSet
 fromList = DI.fromList
 
+map :: (Int -> Int) -> IntSet -> IntSet
+map = DI.map
+
 getUnion :: IntSet -> IntSet -> IntSet
 getUnion = DI.union
 
