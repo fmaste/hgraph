@@ -16,12 +16,14 @@ module Data.Collection.Set.Int (
 	getElementsCount,
 	toList,
 	fromList,
+	map,
 	getUnion,
 	getIntersection) where
 
 -- IMPORTS
 -------------------------------------------------------------------------------
 
+import Prelude hiding (map)
 import qualified Data.IntSet as DI
 import qualified Data.Collection as DC
 import qualified Data.Collection.Cardinality as DCC
